@@ -1,0 +1,26 @@
+---
+interface Props {
+  num: string;
+  sym: string;
+  title: string;
+  level: string;
+  desc: string;
+  meta?: string;
+  linkLabel?: string;
+  linkHref?: string;
+}
+const { num, sym, title, level, desc, meta, linkLabel, linkHref } = Astro.props;
+---
+<div class="hub-card">
+  <div class="hub-card-top">
+    <div class="hub-badge" set:html={sym} />
+    <div class="hub-level">{level}</div>
+  </div>
+  <div class="hub-num">{num}</div>
+  <div class="hub-title">{title}</div>
+  <div class="hub-desc">{desc}</div>
+  {meta && <div class="hub-meta">{meta}</div>}
+  {linkLabel && linkHref && (
+    <a class="hub-link" href={linkHref}>{linkLabel} →</a>
+  )}
+</div>

@@ -1,0 +1,57 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { lessonManifest } from "../../../content/site-data/learn";
+
+export async function getStaticPaths() {
+  const tracks = await getCollection("tracks");
+  return tracks.map((t) => ({ params: { track: t.id }, props: { track: t } }));
+}
+
+const { track } = Astro.props;
+const modules = lessonManifest[track.id] ?? [];
+const hasContent = modules.some((m) => m.items.some((i) => i.slug));
+---
+<BaseLayout
+  title={track.data.title}
+  description={track.data.description}
+  active="learn"
+>
+  <div class="crumbrow">
+    <a href="/learn">Learn</a> / <b>{track.data.title}</b>
+  </div>
+  <section class="section">
+    <div class="container" style="max-width: 760px;">
+      <div class="section-head" style="text-align:left; margin-bottom:28px;">
+        <div class="section-kicker">TRACK {track.data.num} · {track.data.level}</div>
+        <h1 class="section-title">{track.data.title}</h1>
+        <p style="color:var(--muted); margin-top:12px; font-size:15px; line-height:1.6;">{track.data.description}</p>
+      </div>
+
+      {hasContent ? (
+        modules.map((mod) => (
+          <div style="margin-bottom:28px;">
+            <div class="sb-mod" style="padding-left:0;">{mod.module}</div>
+            {mod.items.map((item) => (
+              item.slug ? (
+                <a class="sb-item" style="padding-left:0;" href={`/learn/${track.id}/${item.slug}`}>
+                  <span class="sb-num">{item.num}</span>
+                  <span>{item.title}</span>
+                  <span class="sb-dur">{item.duration}</span>
+                </a>
+              ) : (
+                <div class="sb-item sb-item-inert" style="padding-left:0;">
+                  <span class="sb-num">{item.num}</span>
+                  <span>{item.title}</span>
+                  <span class="sb-dur">{item.duration}</span>
+                </div>
+              )
+            ))}
+          </div>
+        ))
+      ) : (
+        <div class="empty-state">This track's curriculum is being written — check back soon.</div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

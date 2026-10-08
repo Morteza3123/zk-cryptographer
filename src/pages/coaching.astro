@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import CoachingHeroDiagram from "../components/CoachingHeroDiagram.astro";
+import PersonaCard from "../components/PersonaCard.astro";
+import HubCard from "../components/HubCard.astro";
+import Stepper from "../components/Stepper.astro";
+import PlanCard from "../components/PlanCard.astro";
+import Accordion from "../components/Accordion.astro";
+import {
+  coachingHero,
+  personas,
+  focusAreas,
+  processSteps,
+  plans,
+  faqItems,
+  finalCta,
+} from "../content/site-data/coaching";
+---
+<BaseLayout
+  title="1:1 Coaching"
+  description="Personalized zero-knowledge coaching for engineers, founders, and researchers — math, proof systems, circuits, and a real shipped project."
+>
+  <Hero
+    kicker={coachingHero.kicker}
+    heading={coachingHero.heading}
+    sub={coachingHero.sub}
+    primaryCta={{ label: "Apply for a coaching plan", href: "/coaching/apply" }}
+    secondaryCta={{ label: "See how it works", href: "#how-it-works" }}
+    stats={coachingHero.stats}
+  >
+    <CoachingHeroDiagram slot="diagram" />
+  </Hero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">WHO THIS IS FOR</div>
+        <h2 class="section-title">Built for people who want to build, not just watch</h2>
+      </div>
+      <div class="persona-grid">
+        {personas.map((p) => (
+          <PersonaCard title={p.title} desc={p.desc} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">WHAT WE COVER</div>
+        <h2 class="section-title">For now, every plan draws from these four areas</h2>
+      </div>
+      <div class="hub-grid">
+        {focusAreas.map((f) => (
+          <HubCard num={f.num} sym={f.sym} title={f.title} level={f.level} desc={f.desc} meta={f.meta} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">HOW IT WORKS</div>
+        <h2 class="section-title">From application to shipped work</h2>
+      </div>
+      <Stepper steps={processSteps} />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">FORMAT &amp; DURATION</div>
+        <h2 class="section-title">Pick a shape, or we'll figure it out on the intro call</h2>
+      </div>
+      <div class="plan-grid">
+        {plans.map((p) => (
+          <PlanCard
+            name={p.name}
+            tag={p.tag}
+            duration={p.duration}
+            desc={p.desc}
+            features={p.features}
+            ctaLabel="Apply now"
+            ctaHref="/coaching/apply"
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width: 760px;">
+      <div class="section-head">
+        <div class="section-kicker">FAQ</div>
+        <h2 class="section-title">Before you reach out</h2>
+      </div>
+      <Accordion items={faqItems} />
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-band-kicker">{finalCta.kicker}</div>
+      <h2 class="cta-band-title">{finalCta.heading}</h2>
+      <p class="cta-band-sub">{finalCta.sub}</p>
+      <a class="btn" href={finalCta.ctaHref}>{finalCta.ctaLabel}</a>
+    </div>
+  </section>
+</BaseLayout>

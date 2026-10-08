@@ -1,0 +1,62 @@
+---
+track: math
+module: "Modular Arithmetic"
+lessonNumber: "04"
+title: "Modular Arithmetic"
+duration: "5:22"
+description: "The single idea that makes finite fields, elliptic curve groups, and almost every ZK primitive work: arithmetic that wraps around instead of growing forever."
+order: 4
+prevTitle: "Divisibility, Factors & Primes"
+nextTitle: "Modular Inverses & Fermat's"
+---
+import MathBox from "../../components/MathBox.astro";
+
+Modular arithmetic is the backbone of almost every cryptographic primitive you'll touch in ZK — from finite field operations to the elliptic curve groups used in pairing-based SNARKs. The idea is simple: instead of working with the infinite set of integers, we only care about the remainder after dividing by some fixed number, called the **modulus**.
+
+<MathBox label="Definition">
+
+$$a \equiv b \pmod{n}$$
+
+means $n$ divides $(a - b)$. Example: $17 \equiv 5 \pmod{12}$, because $17 - 5 = 12$.
+
+</MathBox>
+
+This is exactly how a 12-hour clock works — once you wrap past 12, you're back to the start. In code, this becomes a single operator:
+
+```python
+def mod_reduce(a, n):
+    return a % n
+
+print(mod_reduce(17, 12))   # 5
+print(mod_reduce(-3, 12))   # 9  (Python wraps negatives for you)
+```
+
+Addition and multiplication behave the way you'd expect under a modulus, but division is trickier — you can't just divide. Instead, you multiply by a **modular inverse**, which only exists if $a$ and $n$ share no common factors. When $n$ is prime, Fermat's Little Theorem hands you a shortcut.
+
+<MathBox label="Fermat's Little Theorem">
+
+$$a^{p-1} \equiv 1 \pmod{p}$$
+
+whenever $p$ is prime and $\gcd(a, p) = 1$. Rearranged, this gives the inverse directly: $a^{p-2} \equiv a^{-1} \pmod{p}$.
+
+</MathBox>
+
+That means you can compute a modular inverse with nothing more than modular exponentiation — and because exponents get huge fast, you never compute $a^{p-2}$ one multiplication at a time. You use **square-and-multiply**:
+
+```python
+def mod_pow(base, exp, mod):
+    result = 1
+    base %= mod
+    while exp > 0:
+        if exp & 1:
+            result = (result * base) % mod
+        exp >>= 1
+        base = (base * base) % mod
+    return result
+
+# modular inverse of 7 mod 13 (13 is prime)
+inv = mod_pow(7, 13 - 2, 13)
+print(inv)   # 2, since 7 * 2 = 14 ≡ 1 (mod 13)
+```
+
+Every finite field you'll meet in ZK — the scalar field of an elliptic curve, the base field a circuit is built over — is just modular arithmetic with a prime modulus. Once square-and-multiply feels natural, the next lesson on modular inverses will mostly be filling in the *why* behind what you just used.

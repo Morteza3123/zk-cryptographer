@@ -1,0 +1,80 @@
+---
+title: "What Zero-Knowledge Proofs Actually Prove"
+category: "Zero-Knowledge"
+excerpt: "A plain-language walkthrough of completeness, soundness, and zero-knowledge — the three properties every ZK protocol has to satisfy, with no hand-waving."
+date: 2026-10-02
+readingTime: "9 min read"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import SigmaProtocolFigure from "../../components/figures/SigmaProtocolFigure.astro";
+import TranscriptCompareFigure from "../../components/figures/TranscriptCompareFigure.astro";
+
+Say someone claims to know a secret — a private key, a password, a solution to a puzzle — without wanting to reveal what it is. A zero-knowledge proof lets them convince you they're telling the truth, with mathematical certainty, while you learn nothing else about the secret itself. That's the headline. The interesting part is what "convince you" and "nothing else" actually mean, because both are precise technical claims, not marketing copy.
+
+Every zero-knowledge protocol has to satisfy three properties simultaneously. Drop any one of them and you don't have a zero-knowledge proof anymore — you have something else, possibly useful, but not this.
+
+<MathBox label="Completeness">
+
+$$\Pr[\mathcal{V} \text{ accepts} \mid x \in L, \text{ honest } \mathcal{P}] = 1$$
+
+If the statement is true and both parties follow the protocol, the verifier always accepts. No honest prover should ever fail to convince an honest verifier.
+
+</MathBox>
+
+Completeness is the easy one to accept intuitively — it just says the protocol works when everyone is playing fair. The harder, more interesting guarantee is what happens when they're not.
+
+<MathBox label="Soundness">
+
+$$\Pr[\mathcal{V} \text{ accepts} \mid x \notin L] \le \varepsilon$$
+
+A cheating prover who doesn't actually know the secret can only fool the verifier with some small probability $\varepsilon$ — and that probability shrinks exponentially as the protocol repeats.
+
+</MathBox>
+
+This is where the interactive, back-and-forth structure earns its keep. In a single round of the classic Sigma-protocol pattern — commitment, challenge, response — a cheating prover can get lucky roughly half the time. Repeat the round twenty times and their odds of bluffing through every single one collapse to about one in a million.
+
+<Figure caption="Fig. 1 — the three-message structure underneath almost every interactive zero-knowledge proof.">
+  <SigmaProtocolFigure />
+</Figure>
+
+So far this just describes a proof system with a tunable error rate — useful, but not yet *zero-knowledge*. The third property is the one that gives the field its name, and it's the subtlest.
+
+<MathBox label="Zero-Knowledge">
+
+$$\{\mathsf{View}_{\mathcal{V}}(\mathcal{P}, \mathcal{V})\} \approx \{\mathsf{Sim}(\mathcal{V})\}$$
+
+Whatever the verifier sees during the protocol (the "view") must be simulatable by the verifier alone, without any help from the prover and without knowing the secret. If a simulator can fake a transcript that is indistinguishable from the real thing, the real transcript cannot have leaked any information.
+
+</MathBox>
+
+This is the part that trips people up on first read, so it's worth sitting with. The proof isn't that the verifier forgets what they saw — it's that what they saw could have been produced by someone who knew nothing at all. If a simulator with no access to the secret can manufacture a transcript that's statistically indistinguishable from a real one, then by definition the real transcript carried no extractable information about the secret. The verifier gained certainty that the prover knows $x$, and gained nothing else.
+
+<Figure caption="Fig. 2 — a real protocol transcript sits next to one fabricated by a simulator with no knowledge of the secret. Indistinguishable.">
+  <TranscriptCompareFigure />
+</Figure>
+
+Here's a minimal, non-production sketch of the three-message pattern for proving knowledge of a discrete logarithm — the "hello world" of zero-knowledge proofs, and the direct ancestor of the Schnorr signatures and zkSNARK building blocks used throughout this site.
+
+```python
+# toy sigma-protocol: prove knowledge of x such that y = g^x (mod p)
+def prover_commit(g, p):
+    k = random_below(p - 1)
+    c = pow(g, k, p)
+    return c, k  # commitment c, kept secret k
+
+def verifier_challenge(p):
+    return random_below(p)  # random e
+
+def prover_response(k, e, x, order):
+    return (k + e * x) % order  # z = k + e·x
+
+def verifier_check(g, y, c, e, z, p):
+    lhs = pow(g, z, p)
+    rhs = (c * pow(y, e, p)) % p
+    return lhs == rhs  # accept iff g^z == c·y^e
+```
+
+Every property above is visible in this toy version: completeness falls out of the algebra ($g^z = c \cdot y^e$ holds whenever the prover genuinely used the same $x$ in both the commitment and the response); soundness comes from the verifier's challenge $e$ being unpredictable at commitment time; and zero-knowledge comes from the fact that $c$, $e$, and $z$ individually look like uniform random noise — a simulator can pick $e$ and $z$ first, then solve backward for a $c$ that makes the check pass, producing a transcript statistically identical to a real one.
+
+Every zkSNARK, every Bulletproof, every STARK you'll encounter is this same skeleton wearing more sophisticated math. Once completeness, soundness, and zero-knowledge stop being abstract requirements and start being three concrete things you can point to in a protocol diagram, the rest of the field opens up considerably.

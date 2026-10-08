@@ -1,0 +1,8 @@
+{
+  "num": "02",
+  "sym": "&#9670;",
+  "title": "Cryptography",
+  "level": "INTERMEDIATE",
+  "description": "Commitments, hash functions, and the classical crypto foundations ZK builds on.",
+  "lessonCount": 14
+}

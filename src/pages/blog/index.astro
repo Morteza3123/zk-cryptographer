@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import BlogHeroDiagram from "../../components/BlogHeroDiagram.astro";
+import PostThumb from "../../components/PostThumb.astro";
+
+const posts = (await getCollection("posts", (p) => !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const categories = ["All", "Zero-Knowledge", "Math", "Cryptography", "ZK Development", "News/Ecosystem", "Post-Quantum Cryptography", "Formal Verification"];
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+---
+<BaseLayout
+  title="Blog"
+  description="Explainers, project write-ups, and field notes on zero-knowledge, the math underneath it, and what's shipping across the ecosystem."
+  active="blog"
+>
+  <Hero
+    kicker="THE BLOG"
+    heading="Notes from the proof side of cryptography."
+    sub="Explainers, project write-ups, and field notes on zero-knowledge, the math underneath it, and what's shipping across the ecosystem."
+  >
+    <BlogHeroDiagram slot="diagram" />
+  </Hero>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="pillrow" data-pillrow style="margin-bottom:28px;">
+        {categories.map((cat, i) => (
+          <button
+            type="button"
+            class={`pill ${i === 0 ? "active" : ""}`}
+            data-cat={slugify(cat)}
+          >{cat}</button>
+        ))}
+      </div>
+
+      <div class="post-grid" data-post-grid>
+        {posts.map((post) => (
+          <a class="post-card" href={`/blog/${post.slug}`} data-cat={slugify(post.data.category)}>
+            <div class="post-thumb">
+              <PostThumb category={post.data.category} />
+            </div>
+            <div class="post-body">
+              <div class="post-cat">{post.data.category}</div>
+              <div class="post-title">{post.data.title}</div>
+              <div class="post-excerpt">{post.data.excerpt}</div>
+              <div class="post-meta">{dateFormatter.format(post.data.date)} · {post.data.readingTime}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="empty-state" data-empty-state hidden>No posts in this category yet.</div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Client-side category filter — this is a fully static site, so filtering
+  // happens by toggling visibility rather than a server-side query.
+  const pillrow = document.querySelector("[data-pillrow]");
+  const cards = document.querySelectorAll<HTMLElement>("[data-post-grid] [data-cat]");
+  const emptyState = document.querySelector<HTMLElement>("[data-empty-state]");
+
+  pillrow?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-cat]");
+    if (!btn) return;
+    pillrow.querySelectorAll(".pill").forEach((p) => p.classList.remove("active"));
+    btn.classList.add("active");
+
+    const cat = btn.dataset.cat;
+    let visibleCount = 0;
+    cards.forEach((card) => {
+      const match = cat === "all" || card.dataset.cat === cat;
+      card.style.display = match ? "" : "none";
+      if (match) visibleCount++;
+    });
+    if (emptyState) emptyState.hidden = visibleCount > 0;
+  });
+</script>

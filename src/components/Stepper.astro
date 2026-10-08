@@ -1,0 +1,20 @@
+---
+interface Step {
+  num: string;
+  label: string;
+  desc?: string;
+}
+interface Props {
+  steps: Step[];
+}
+const { steps } = Astro.props;
+---
+<div class="path-stepper">
+  {steps.map((s) => (
+    <div class="path-step">
+      <div class="path-dot">{s.num}</div>
+      <div class="path-label">{s.label}</div>
+      {s.desc && <div class="path-desc">{s.desc}</div>}
+    </div>
+  ))}
+</div>

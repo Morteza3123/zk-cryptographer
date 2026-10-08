@@ -1,0 +1,35 @@
+---
+import Logo from "./Logo.astro";
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-row">
+          <Logo size={26} />
+          ZK Cryptographer
+        </div>
+        <div class="footer-tag">Where zero-knowledge meets real-world proof.</div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">LEARN</div>
+          <a href="/learn/math">Math</a>
+          <a href="/learn/cryptography">Cryptography</a>
+          <a href="/learn/fundamentals">Fundamentals</a>
+          <a href="/learn/zk-development">ZK Development</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">MORE</div>
+          <a href="/blog">Blog</a>
+          <a href="/services">Services</a>
+          <a href="/about">About</a>
+          <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">© {year} ZK Cryptographer. All rights reserved.</div>
+  </div>
+</footer>

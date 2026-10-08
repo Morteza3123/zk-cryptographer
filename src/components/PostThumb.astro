@@ -1,0 +1,32 @@
+---
+// A generic, category-coded thumbnail for blog post cards — a single
+// reusable pattern rather than bespoke art per post, so new posts get a
+// thumbnail automatically. Reuses the brand gradient defs from LogoDefs.
+interface Props {
+  category: string;
+}
+const { category } = Astro.props;
+
+const SYMBOLS: Record<string, string> = {
+  "Zero-Knowledge": "&#128274;", // uses the lock glyph as a stand-in; replaced by the brand icon below for this category
+  "Math": "&#931;",
+  "Cryptography": "&#9670;",
+  "ZK Development": "&#11041;",
+  "News/Ecosystem": "&#9632;",
+  "Post-Quantum Cryptography": "&#9678;",
+  "Formal Verification": "&#10003;",
+};
+const sym = SYMBOLS[category] ?? "&#9670;";
+const isZK = category === "Zero-Knowledge";
+---
+<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="225" fill="#121c2c" />
+  <circle cx="200" cy="100" r="2" fill="none" />
+  <circle cx="200" cy="100" r="42" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
+  {isZK ? (
+    <svg x="182" y="80" width="36" height="38" viewBox="0 0 400 420"><use href="#zk-logo-icon"></use></svg>
+  ) : (
+    <text x="200" y="110" text-anchor="middle" fill="#e9eef5" font-size="26" font-weight="800" font-family="-apple-system,Arial,sans-serif" set:html={sym} />
+  )}
+  <line x1="60" y1="170" x2="340" y2="170" stroke="#223049" stroke-width="1.5" />
+</svg>

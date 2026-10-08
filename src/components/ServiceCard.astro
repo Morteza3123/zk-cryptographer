@@ -1,0 +1,26 @@
+---
+interface Props {
+  sym: string;
+  tag: string;
+  title: string;
+  desc: string;
+  items: string[];
+  ctaLabel: string;
+  ctaHref: string;
+}
+const { sym, tag, title, desc, items, ctaLabel, ctaHref } = Astro.props;
+---
+<div class="service-card">
+  <div class="service-card-top">
+    <div class="hub-badge service-badge" set:html={sym} />
+    <div class="hub-level">{tag}</div>
+  </div>
+  <div class="service-title">{title}</div>
+  <div class="service-desc">{desc}</div>
+  <div class="plan-feats">
+    {items.map((i) => (
+      <div class="plan-feat"><span class="plan-check">✓</span>{i}</div>
+    ))}
+  </div>
+  <a class="plan-cta" href={ctaHref}>{ctaLabel}</a>
+</div>

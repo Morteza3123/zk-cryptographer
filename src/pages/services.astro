@@ -1,0 +1,114 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import ServicesHeroDiagram from "../components/ServicesHeroDiagram.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import HubCard from "../components/HubCard.astro";
+import Stepper from "../components/Stepper.astro";
+import PlanCard from "../components/PlanCard.astro";
+import Accordion from "../components/Accordion.astro";
+import {
+  servicesHero,
+  engagementTypes,
+  capabilities,
+  processSteps,
+  models,
+  faqItems,
+  finalCta,
+} from "../content/site-data/services";
+---
+<BaseLayout
+  title="Services"
+  description="Zero-knowledge consulting and hands-on engineering — proof-system selection, circuit development, security review, and on-chain integration."
+  active="services"
+>
+  <Hero
+    kicker={servicesHero.kicker}
+    heading={servicesHero.heading}
+    sub={servicesHero.sub}
+    primaryCta={{ label: "Start a project", href: "/services/apply" }}
+    secondaryCta={{ label: "See how it works", href: "#how-it-works" }}
+    stats={servicesHero.stats}
+  >
+    <ServicesHeroDiagram engagements={[engagementTypes[0], engagementTypes[1]]} slot="diagram" />
+  </Hero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">WAYS TO WORK TOGETHER</div>
+        <h2 class="section-title">Advisory when you need a decision, hands-on when you need it built</h2>
+      </div>
+      <div class="service-grid">
+        {engagementTypes.map((e) => (
+          <ServiceCard sym={e.sym} tag={e.tag} title={e.title} desc={e.desc} items={e.items} ctaLabel={e.ctaLabel} ctaHref={e.ctaHref} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="capabilities">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">CORE CAPABILITIES</div>
+        <h2 class="section-title">What I actually work on</h2>
+      </div>
+      <div class="hub-grid">
+        {capabilities.map((c) => (
+          <HubCard num={c.num} sym={c.sym} title={c.title} level={c.level} desc={c.desc} meta={c.meta} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">HOW IT WORKS</div>
+        <h2 class="section-title">From scope call to handoff</h2>
+      </div>
+      <Stepper steps={processSteps} />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">ENGAGEMENT MODELS</div>
+        <h2 class="section-title">Pick a shape, or we'll figure it out on the scope call</h2>
+      </div>
+      <div class="plan-grid">
+        {models.map((m) => (
+          <PlanCard
+            name={m.name}
+            tag={m.tag}
+            duration={m.duration}
+            desc={m.desc}
+            features={m.features}
+            ctaLabel="Start a project"
+            ctaHref="/services/apply"
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width: 760px;">
+      <div class="section-head">
+        <div class="section-kicker">FAQ</div>
+        <h2 class="section-title">Before you reach out</h2>
+      </div>
+      <Accordion items={faqItems} />
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-band-kicker">{finalCta.kicker}</div>
+      <h2 class="cta-band-title">{finalCta.heading}</h2>
+      <p class="cta-band-sub">{finalCta.sub}</p>
+      <a class="btn" href={finalCta.ctaHref}>{finalCta.ctaLabel}</a>
+    </div>
+  </section>
+</BaseLayout>

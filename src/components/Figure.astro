@@ -1,0 +1,13 @@
+---
+// A captioned inline diagram for lesson/post MDX content — the diagram
+// itself is passed as the default slot (typically one of the components
+// in src/components/figures/).
+interface Props {
+  caption: string;
+}
+const { caption } = Astro.props;
+---
+<figure class="article-figure">
+  <div class="figure-media"><slot /></div>
+  <figcaption set:html={caption} />
+</figure>

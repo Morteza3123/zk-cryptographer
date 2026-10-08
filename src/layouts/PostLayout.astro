@@ -1,0 +1,43 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import "katex/dist/katex.min.css";
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  dateLabel: string;
+  readingTime: string;
+  ogImage?: string;
+}
+const {
+  title,
+  description,
+  category,
+  dateLabel,
+  readingTime,
+  ogImage = "/images/og-square.png",
+} = Astro.props;
+---
+<BaseLayout
+  title={title}
+  description={description}
+  active="blog"
+  ogImage={ogImage}
+  ogImageWidth={1080}
+  ogImageHeight={1080}
+>
+  <div class="crumbrow">
+    <a href="/blog">Blog</a> / <a href={`/blog?category=${encodeURIComponent(category)}`}>{category}</a> / <b>{title}</b>
+  </div>
+  <div class="course-layout">
+    <div class="course-main">
+      <div class="post-cat-pill">{category}</div>
+      <div class="lesson-title">{title}</div>
+      <div class="lesson-meta">{dateLabel} · {readingTime}</div>
+      <article class="lesson-article">
+        <slot />
+      </article>
+    </div>
+  </div>
+</BaseLayout>

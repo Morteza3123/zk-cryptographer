@@ -1,0 +1,24 @@
+---
+interface Props {
+  name: string;
+  tag?: string;
+  duration: string;
+  desc: string;
+  features: string[];
+  ctaLabel: string;
+  ctaHref: string;
+}
+const { name, tag, duration, desc, features, ctaLabel, ctaHref } = Astro.props;
+---
+<div class={`plan-card ${tag ? "featured" : ""}`}>
+  {tag && <div class="plan-tag">{tag}</div>}
+  <div class="plan-name">{name}</div>
+  <div class="plan-duration">{duration}</div>
+  <div class="plan-desc">{desc}</div>
+  <div class="plan-feats">
+    {features.map((f) => (
+      <div class="plan-feat"><span class="plan-check">✓</span>{f}</div>
+    ))}
+  </div>
+  <a class="plan-cta" href={ctaHref}>{ctaLabel}</a>
+</div>

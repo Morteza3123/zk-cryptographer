@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import HomeHeroDiagram from "../components/HomeHeroDiagram.astro";
+import PersonaCard from "../components/PersonaCard.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import { homeHero, valueProps, pillars, about, finalCta } from "../content/site-data/home";
+---
+<BaseLayout
+  title="Zero-Knowledge Engineering, Learning & Coaching"
+  description="Learn zero-knowledge proofs from the math up, get 1:1 coaching, or bring in hands-on ZK engineering — proof systems, circuits, and security review."
+>
+  <Hero
+    kicker={homeHero.kicker}
+    heading={homeHero.heading}
+    sub={homeHero.sub}
+    primaryCta={{ label: "Explore the Learning Hub", href: "/learn" }}
+    secondaryCta={{ label: "Book a coaching call", href: "/coaching" }}
+    stats={homeHero.stats}
+  >
+    <HomeHeroDiagram slot="diagram" />
+  </Hero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">WHY ZK CRYPTOGRAPHER</div>
+        <h2 class="section-title">Taught and built by someone who ships</h2>
+      </div>
+      <div class="persona-grid">
+        {valueProps.map((v) => (
+          <PersonaCard title={v.title} desc={v.desc} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">THREE WAYS TO GO DEEPER</div>
+        <h2 class="section-title">Pick the path that matches where you are</h2>
+      </div>
+      <div class="persona-grid">
+        {pillars.map((p) => (
+          <ServiceCard sym={p.sym} tag={p.tag} title={p.title} desc={p.desc} items={p.items} ctaLabel={p.ctaLabel} ctaHref={p.ctaHref} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">{about.kicker}</div>
+        <h2 class="section-title">{about.title}</h2>
+      </div>
+      <div class="prose-centered">
+        <p>{about.body}</p>
+        <a class="btn-outline" href={about.ctaHref}>{about.ctaLabel}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-band-kicker">{finalCta.kicker}</div>
+      <h2 class="cta-band-title">{finalCta.heading}</h2>
+      <p class="cta-band-sub">{finalCta.sub}</p>
+      <a class="btn" href={finalCta.ctaHref}>{finalCta.ctaLabel}</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+// Coaching's hero visual: a single rising path through three growing nodes
+// (1 session -> 4 weeks -> 12 weeks). Reads as progression, not a stack.
+const nodes = [
+  { badge: "1", x: 90, y: 310, r: 20, title: "Single Session", sub: "90-minute call", pos: "right" as const },
+  { badge: "4", x: 300, y: 210, r: 28, title: "4-Week Sprint", sub: "Weekly sessions", pos: "right" as const },
+  { badge: "12", x: 500, y: 95, r: 36, title: "12-Week Mentorship", sub: "Most popular format", pos: "below" as const },
+];
+---
+<svg viewBox="0 0 640 400" class="hero-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+  <path d="M90,310 C180,290 220,240 300,210 C380,180 420,140 500,95" fill="none" stroke="#3ab7ff" stroke-width="2" opacity="0.55" />
+  <path d="M500,95 L556,52" fill="none" stroke="#3ab7ff" stroke-width="2" opacity="0.55" stroke-dasharray="5 5" />
+  <polygon points="556,52 544,58 548,68" fill="#3ab7ff" opacity="0.7" />
+  {nodes.map((n) => (
+    <>
+      <circle cx={n.x} cy={n.y} r={n.r} fill="url(#fpGrad)" stroke="#8fdcff" stroke-width="1.5" />
+      <text x={n.x} y={n.y + 6} text-anchor="middle" fill="#051625" font-size={Math.round(n.r * 0.72)} font-weight="800" font-family="-apple-system,Arial,sans-serif">{n.badge}</text>
+      {n.pos === "right" ? (
+        <>
+          <text x={n.x + n.r + 18} y={n.y - 4} text-anchor="start" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{n.title}</text>
+          <text x={n.x + n.r + 18} y={n.y + 16} text-anchor="start" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">{n.sub}</text>
+        </>
+      ) : (
+        <>
+          <text x={n.x} y={n.y + n.r + 24} text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{n.title}</text>
+          <text x={n.x} y={n.y + n.r + 42} text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">{n.sub}</text>
+        </>
+      )}
+    </>
+  ))}
+</svg>

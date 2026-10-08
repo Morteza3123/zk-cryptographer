@@ -1,0 +1,105 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import YouTubeEmbed from "../components/YouTubeEmbed.astro";
+import "katex/dist/katex.min.css";
+
+interface ManifestItem {
+  num: string;
+  title: string;
+  duration: string;
+  slug?: string;
+}
+interface ManifestModule {
+  module: string;
+  items: ManifestItem[];
+}
+interface Props {
+  trackTitle: string;
+  trackHref: string;
+  lessonCrumb: string;
+  modules: ManifestModule[];
+  activeSlug: string;
+  lessonNumber: string;
+  title: string;
+  moduleLabel: string;
+  lessonsInTrack: number;
+  duration: string;
+  description: string;
+  prevTitle?: string;
+  prevHref?: string;
+  nextTitle?: string;
+  nextHref?: string;
+}
+const {
+  trackTitle,
+  trackHref,
+  lessonCrumb,
+  modules,
+  activeSlug,
+  lessonNumber,
+  title,
+  moduleLabel,
+  lessonsInTrack,
+  duration,
+  description,
+  prevTitle,
+  prevHref,
+  nextTitle,
+  nextHref,
+} = Astro.props;
+---
+<BaseLayout title={title} description={description} active="learn">
+  <div class="crumbrow">
+    <a href="/learn">Learn</a> / <a href={trackHref}>{trackTitle}</a> / <b>{lessonCrumb}</b>
+  </div>
+  <div class="course-layout">
+    <aside class="course-sidebar">
+      {modules.map((mod) => (
+        <>
+          <div class="sb-mod">{mod.module}</div>
+          {mod.items.map((item) => (
+            item.slug ? (
+              <a
+                class={`sb-item ${item.slug === activeSlug ? "active" : ""}`}
+                href={`${trackHref}/${item.slug}`}
+              >
+                <span class="sb-num">{item.num}</span>
+                <span>{item.title}</span>
+                <span class="sb-dur">{item.duration}</span>
+              </a>
+            ) : (
+              <div class="sb-item sb-item-inert">
+                <span class="sb-num">{item.num}</span>
+                <span>{item.title}</span>
+                <span class="sb-dur">{item.duration}</span>
+              </div>
+            )
+          ))}
+        </>
+      ))}
+    </aside>
+    <div class="course-main">
+      <YouTubeEmbed duration={duration} />
+      <div class="lesson-title">{lessonNumber}. {title}</div>
+      <div class="lesson-meta">{moduleLabel} · Lesson {Number(lessonNumber) + 1} of {lessonsInTrack} · {duration}</div>
+      <div class="lesson-desc">{description}</div>
+      <article class="lesson-article">
+        <slot />
+      </article>
+      <div class="prevnext">
+        <div>
+          {prevTitle && (
+            prevHref ? <a href={prevHref}>&larr; <span class="sub">Previous</span><br />{prevTitle}</a>
+            : <span class="prevnext-inert">&larr; <span class="sub">Previous</span><br />{prevTitle}</span>
+          )}
+        </div>
+        <div style="text-align:right;">
+          {nextTitle && (
+            nextHref ? <a href={nextHref}><span class="sub">Next</span> &rarr;<br />{nextTitle}</a>
+            : <span class="prevnext-inert"><span class="sub">Next</span> &rarr;<br />{nextTitle}</span>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

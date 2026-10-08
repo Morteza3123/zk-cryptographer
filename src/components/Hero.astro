@@ -1,0 +1,48 @@
+---
+interface Stat {
+  num: string;
+  label: string;
+}
+interface Props {
+  kicker: string;
+  heading: string;
+  sub: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  stats?: Stat[];
+}
+const { kicker, heading, sub, primaryCta, secondaryCta, stats } = Astro.props;
+---
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-kicker">{kicker}</div>
+        <h1 class="hero-h1">{heading}</h1>
+        <p class="hero-sub">{sub}</p>
+        {(primaryCta || secondaryCta) && (
+          <div class="btnrow" style="margin-bottom: 28px;">
+            {primaryCta && <a class="btn" href={primaryCta.href}>{primaryCta.label}</a>}
+            {secondaryCta && <a class="btn-outline" href={secondaryCta.href}>{secondaryCta.label}</a>}
+          </div>
+        )}
+        {stats && (
+          <div class="stat-row">
+            {stats.map((s) => (
+              <div class="stat">
+                <div class="stat-num">{s.num}</div>
+                <div class="stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div class="hero-right">
+        <div class="hero-diagram">
+          <slot name="diagram" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

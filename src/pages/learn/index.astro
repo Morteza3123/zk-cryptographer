@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import TrackStack from "../../components/TrackStack.astro";
+import HubCard from "../../components/HubCard.astro";
+import Stepper from "../../components/Stepper.astro";
+import { learnHero, trackStack, fitTogether, allTracks, trackOrder } from "../../content/site-data/learn";
+
+const tracksById = Object.fromEntries((await getCollection("tracks")).map((t) => [t.id, t.data]));
+const orderedTracks = trackOrder.map((id) => ({ id, ...tracksById[id] }));
+---
+<BaseLayout
+  title="Learning Hub"
+  description="Four structured ZK learning tracks — Math, Cryptography, Fundamentals, and ZK Development — free, self-paced, and worked out in full."
+  active="learn"
+>
+  <Hero
+    kicker={learnHero.kicker}
+    heading={learnHero.heading}
+    sub={learnHero.sub}
+    stats={learnHero.stats}
+  >
+    <TrackStack tracks={trackStack} slot="diagram" />
+  </Hero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">{fitTogether.kicker}</div>
+        <h2 class="section-title">{fitTogether.title}</h2>
+      </div>
+      <Stepper steps={fitTogether.steps} />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">{allTracks.kicker}</div>
+        <h2 class="section-title">{allTracks.title}</h2>
+      </div>
+      <div class="hub-grid">
+        {orderedTracks.map((t) => (
+          <HubCard
+            num={t.num}
+            sym={t.sym}
+            title={t.title}
+            level={t.level}
+            desc={t.description}
+            meta={`${t.lessonCount} lessons`}
+            linkLabel="Start track"
+            linkHref={`/learn/${t.id}`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

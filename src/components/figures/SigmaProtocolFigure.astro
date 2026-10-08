@@ -1,0 +1,30 @@
+---
+// Fig. 1 in "What Zero-Knowledge Proofs Actually Prove": the three-message
+// sigma-protocol exchange between Prover and Verifier.
+---
+<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <circle cx="90" cy="110" r="34" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
+  <text x="90" y="117" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
+  <text x="90" y="166" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">Prover</text>
+
+  <circle cx="470" cy="110" r="34" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
+  <text x="470" y="117" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">V</text>
+  <text x="470" y="166" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">Verifier</text>
+
+  <line x1="128" y1="70" x2="432" y2="70" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#sigma-arrow)" />
+  <text x="280" y="58" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">1. commitment c</text>
+
+  <line x1="432" y1="110" x2="128" y2="110" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#sigma-arrow)" />
+  <text x="280" y="102" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">2. challenge e</text>
+
+  <line x1="128" y1="150" x2="432" y2="150" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#sigma-arrow)" />
+  <text x="280" y="142" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">3. response z</text>
+
+  <text x="280" y="198" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">repeat × k</text>
+
+  <defs>
+    <marker id="sigma-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

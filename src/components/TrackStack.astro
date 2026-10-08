@@ -1,0 +1,90 @@
+---
+// Learning Hub's hero visual: a cascading stack of track cards.
+// Kept as HTML/CSS (not SVG) since it's literally a stack of cards, matching
+// the original design — the other three hero diagrams use SVG because they're
+// node/line compositions, not stacked rectangles.
+interface Track {
+  num: string;
+  sym: string;
+  title: string;
+  level: string;
+}
+interface Props {
+  tracks: Track[];
+}
+const { tracks } = Astro.props;
+---
+<div class="track-stack">
+  {tracks.map((t, i) => (
+    <div class={`stack-chip stack-chip-${i}`}>
+      <div class="stack-chip-badge" set:html={t.sym} />
+      <div class="stack-chip-text">
+        <div class="stack-chip-num">TRACK {t.num}</div>
+        <div class="stack-chip-title">{t.title}</div>
+        <div class="stack-chip-level">{t.level}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .track-stack {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+  }
+  .stack-chip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    position: relative;
+    padding: 16px 18px;
+  }
+  .stack-chip-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--gradient-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--accent-ink);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(58, 183, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .stack-chip-num {
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 10.5px;
+  }
+  .stack-chip-title {
+    font-weight: 800;
+    color: var(--text);
+    font-size: 16px;
+    margin: 2px 0;
+  }
+  .stack-chip-level {
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .stack-chip-0 { z-index: 4; transform: translateX(0) rotate(-1.5deg); }
+  .stack-chip-1 { z-index: 3; opacity: 0.96; transform: translateX(28px) rotate(1deg); margin-top: -16px; }
+  .stack-chip-2 { z-index: 2; opacity: 0.92; transform: translateX(50px) rotate(-1deg); margin-top: -16px; }
+  .stack-chip-3 { z-index: 1; opacity: 0.88; transform: translateX(66px) rotate(1.3deg); margin-top: -16px; }
+
+  @media (max-width: 768px) {
+    .track-stack { max-width: 100%; }
+    .stack-chip-0, .stack-chip-1, .stack-chip-2, .stack-chip-3 {
+      transform: none;
+      margin-top: 10px;
+    }
+    .stack-chip-0 { margin-top: 0; }
+  }
+</style>

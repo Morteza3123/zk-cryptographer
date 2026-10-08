@@ -1,0 +1,39 @@
+---
+// Blog's hero visual: a hub-and-spoke "topic constellation" — category nodes
+// scattered around a central brand node, each connected by a thin line.
+// Deliberately NOT a stack of cards (see TrackStack) — this page's hero should
+// read as "many topics branching from one place," not "a pile of posts."
+const nodes = [
+  { label: "ZERO-KNOWLEDGE", x: 120, y: 80, r: 8, va: "above" },
+  { label: "MATH", x: 300, y: 50, r: 7, va: "above" },
+  { label: "CRYPTOGRAPHY", x: 460, y: 120, r: 9, va: "above" },
+  { label: "ZK DEVELOPMENT", x: 470, y: 270, r: 7, va: "below" },
+  { label: "FORMAL VERIF.", x: 300, y: 350, r: 6, va: "below" },
+  { label: "POST-QUANTUM", x: 110, y: 300, r: 7, va: "below" },
+];
+const hubX = 280;
+const hubY = 200;
+---
+<svg viewBox="0 0 560 400" class="hero-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+  {nodes.map((n) => (
+    <line x1={hubX} y1={hubY} x2={n.x} y2={n.y} stroke="#3ab7ff" stroke-width="1.2" opacity="0.32" />
+  ))}
+  <circle cx={hubX} cy={hubY} r="30" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="1.6" />
+  <svg x={hubX - 15} y={hubY - 16} width="30" height="32" viewBox="0 0 400 420"><use href="#zk-logo-icon"></use></svg>
+  {nodes.map((n) => (
+    <>
+      <circle cx={n.x} cy={n.y} r={n.r} fill="#121c2c" stroke="#3ab7ff" stroke-width="1.6" />
+      <circle cx={n.x} cy={n.y} r={Math.max(2, n.r - 4)} fill="#3ab7ff" opacity="0.85" />
+      <text
+        x={n.x}
+        y={n.va === "above" ? n.y - n.r - 10 : n.y + n.r + 18}
+        text-anchor="middle"
+        fill="#c3cedd"
+        font-size="13"
+        font-weight="700"
+        font-family="-apple-system,Arial,sans-serif"
+        letter-spacing="0.02em"
+      >{n.label}</text>
+    </>
+  ))}
+</svg>

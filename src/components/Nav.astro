@@ -1,0 +1,86 @@
+---
+import Logo from "./Logo.astro";
+
+interface Props {
+  active?: "learn" | "blog" | "services" | "about";
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+const { active, ctaLabel = "Book Coaching", ctaHref = "/coaching" } = Astro.props;
+
+const links = [
+  { label: "Learn", href: "/learn", key: "learn" },
+  { label: "Blog", href: "/blog", key: "blog" },
+  { label: "Services", href: "/services", key: "services" },
+  { label: "About", href: "/about", key: "about" },
+];
+---
+<div class="container">
+  <nav class="nav">
+    <a class="brand" href="/">
+      <Logo size={30} />
+      ZK Cryptographer
+    </a>
+    <div class="navlinks">
+      {links.map((l) => (
+        <a href={l.href} class={active === l.key ? "active" : ""}>{l.label}</a>
+      ))}
+    </div>
+    <a class="btn navbtn-desktop" href={ctaHref}>{ctaLabel}</a>
+    <button class="hamburger" aria-label="Open menu" data-mobile-nav-toggle>
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</div>
+
+<!--
+  Mobile nav panel: hidden by default, toggled by the hamburger button.
+  Kept deliberately simple (no animation library) — just a slide-down panel.
+-->
+<div class="mobile-nav-panel" data-mobile-nav-panel hidden>
+  <div class="container">
+    {links.map((l) => (
+      <a href={l.href} class={active === l.key ? "active" : ""}>{l.label}</a>
+    ))}
+    <a class="btn" href={ctaHref} style="margin-top: 8px;">{ctaLabel}</a>
+  </div>
+</div>
+
+<style>
+  .mobile-nav-panel {
+    display: none;
+    border-bottom: 1px solid var(--card-border);
+    background: var(--bg);
+  }
+  .mobile-nav-panel .container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .mobile-nav-panel a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .mobile-nav-panel a.active {
+    color: var(--accent);
+  }
+  @media (max-width: 768px) {
+    .mobile-nav-panel[data-open="true"] {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  // Tiny vanilla toggle — no need for a React island just for a hamburger menu.
+  const toggle = document.querySelector<HTMLElement>("[data-mobile-nav-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-mobile-nav-panel]");
+  toggle?.addEventListener("click", () => {
+    const isOpen = panel?.getAttribute("data-open") === "true";
+    panel?.setAttribute("data-open", isOpen ? "false" : "true");
+    if (panel) panel.hidden = isOpen;
+  });
+</script>

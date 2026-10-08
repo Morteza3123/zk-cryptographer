@@ -1,0 +1,23 @@
+---
+// Video placeholder for a lesson page. No real video is hosted yet, so this
+// renders as a static poster (brand gradient + play button) rather than an
+// actual <iframe> embed — swap `href` for the real YouTube URL once the
+// lesson's video is published.
+interface Props {
+  duration: string;
+  href?: string;
+}
+const { duration, href = "#" } = Astro.props;
+---
+<a class="yt-embed" href={href} aria-label={`Watch this lesson (${duration})`}>
+  <div class="yt-poster">
+    <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#0a0f19" />
+      <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
+      <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
+    </svg>
+  </div>
+  <div class="yt-badge"><span class="dot"></span> LESSON VIDEO</div>
+  <div class="play-btn"></div>
+  <div class="dur-badge">{duration}</div>
+</a>

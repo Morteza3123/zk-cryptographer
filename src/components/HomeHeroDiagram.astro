@@ -1,0 +1,48 @@
+---
+// Homepage hero visual: a cyclical "proof flow" — Statement, Witness, Proof,
+// Verified — arranged at the compass points around a central brand hub, with
+// directional arrows cycling between them. Deliberately a *loop*, distinct
+// from the Blog's scatter, Coaching's rising path, Services' convergence,
+// and the Learning Hub's card stack.
+const nodes = [
+  { label: "STATEMENT", x: 240, y: 56, pos: "top" as const },
+  { label: "WITNESS", x: 424, y: 240, pos: "right" as const },
+  { label: "PROOF", x: 240, y: 424, pos: "bottom" as const },
+  { label: "VERIFIED", x: 56, y: 240, pos: "left" as const },
+];
+const hub = { x: 240, y: 240, r: 42 };
+const arcs = [
+  "M 272 70 A 190 190 0 0 1 410 208",
+  "M 410 272 A 190 190 0 0 1 272 410",
+  "M 208 410 A 190 190 0 0 1 70 272",
+  "M 70 208 A 190 190 0 0 1 208 70",
+];
+---
+<svg viewBox="0 0 480 480" class="hero-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="240" cy="240" r="190" fill="none" stroke="#3ab7ff" stroke-width="1" opacity="0.18" stroke-dasharray="3 6" />
+  {arcs.map((d) => (
+    <path d={d} fill="none" stroke="#3ab7ff" stroke-width="2" opacity="0.55" marker-end="url(#home-arrow)" />
+  ))}
+  <defs>
+    <marker id="home-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" opacity="0.8" />
+    </marker>
+  </defs>
+  <circle cx={hub.x} cy={hub.y} r={hub.r} fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="1.6" />
+  <svg x={hub.x - 19} y={hub.y - 21} width="38" height="40" viewBox="0 0 400 420"><use href="#zk-logo-icon"></use></svg>
+  {nodes.map((n) => (
+    <>
+      <circle cx={n.x} cy={n.y} r="26" fill="url(#fpGrad)" stroke="#8fdcff" stroke-width="1.5" />
+      <text
+        x={n.x}
+        y={n.pos === "top" ? n.y - 40 : n.pos === "bottom" ? n.y + 44 : n.y + 5}
+        text-anchor="middle"
+        fill="#c3cedd"
+        font-size="12.5"
+        font-weight="700"
+        letter-spacing="0.04em"
+        font-family="-apple-system,Arial,sans-serif"
+      >{n.label}</text>
+    </>
+  ))}
+</svg>

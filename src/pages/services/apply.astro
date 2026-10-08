@@ -1,0 +1,109 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ApplyFormBehavior from "../../components/ApplyFormBehavior.astro";
+---
+<BaseLayout
+  title="Start a Project"
+  description="Apply to work together on a ZK engagement — tell me about your team and what you're building, and I'll follow up by email within 2 business days."
+  active="services"
+>
+  <div class="crumbrow">
+    <a href="/services">Services</a> / <b>Apply</b>
+  </div>
+
+  <div class="apply-page">
+    <div class="container">
+      <div class="apply-head">
+        <div class="apply-kicker">START A PROJECT</div>
+        <h1 class="apply-h1">Tell me about your team and what you're building.</h1>
+        <p class="apply-sub">This starts with a free scoping call, not a contract. I read every submission myself and follow up by email within 2 business days to find a time.</p>
+      </div>
+
+      <div class="apply-card" data-apply-card>
+        <form data-apply-form data-action="/api/apply/services">
+          <div class="form-error" data-form-error hidden></div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="name">Full name <span class="req">*</span></label>
+              <input id="name" name="name" type="text" placeholder="Ada Lovelace" required />
+            </div>
+            <div class="field">
+              <label for="email">Work email <span class="req">*</span></label>
+              <input id="email" name="email" type="email" placeholder="you@company.com" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="contact">WhatsApp or Telegram <span class="opt">(optional)</span></label>
+            <input id="contact" name="contact" type="text" placeholder="+1 555 123 4567 or @username" />
+          </div>
+
+          <div class="field">
+            <label for="company">Company / project name <span class="req">*</span></label>
+            <input id="company" name="company" type="text" placeholder="Acme Protocol" required />
+          </div>
+
+          <div class="field">
+            <label for="stage">Team size or stage <span class="opt">(optional)</span></label>
+            <select id="stage" name="stage">
+              <option value="">Choose one</option>
+              <option>Just me / pre-team</option>
+              <option>2-10 people</option>
+              <option>11-50 people</option>
+              <option>50+ people</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="need">What do you need help with? <span class="req">*</span></label>
+            <select id="need" name="need" required>
+              <option value="">Choose one</option>
+              <option>Consultation</option>
+              <option>Technical Development</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="goals">Tell me about the project &amp; what you're trying to achieve <span class="req">*</span></label>
+            <textarea id="goals" name="goals" placeholder="What you're building, where you are in the process, and what kind of help would move things forward." required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="timeline">Target timeline <span class="req">*</span></label>
+            <select id="timeline" name="timeline" required>
+              <option value="">Choose one</option>
+              <option>ASAP</option>
+              <option>Within a month</option>
+              <option>Just exploring</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="link">Project / repo / site link <span class="opt">(optional)</span></label>
+            <input id="link" name="link" type="text" placeholder="https://..." />
+          </div>
+
+          <div class="field">
+            <label for="source">How did you hear about ZK Cryptographer? <span class="opt">(optional)</span></label>
+            <input id="source" name="source" type="text" placeholder="YouTube, blog, referral, ..." />
+          </div>
+
+          <div class="submit-row">
+            <button class="btn submit-btn" type="submit" data-submit-btn>Submit application</button>
+            <div class="form-note">No payment required to apply — pricing is discussed after the scoping call.</div>
+          </div>
+        </form>
+
+        <div class="apply-confirm" data-apply-confirm hidden>
+          <div class="confirm-badge">&#10003;</div>
+          <div class="confirm-title">Application received.</div>
+          <p class="confirm-sub">Thanks — I'll review this and follow up by email within 2 business days to schedule your free scoping call.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ApplyFormBehavior />
+</BaseLayout>

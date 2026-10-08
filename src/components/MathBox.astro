@@ -1,0 +1,14 @@
+---
+// A labeled callout for a definition/theorem used inside lesson and post
+// MDX content. The formula itself is written as ordinary $...$/$$...$$
+// math in the slot — remark-math + rehype-katex render it to real KaTeX,
+// so this component only supplies the chrome (label + box).
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+<div class="math-box">
+  <div class="math-box-label">{label}</div>
+  <div class="math-box-body"><slot /></div>
+</div>

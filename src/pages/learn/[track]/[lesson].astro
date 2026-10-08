@@ -1,0 +1,43 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import LessonLayout from "../../../layouts/LessonLayout.astro";
+import { lessonManifest } from "../../../content/site-data/learn";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  return Promise.all(
+    lessons.map(async (entry) => {
+      const track = await getEntry(entry.data.track);
+      return {
+        params: { track: track.id, lesson: entry.slug },
+        props: { entry, track },
+      };
+    })
+  );
+}
+
+const { entry, track } = Astro.props;
+const { Content } = await entry.render();
+const modules = lessonManifest[track.id] ?? [];
+const lessonsInTrack = track.data.lessonCount;
+---
+<LessonLayout
+  description={entry.data.description}
+  trackTitle={track.data.title}
+  trackHref={`/learn/${track.id}`}
+  lessonCrumb={entry.data.title}
+  modules={modules}
+  activeSlug={entry.slug}
+  lessonNumber={entry.data.lessonNumber}
+  title={entry.data.title}
+  moduleLabel={entry.data.module}
+  lessonsInTrack={lessonsInTrack}
+  duration={entry.data.duration}
+  description={entry.data.description}
+  prevTitle={entry.data.prevTitle}
+  prevHref={entry.data.prevHref}
+  nextTitle={entry.data.nextTitle}
+  nextHref={entry.data.nextHref}
+>
+  <Content />
+</LessonLayout>

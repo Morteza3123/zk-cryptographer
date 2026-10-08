@@ -1,0 +1,45 @@
+---
+interface Item {
+  question: string;
+  answer: string;
+}
+interface Props {
+  items: Item[];
+}
+const { items } = Astro.props;
+---
+<div class="accordion" data-accordion>
+  {items.map((item, i) => (
+    <div class="acc-mod" data-open={i === 0 ? "true" : "false"}>
+      <button class="acc-head" data-acc-toggle type="button" aria-expanded={i === 0}>
+        {item.question}
+        <svg class="acc-chevron" width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M5.5 7.5L10 12l4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="acc-body" set:html={item.answer} />
+    </div>
+  ))}
+</div>
+
+<script>
+  // Each accordion item opens/closes independently; no "only one open" constraint
+  // since that's how the original mockups behaved and it reads fine either way.
+  document.querySelectorAll("[data-accordion]").forEach((acc) => {
+    acc.querySelectorAll<HTMLElement>(".acc-mod").forEach((mod) => {
+      const toggle = mod.querySelector("[data-acc-toggle]");
+      const body = mod.querySelector<HTMLElement>(".acc-body");
+      if (body) {
+        body.style.maxHeight = mod.dataset.open === "true" ? `${body.scrollHeight}px` : "0px";
+      }
+      toggle?.addEventListener("click", () => {
+        const isOpen = mod.dataset.open === "true";
+        mod.dataset.open = isOpen ? "false" : "true";
+        toggle.setAttribute("aria-expanded", String(!isOpen));
+        if (body) {
+          body.style.maxHeight = isOpen ? "0px" : `${body.scrollHeight}px`;
+        }
+      });
+    });
+  });
+</script>

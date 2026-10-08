@@ -1,0 +1,46 @@
+{/* Shared submit handling for the coaching/services apply forms — posts to
+    the matching API route and swaps in the confirmation state on success,
+    without a full page reload. Kept as plain JS (no React island needed). */}
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-apply-form]").forEach((form) => {
+    const action = form.dataset.action;
+    if (!action) return;
+
+    const card = form.closest<HTMLElement>("[data-apply-card]");
+    const confirmEl = card?.querySelector<HTMLElement>("[data-apply-confirm]");
+    const errorEl = form.querySelector<HTMLElement>("[data-form-error]");
+    const submitBtn = form.querySelector<HTMLButtonElement>("[data-submit-btn]");
+    const submitLabel = submitBtn?.textContent ?? "Submit application";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (errorEl) {
+        errorEl.hidden = true;
+        errorEl.textContent = "";
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting…";
+      }
+
+      try {
+        const res = await fetch(action, { method: "POST", body: new FormData(form) });
+        const json = await res.json().catch(() => ({ ok: false, error: "Unexpected response from the server." }));
+        if (!res.ok || !json.ok) {
+          throw new Error(json.error || "Something went wrong — please try again.");
+        }
+        form.hidden = true;
+        if (confirmEl) confirmEl.hidden = false;
+      } catch (err) {
+        if (errorEl) {
+          errorEl.textContent = err instanceof Error ? err.message : "Something went wrong — please try again.";
+          errorEl.hidden = false;
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = submitLabel;
+        }
+      }
+    });
+  });
+</script>

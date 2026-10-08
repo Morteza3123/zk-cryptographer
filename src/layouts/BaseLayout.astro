@@ -1,0 +1,69 @@
+---
+import LogoDefs from "../components/LogoDefs.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import "../styles/components.css";
+
+interface Props {
+  title: string;
+  description: string;
+  active?: "learn" | "blog" | "services" | "about";
+  ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+}
+const {
+  title,
+  description,
+  active,
+  ogImage = "/images/og-default.png",
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} · ZK Cryptographer</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ZK Cryptographer" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:image:width" content={String(ogImageWidth)} />
+    <meta property="og:image:height" content={String(ogImageHeight)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="ZK Cryptographer Blog"
+      href="/rss.xml"
+    />
+  </head>
+  <body>
+    <LogoDefs />
+    <Nav active={active} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
