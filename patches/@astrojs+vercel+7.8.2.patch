@@ -1,0 +1,28 @@
+diff --git a/node_modules/@astrojs/vercel/dist/serverless/adapter.js b/node_modules/@astrojs/vercel/dist/serverless/adapter.js
+index ae8cd14..691b14c 100644
+--- a/node_modules/@astrojs/vercel/dist/serverless/adapter.js
++++ b/node_modules/@astrojs/vercel/dist/serverless/adapter.js
+@@ -366,16 +366,13 @@ function getRuntime(process, logger) {
+     const major = version.split('.')[0]; // '18.19.0' --> '18'
+     const support = SUPPORTED_NODE_VERSIONS[major];
+     if (support === undefined) {
+-        logger.warn(
+-        // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+-        // biome-ignore lint/style/useTemplate: <explanation>
+-        `\n` +
+-            `\tThe local Node.js version (${major}) is not supported by Vercel Serverless Functions.\n` +
+-            // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+-            `\tYour project will use Node.js 18 as the runtime instead.\n` +
+-            // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+-            `\tConsider switching your local version to 18.\n`);
+-        return 'nodejs18.x';
++        // Patched: this adapter's hardcoded table (18 "retiring", 20
++        // "default") predates Node 22/24 and otherwise falls back to the
++        // now fully-removed nodejs18.x runtime, which Vercel rejects
++        // outright ("invalid runtime"). Trust whatever Node major Vercel's
++        // own build machine actually ran this build with instead.
++        logger.warn(`Node.js ${major} isn't in this adapter's known-version table yet; using nodejs${major}.x as the Serverless Function runtime since that's what Vercel built with.`);
++        return `nodejs${major}.x`;
+     }
+     if (support.status === 'default') {
+         return `nodejs${major}.x`;
