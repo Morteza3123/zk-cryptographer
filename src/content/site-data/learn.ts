@@ -67,7 +67,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
         { num: "00", title: "ZK Math — Introduction", duration: "8:04", slug: "zk-math-introduction" },
         { num: "01", title: "Variables, Expressions & Equations", duration: "5:11", slug: "variables-expressions-equations" },
         { num: "02", title: "Exponents and Powers", duration: "5:25", slug: "exponents-and-powers" },
-        { num: "03", title: "Divisibility, Factors & Primes", duration: "6:46" },
+        { num: "03", title: "Divisibility, Factors & Primes", duration: "6:46", slug: "divisibility-factors-primes" },
       ],
     },
     {

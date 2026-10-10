@@ -1,0 +1,36 @@
+---
+// Fig. for "Divisibility, Factors & Primes": four quick primality checks —
+// two primes, one composite, and the special case of 1 — read off by
+// counting factors.
+interface Col {
+  n: string;
+  factors: string;
+  note: string;
+  verdict: string;
+  color: string;
+}
+const cols: Col[] = [
+  { n: "7", factors: "factors: 1 and 7", note: "exactly 2 factors", verdict: "✓ PRIME", color: "#5ddc8a" },
+  { n: "2", factors: "factors: 1 and 2", note: "only even prime", verdict: "✓ PRIME", color: "#5ddc8a" },
+  { n: "6", factors: "factors: 1, 2, 3, 6", note: "4 factors", verdict: "✗ COMPOSITE", color: "#ff8080" },
+  { n: "1", factors: "factors: only 1", note: "just 1 factor", verdict: "— SPECIAL", color: "#8b96a8" },
+];
+const colW = 180;
+---
+<svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <line x1="180" y1="14" x2="180" y2="186" stroke="#223049" stroke-width="1" />
+  <line x1="360" y1="14" x2="360" y2="186" stroke="#223049" stroke-width="1" />
+  <line x1="540" y1="14" x2="540" y2="186" stroke="#223049" stroke-width="1" />
+
+  {cols.map((col, i) => {
+    const cx = i * colW + colW / 2;
+    return (
+      <>
+        <text x={cx} y="62" text-anchor="middle" fill="#e9eef5" font-size="42" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.n}</text>
+        <text x={cx} y="98" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">{col.factors}</text>
+        <text x={cx} y="120" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">{col.note}</text>
+        <text x={cx} y="160" text-anchor="middle" fill={col.color} font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.verdict}</text>
+      </>
+    );
+  })}
+</svg>

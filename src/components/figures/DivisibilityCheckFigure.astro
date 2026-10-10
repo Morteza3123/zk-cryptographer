@@ -1,0 +1,36 @@
+---
+// Fig. for "Divisibility, Factors & Primes": three worked checks side by
+// side — two clean divisions and one that leaves a remainder — showing
+// the "|" / "∤" divides-notation alongside the plain division.
+interface Col {
+  eq: string;
+  note: string;
+  bar: string;
+  ok: boolean;
+}
+const cols: Col[] = [
+  { eq: "12 ÷ 4 = 3", note: "no remainder", bar: "4 ∣ 12", ok: true },
+  { eq: "12 ÷ 3 = 4", note: "no remainder", bar: "3 ∣ 12", ok: true },
+  { eq: "13 ÷ 4 = 3 r1", note: "remainder = 1", bar: "4 ∤ 13", ok: false },
+];
+const colW = 220;
+---
+<svg viewBox="0 0 660 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <line x1="220" y1="14" x2="220" y2="206" stroke="#223049" stroke-width="1" />
+  <line x1="440" y1="14" x2="440" y2="206" stroke="#223049" stroke-width="1" />
+
+  {cols.map((col, i) => {
+    const cx = i * colW + colW / 2;
+    const color = col.ok ? "#5ddc8a" : "#ff8080";
+    return (
+      <>
+        <text x={cx} y="46" text-anchor="middle" fill="#e9eef5" font-size="21" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.eq}</text>
+        <text x={cx} y="72" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note}</text>
+        <text x={cx} y="135" text-anchor="middle" fill="#8fdcff" font-size="26" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.bar}</text>
+        <text x={cx} y="190" text-anchor="middle" fill={color} font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">
+          {col.ok ? "✓ divisible" : "✗ not divisible"}
+        </text>
+      </>
+    );
+  })}
+</svg>

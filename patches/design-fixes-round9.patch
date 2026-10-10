@@ -1,0 +1,302 @@
+diff --git a/src/components/figures/DivisibilityCheckFigure.astro b/src/components/figures/DivisibilityCheckFigure.astro
+new file mode 100644
+index 0000000..4272f37
+--- /dev/null
++++ b/src/components/figures/DivisibilityCheckFigure.astro
+@@ -0,0 +1,36 @@
++---
++// Fig. for "Divisibility, Factors & Primes": three worked checks side by
++// side — two clean divisions and one that leaves a remainder — showing
++// the "|" / "∤" divides-notation alongside the plain division.
++interface Col {
++  eq: string;
++  note: string;
++  bar: string;
++  ok: boolean;
++}
++const cols: Col[] = [
++  { eq: "12 ÷ 4 = 3", note: "no remainder", bar: "4 ∣ 12", ok: true },
++  { eq: "12 ÷ 3 = 4", note: "no remainder", bar: "3 ∣ 12", ok: true },
++  { eq: "13 ÷ 4 = 3 r1", note: "remainder = 1", bar: "4 ∤ 13", ok: false },
++];
++const colW = 220;
++---
++<svg viewBox="0 0 660 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <line x1="220" y1="14" x2="220" y2="206" stroke="#223049" stroke-width="1" />
++  <line x1="440" y1="14" x2="440" y2="206" stroke="#223049" stroke-width="1" />
++
++  {cols.map((col, i) => {
++    const cx = i * colW + colW / 2;
++    const color = col.ok ? "#5ddc8a" : "#ff8080";
++    return (
++      <>
++        <text x={cx} y="46" text-anchor="middle" fill="#e9eef5" font-size="21" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.eq}</text>
++        <text x={cx} y="72" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note}</text>
++        <text x={cx} y="135" text-anchor="middle" fill="#8fdcff" font-size="26" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.bar}</text>
++        <text x={cx} y="190" text-anchor="middle" fill={color} font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">
++          {col.ok ? "✓ divisible" : "✗ not divisible"}
++        </text>
++      </>
++    );
++  })}
++</svg>
+diff --git a/src/components/figures/OneWayFunctionFigure.astro b/src/components/figures/OneWayFunctionFigure.astro
+new file mode 100644
+index 0000000..ad5ceac
+--- /dev/null
++++ b/src/components/figures/OneWayFunctionFigure.astro
+@@ -0,0 +1,34 @@
++---
++// Fig. for "Divisibility, Factors & Primes": multiplying two primes is
++// instant; factoring the product back apart is not — the asymmetry
++// cryptographic security is built on. Laid out in clearly separated rows
++// (numbers, then arrows, then caption) so nothing collides regardless of
++// how wide the arrow labels run.
++---
++<svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="60" y="72" text-anchor="middle" fill="#e9eef5" font-size="34" font-weight="800" font-family="-apple-system,Arial,sans-serif">7</text>
++  <text x="60" y="96" text-anchor="middle" fill="#5ddc8a" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">prime</text>
++
++  <text x="150" y="72" text-anchor="middle" fill="#e9eef5" font-size="34" font-weight="800" font-family="-apple-system,Arial,sans-serif">11</text>
++  <text x="150" y="96" text-anchor="middle" fill="#5ddc8a" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">prime</text>
++
++  <text x="450" y="72" text-anchor="middle" fill="#e9eef5" font-size="34" font-weight="800" font-family="-apple-system,Arial,sans-serif">77</text>
++  <text x="450" y="96" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">7 × 11</text>
++
++  <text x="290" y="132" text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">× multiply — instant, easy</text>
++  <line x1="200" y1="146" x2="380" y2="146" stroke="#5ddc8a" stroke-width="2" marker-end="url(#owf-arrow-fwd)" />
++
++  <line x1="380" y1="178" x2="200" y2="178" stroke="#ff8080" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#owf-arrow-rev)" />
++  <text x="290" y="200" text-anchor="middle" fill="#ff8080" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">factor back — nearly impossible for huge numbers</text>
++
++  <text x="290" y="232" text-anchor="middle" fill="#8b96a8" font-size="13" font-style="italic" font-family="-apple-system,Arial,sans-serif">this asymmetry is called a one-way function</text>
++
++  <defs>
++    <marker id="owf-arrow-fwd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
++    </marker>
++    <marker id="owf-arrow-rev" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#ff8080" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/PrimeCheckFigure.astro b/src/components/figures/PrimeCheckFigure.astro
+new file mode 100644
+index 0000000..97fd98f
+--- /dev/null
++++ b/src/components/figures/PrimeCheckFigure.astro
+@@ -0,0 +1,36 @@
++---
++// Fig. for "Divisibility, Factors & Primes": four quick primality checks —
++// two primes, one composite, and the special case of 1 — read off by
++// counting factors.
++interface Col {
++  n: string;
++  factors: string;
++  note: string;
++  verdict: string;
++  color: string;
++}
++const cols: Col[] = [
++  { n: "7", factors: "factors: 1 and 7", note: "exactly 2 factors", verdict: "✓ PRIME", color: "#5ddc8a" },
++  { n: "2", factors: "factors: 1 and 2", note: "only even prime", verdict: "✓ PRIME", color: "#5ddc8a" },
++  { n: "6", factors: "factors: 1, 2, 3, 6", note: "4 factors", verdict: "✗ COMPOSITE", color: "#ff8080" },
++  { n: "1", factors: "factors: only 1", note: "just 1 factor", verdict: "— SPECIAL", color: "#8b96a8" },
++];
++const colW = 180;
++---
++<svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <line x1="180" y1="14" x2="180" y2="186" stroke="#223049" stroke-width="1" />
++  <line x1="360" y1="14" x2="360" y2="186" stroke="#223049" stroke-width="1" />
++  <line x1="540" y1="14" x2="540" y2="186" stroke="#223049" stroke-width="1" />
++
++  {cols.map((col, i) => {
++    const cx = i * colW + colW / 2;
++    return (
++      <>
++        <text x={cx} y="62" text-anchor="middle" fill="#e9eef5" font-size="42" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.n}</text>
++        <text x={cx} y="98" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">{col.factors}</text>
++        <text x={cx} y="120" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">{col.note}</text>
++        <text x={cx} y="160" text-anchor="middle" fill={col.color} font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.verdict}</text>
++      </>
++    );
++  })}
++</svg>
+diff --git a/src/components/figures/PrimeFactorTreeFigure.astro b/src/components/figures/PrimeFactorTreeFigure.astro
+new file mode 100644
+index 0000000..bd9b607
+--- /dev/null
++++ b/src/components/figures/PrimeFactorTreeFigure.astro
+@@ -0,0 +1,45 @@
++---
++// Fig. for "Divisibility, Factors & Primes": factoring 60 down to its
++// prime pieces — 60 → 2 × 30 → 2 × (2 × 15) → 2 × 2 × (3 × 5). Composite
++// numbers stay plain; only the prime leaves get the green "prime" mark.
++// The final equation (60 = 2×2×3×5 = 2²×3×5) lives in the external
++// <Figure> caption rather than repeated here.
++interface Node {
++  x: number;
++  y: number;
++  label: string;
++  prime: boolean;
++}
++const nodes: Node[] = [
++  { x: 300, y: 30, label: "60", prime: false },
++  { x: 90, y: 115, label: "2", prime: true },
++  { x: 410, y: 115, label: "30", prime: false },
++  { x: 280, y: 195, label: "2", prime: true },
++  { x: 490, y: 195, label: "15", prime: false },
++  { x: 410, y: 275, label: "3", prime: true },
++  { x: 570, y: 275, label: "5", prime: true },
++];
++const edges: [number, number][] = [
++  [0, 1],
++  [0, 2],
++  [2, 3],
++  [2, 4],
++  [4, 5],
++  [4, 6],
++];
++---
++<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  {edges.map(([a, b]) => {
++    const from = nodes[a];
++    const to = nodes[b];
++    return <line x1={from.x} y1={from.y + 14} x2={to.x} y2={to.y - 24} stroke="#3ab7ff" stroke-width="1.6" opacity="0.7" />;
++  })}
++  {nodes.map((node) => (
++    <>
++      <text x={node.x} y={node.y} text-anchor="middle" fill="#e9eef5" font-size="30" font-weight="800" font-family="-apple-system,Arial,sans-serif">{node.label}</text>
++      {node.prime && (
++        <text x={node.x} y={node.y + 24} text-anchor="middle" fill="#5ddc8a" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">✓ prime</text>
++      )}
++    </>
++  ))}
++</svg>
+diff --git a/src/content/lessons/divisibility-factors-primes.mdx b/src/content/lessons/divisibility-factors-primes.mdx
+new file mode 100644
+index 0000000..3550b22
+--- /dev/null
++++ b/src/content/lessons/divisibility-factors-primes.mdx
+@@ -0,0 +1,84 @@
++---
++track: math
++module: "Foundations"
++lessonNumber: "03"
++title: "Divisibility, Factors & Primes"
++duration: "6:46"
++description: "Why prime numbers — the same ones from grade school — turn out to be the reason factoring a large number back apart is nearly impossible, and the whole basis for cryptographic security."
++order: 3
++youtubeHref: "https://www.youtube.com/watch?v=99xDV3tT9Ss"
++prevTitle: "Exponents and Powers"
++prevHref: "/learn/math/exponents-and-powers"
++nextTitle: "Modular Arithmetic"
++nextHref: "/learn/math/modular-arithmetic"
++---
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import DivisibilityCheckFigure from "../../components/figures/DivisibilityCheckFigure.astro";
++import PrimeCheckFigure from "../../components/figures/PrimeCheckFigure.astro";
++import PrimeFactorTreeFigure from "../../components/figures/PrimeFactorTreeFigure.astro";
++import OneWayFunctionFigure from "../../components/figures/OneWayFunctionFigure.astro";
++
++Variables, equations, and powers all describe how to combine numbers. This lesson goes one level deeper, into the numbers themselves — divisibility, factors, and prime numbers. It reads like grade-school material, and that's exactly the trap: **prime numbers are the actual reason factoring a large number back apart is nearly impossible, and that single fact is what modern cryptography is built on.**
++
++## Divisibility and factors
++
++A number $a$ is divisible by $b$ when dividing one by the other leaves no remainder:
++
++<Figure caption="Fig. 1 — two clean divisions and one with a remainder, shown both ways: as division and with the divides-notation.">
++  <DivisibilityCheckFigure />
++</Figure>
++
++The notation $b \mid a$ reads as "$b$ divides $a$"; a slash through the bar, $b \nmid a$, reads as "$b$ does not divide $a$." Whenever $b$ divides $a$ cleanly, $b$ is called a **factor** of $a$ — so $12$ has factors $1, 2, 3, 4, 6, 12$, since each of those divides it with nothing left over.
++
++## Prime numbers
++
++A **prime number** is a whole number greater than $1$ with exactly two factors: $1$ and itself. Anything with more factors than that is **composite**.
++
++<Figure caption="Fig. 2 — count the factors and the label falls out automatically. 1 doesn't fit either category.">
++  <PrimeCheckFigure />
++</Figure>
++
++$2$ is worth a second look — it's the only even prime, since every other even number automatically has $2$ as a third factor. And $1$ isn't prime or composite at all; it only has one factor, itself, which puts it in a category of its own. The primes keep going forever: $2, 3, 5, 7, 11, 13, 17, 19, 23, \ldots$
++
++## The fundamental theorem of arithmetic
++
++Every whole number greater than $1$ breaks down into primes, and **only one such breakdown exists** — no matter which factor you pull out first, the pieces you end up with are always the same. Take $60$:
++
++<Figure caption="Fig. 3 — however you start splitting 60 apart, the leaves at the bottom are always the same four primes.">
++  <PrimeFactorTreeFigure />
++</Figure>
++
++<MathBox label="Prime factorization">
++
++$$60 = 2 \times 2 \times 3 \times 5 = 2^2 \times 3 \times 5$$
++
++</MathBox>
++
++This is why primes get called the building blocks of arithmetic — every other whole number is just a specific combination of them, and that combination is unique. It's also exactly why $1$ gets excluded from the primes: if it counted, you could pad any factorization with as many extra $1$s as you wanted, and "the one unique breakdown" would stop meaning anything.
++
++## Why this makes cryptography possible
++
++Give someone $77$ and ask for its prime factors, and a quick search finds the answer: not divisible by $2$, $3$, or $5$, but $77 / 7 = 11$, and $11$ is prime. So $77 = 7 \times 11$ — a few seconds of work.
++
++<Figure caption="Fig. 4 — going right is instant. Going left, for a number hundreds of digits long, is the hard part.">
++  <OneWayFunctionFigure />
++</Figure>
++
++Now stretch that same number out to hundreds of digits, and the multiplication stays just as easy, while recovering the original two primes becomes **infeasible even for the most powerful computers that exist** — not slow, but practically unreachable within any human timescale. This gap, called the integer factorization problem, is a **one-way function**: trivial in one direction, and effectively irreversible in the other. That asymmetry is the whole foundation cryptographic security rests on.
++
++## Where this shows up inside a real circuit
++
++Circom's default curve, BN254, is built around one enormous prime:
++
++<MathBox label="BN254 field prime — p">
++
++$$p = 21888242871839275222246405745257275088548364400416034343698204186575808495617$$
++
++254 bits long, and prime. Used by Circom, snarkjs, and most Groth16 toolchains.
++
++</MathBox>
++
++Every signal in a Circom circuit — every constraint, every intermediate value — is a number somewhere in $\{0, 1, 2, \ldots, p-1\}$, and every arithmetic operation happens inside that range. Using a prime for $p$ isn't incidental: it's exactly the property this lesson covered, carried into a circuit at full scale, and it's what keeps that arithmetic well-behaved instead of leaking structure an attacker could exploit.
++
++That range — arithmetic that lives inside $\{0, \ldots, p-1\}$ and wraps instead of growing forever — is **modular arithmetic**, and it's the very next topic in this track.
+diff --git a/src/content/lessons/exponents-and-powers.mdx b/src/content/lessons/exponents-and-powers.mdx
+index 56e3e5e..571ee04 100644
+--- a/src/content/lessons/exponents-and-powers.mdx
++++ b/src/content/lessons/exponents-and-powers.mdx
+@@ -10,6 +10,7 @@ youtubeHref: "https://www.youtube.com/watch?v=QhHw3qtbXjE"
+ prevTitle: "Variables, Expressions & Equations"
+ prevHref: "/learn/math/variables-expressions-equations"
+ nextTitle: "Divisibility, Factors & Primes"
++nextHref: "/learn/math/divisibility-factors-primes"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+diff --git a/src/content/lessons/modular-arithmetic.mdx b/src/content/lessons/modular-arithmetic.mdx
+index 345ea20..49a5854 100644
+--- a/src/content/lessons/modular-arithmetic.mdx
++++ b/src/content/lessons/modular-arithmetic.mdx
+@@ -7,6 +7,7 @@ duration: "5:22"
+ description: "The single idea that makes finite fields, elliptic curve groups, and almost every ZK primitive work: arithmetic that wraps around instead of growing forever."
+ order: 4
+ prevTitle: "Divisibility, Factors & Primes"
++prevHref: "/learn/math/divisibility-factors-primes"
+ nextTitle: "Modular Inverses & Fermat's"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 7b063ca..3980094 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -67,7 +67,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "00", title: "ZK Math — Introduction", duration: "8:04", slug: "zk-math-introduction" },
+         { num: "01", title: "Variables, Expressions & Equations", duration: "5:11", slug: "variables-expressions-equations" },
+         { num: "02", title: "Exponents and Powers", duration: "5:25", slug: "exponents-and-powers" },
+-        { num: "03", title: "Divisibility, Factors & Primes", duration: "6:46" },
++        { num: "03", title: "Divisibility, Factors & Primes", duration: "6:46", slug: "divisibility-factors-primes" },
+       ],
+     },
+     {

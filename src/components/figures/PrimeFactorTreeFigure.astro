@@ -1,0 +1,45 @@
+---
+// Fig. for "Divisibility, Factors & Primes": factoring 60 down to its
+// prime pieces — 60 → 2 × 30 → 2 × (2 × 15) → 2 × 2 × (3 × 5). Composite
+// numbers stay plain; only the prime leaves get the green "prime" mark.
+// The final equation (60 = 2×2×3×5 = 2²×3×5) lives in the external
+// <Figure> caption rather than repeated here.
+interface Node {
+  x: number;
+  y: number;
+  label: string;
+  prime: boolean;
+}
+const nodes: Node[] = [
+  { x: 300, y: 30, label: "60", prime: false },
+  { x: 90, y: 115, label: "2", prime: true },
+  { x: 410, y: 115, label: "30", prime: false },
+  { x: 280, y: 195, label: "2", prime: true },
+  { x: 490, y: 195, label: "15", prime: false },
+  { x: 410, y: 275, label: "3", prime: true },
+  { x: 570, y: 275, label: "5", prime: true },
+];
+const edges: [number, number][] = [
+  [0, 1],
+  [0, 2],
+  [2, 3],
+  [2, 4],
+  [4, 5],
+  [4, 6],
+];
+---
+<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  {edges.map(([a, b]) => {
+    const from = nodes[a];
+    const to = nodes[b];
+    return <line x1={from.x} y1={from.y + 14} x2={to.x} y2={to.y - 24} stroke="#3ab7ff" stroke-width="1.6" opacity="0.7" />;
+  })}
+  {nodes.map((node) => (
+    <>
+      <text x={node.x} y={node.y} text-anchor="middle" fill="#e9eef5" font-size="30" font-weight="800" font-family="-apple-system,Arial,sans-serif">{node.label}</text>
+      {node.prime && (
+        <text x={node.x} y={node.y + 24} text-anchor="middle" fill="#5ddc8a" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">✓ prime</text>
+      )}
+    </>
+  ))}
+</svg>

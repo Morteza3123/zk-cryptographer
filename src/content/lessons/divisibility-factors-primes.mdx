@@ -1,0 +1,84 @@
+---
+track: math
+module: "Foundations"
+lessonNumber: "03"
+title: "Divisibility, Factors & Primes"
+duration: "6:46"
+description: "Why prime numbers — the same ones from grade school — turn out to be the reason factoring a large number back apart is nearly impossible, and the whole basis for cryptographic security."
+order: 3
+youtubeHref: "https://www.youtube.com/watch?v=99xDV3tT9Ss"
+prevTitle: "Exponents and Powers"
+prevHref: "/learn/math/exponents-and-powers"
+nextTitle: "Modular Arithmetic"
+nextHref: "/learn/math/modular-arithmetic"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import DivisibilityCheckFigure from "../../components/figures/DivisibilityCheckFigure.astro";
+import PrimeCheckFigure from "../../components/figures/PrimeCheckFigure.astro";
+import PrimeFactorTreeFigure from "../../components/figures/PrimeFactorTreeFigure.astro";
+import OneWayFunctionFigure from "../../components/figures/OneWayFunctionFigure.astro";
+
+Variables, equations, and powers all describe how to combine numbers. This lesson goes one level deeper, into the numbers themselves — divisibility, factors, and prime numbers. It reads like grade-school material, and that's exactly the trap: **prime numbers are the actual reason factoring a large number back apart is nearly impossible, and that single fact is what modern cryptography is built on.**
+
+## Divisibility and factors
+
+A number $a$ is divisible by $b$ when dividing one by the other leaves no remainder:
+
+<Figure caption="Fig. 1 — two clean divisions and one with a remainder, shown both ways: as division and with the divides-notation.">
+  <DivisibilityCheckFigure />
+</Figure>
+
+The notation $b \mid a$ reads as "$b$ divides $a$"; a slash through the bar, $b \nmid a$, reads as "$b$ does not divide $a$." Whenever $b$ divides $a$ cleanly, $b$ is called a **factor** of $a$ — so $12$ has factors $1, 2, 3, 4, 6, 12$, since each of those divides it with nothing left over.
+
+## Prime numbers
+
+A **prime number** is a whole number greater than $1$ with exactly two factors: $1$ and itself. Anything with more factors than that is **composite**.
+
+<Figure caption="Fig. 2 — count the factors and the label falls out automatically. 1 doesn't fit either category.">
+  <PrimeCheckFigure />
+</Figure>
+
+$2$ is worth a second look — it's the only even prime, since every other even number automatically has $2$ as a third factor. And $1$ isn't prime or composite at all; it only has one factor, itself, which puts it in a category of its own. The primes keep going forever: $2, 3, 5, 7, 11, 13, 17, 19, 23, \ldots$
+
+## The fundamental theorem of arithmetic
+
+Every whole number greater than $1$ breaks down into primes, and **only one such breakdown exists** — no matter which factor you pull out first, the pieces you end up with are always the same. Take $60$:
+
+<Figure caption="Fig. 3 — however you start splitting 60 apart, the leaves at the bottom are always the same four primes.">
+  <PrimeFactorTreeFigure />
+</Figure>
+
+<MathBox label="Prime factorization">
+
+$$60 = 2 \times 2 \times 3 \times 5 = 2^2 \times 3 \times 5$$
+
+</MathBox>
+
+This is why primes get called the building blocks of arithmetic — every other whole number is just a specific combination of them, and that combination is unique. It's also exactly why $1$ gets excluded from the primes: if it counted, you could pad any factorization with as many extra $1$s as you wanted, and "the one unique breakdown" would stop meaning anything.
+
+## Why this makes cryptography possible
+
+Give someone $77$ and ask for its prime factors, and a quick search finds the answer: not divisible by $2$, $3$, or $5$, but $77 / 7 = 11$, and $11$ is prime. So $77 = 7 \times 11$ — a few seconds of work.
+
+<Figure caption="Fig. 4 — going right is instant. Going left, for a number hundreds of digits long, is the hard part.">
+  <OneWayFunctionFigure />
+</Figure>
+
+Now stretch that same number out to hundreds of digits, and the multiplication stays just as easy, while recovering the original two primes becomes **infeasible even for the most powerful computers that exist** — not slow, but practically unreachable within any human timescale. This gap, called the integer factorization problem, is a **one-way function**: trivial in one direction, and effectively irreversible in the other. That asymmetry is the whole foundation cryptographic security rests on.
+
+## Where this shows up inside a real circuit
+
+Circom's default curve, BN254, is built around one enormous prime:
+
+<MathBox label="BN254 field prime — p">
+
+$$p = 21888242871839275222246405745257275088548364400416034343698204186575808495617$$
+
+254 bits long, and prime. Used by Circom, snarkjs, and most Groth16 toolchains.
+
+</MathBox>
+
+Every signal in a Circom circuit — every constraint, every intermediate value — is a number somewhere in $\{0, 1, 2, \ldots, p-1\}$, and every arithmetic operation happens inside that range. Using a prime for $p$ isn't incidental: it's exactly the property this lesson covered, carried into a circuit at full scale, and it's what keeps that arithmetic well-behaved instead of leaking structure an attacker could exploit.
+
+That range — arithmetic that lives inside $\{0, \ldots, p-1\}$ and wraps instead of growing forever — is **modular arithmetic**, and it's the very next topic in this track.
