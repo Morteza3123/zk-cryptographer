@@ -16,23 +16,23 @@ import ZKRevealFigure from "../../components/figures/ZKRevealFigure.astro";
 import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
 import EllipticCurveFigure from "../../components/figures/EllipticCurveFigure.astro";
 
-If you've tried to learn zero-knowledge proofs before, you've probably noticed something quickly: the hard part isn't the code, and it isn't the tooling — it's the math. Most developers come to ZK wanting to build privacy applications, scalable blockchains, identity systems, or advanced cryptographic protocols, and then run straight into terms like finite fields, modular arithmetic, elliptic curves, polynomial commitments, and group theory, usually with no on-ramp. That gap is exactly what this track exists to close.
+Anyone who has tried to pick up zero-knowledge proofs runs into the same wall fast: **the math, not the code, is what actually slows people down**. People show up wanting to build privacy tools, scalable blockchains, identity systems, or new cryptographic protocols, and within a few pages they're staring at finite fields, modular arithmetic, elliptic curves, polynomial commitments, and group theory with no real starting point. This track is that starting point.
 
-You don't need a PhD in mathematics, and you don't need to already think of yourself as a "math person." You need curiosity, a willingness to work through a few equations by hand, and about as much patience as you'd give to learning a new programming language. By the end of this track you'll have the actual mathematical foundation that modern cryptography and zero-knowledge systems are built on — not an intuition-only version of it that falls apart the moment a paper gets specific.
+None of it requires an advanced math degree. What it takes is curiosity, a willingness to sit with an equation until it makes sense, and roughly the patience you'd bring to picking up a new programming language. Work through this track and you come out the other side with **a real mathematical foundation** — the kind that holds up once a paper gets specific, rather than a surface-level feel for the vocabulary.
 
 ## Why the math actually matters
 
-Almost everything you do online already depends on cryptography. Logging into a website, sending a message, making a payment, or submitting a blockchain transaction — all of it is protected by math, not by policy or good intentions. Without cryptography, there's no secure internet to speak of.
+Cryptography is already running underneath almost everything you do online. Logging into an account, sending a message, paying for something, submitting a blockchain transaction: every one of those is secured by math, not by a company's good intentions. Take the math away and there's no secure internet left.
 
-Zero-knowledge proofs push this a step further. They let one party prove a statement is true without revealing anything about *why* it's true beyond the statement itself — "I'm over 18" without your exact birthdate, "I know this password" without sending the password, "this transaction is valid" without exposing the sender, receiver, or amount. That's not a minor trick. It's one of the most significant developments in blockchain privacy and digital identity in the last decade, and it's the reason ZK has gone from an academic curiosity to production infrastructure in a few years.
+Zero-knowledge proofs push that a step further: one side can **prove a statement is true while revealing nothing about why**. "I'm over 18" without handing over a birthdate. "I know this password" without ever sending it. "This transaction is valid" without exposing who sent what to whom. It's a genuinely significant shift in how blockchain privacy and digital identity work, and it's why ZK went from a research topic to production infrastructure in under a decade.
 
-The reason this needs so much math is simple: computers can be tricked, and people can lie, but mathematics can't be talked out of a true statement. Every cryptographic guarantee ultimately reduces to "this specific mathematical problem is too hard to solve in a reasonable amount of time, even with enormous computing power." You're not trusting a person or a company — you're trusting that a particular equation has no shortcut. That's a fundamentally different, and much stronger, kind of guarantee, and it's why cryptography is a branch of mathematics first and a branch of software engineering second.
+Here's why so much math is involved: software can be exploited and people can lie, but a mathematical fact doesn't bend under pressure. Every cryptographic guarantee comes down to one specific problem being too hard to crack in any practical amount of time, no matter how much computing power gets thrown at it. You end up trusting an equation instead of a person or a company, and that's a fundamentally stronger kind of guarantee. It's also why **cryptography belongs to mathematics first, and software engineering second**.
 
 ## Why zero-knowledge feels different to learn
 
-Most programming topics build on things you already know. A new language still has variables, loops, and functions to anchor onto. Zero-knowledge doesn't give you that shortcut — instead of reasoning purely about code, you're reasoning about mathematical structures: fields, groups, polynomials. Most tutorials skip straight to the advanced material assuming this background already exists, which is exactly how people end up memorizing protocol steps without understanding why any of them actually work.
+Most programming subjects let you lean on things you already know — a new language still has variables, loops, and functions to hold onto. Zero-knowledge skips that comfort. Instead of reasoning only about code, you're reasoning about mathematical structures: fields, groups, polynomials. Most tutorials jump straight to the advanced material as if that background is already there, which is exactly how people end up reciting protocol steps without understanding what makes any of them work.
 
-The good news: the whole field is built from a surprisingly small set of mathematical ideas, reused in different combinations. Once those ideas are genuinely familiar — not memorized, understood — reading a new ZK paper stops feeling like a different language and starts feeling like recognizing old friends in new outfits.
+In practice, the field leans on a fairly small set of mathematical ideas, combined and recombined. Once those ideas are **genuinely understood rather than memorized**, a new ZK paper reads less like an unfamiliar language and more like a different arrangement of concepts you've already seen.
 
 ## A first taste of how the math gets used
 
@@ -50,13 +50,13 @@ Say I claim to know a value of $x$ that satisfies this, and I don't want to tell
   <ZKRevealFigure />
 </Figure>
 
-To make that work, the statement first gets converted into a set of mathematical constraints a proof system can check — a single toy equation like this one becomes a handful of constraints, and a real-world ZK circuit can involve millions of them. The system then leans on algebra, finite fields, and polynomials to verify the claim holds, without ever reconstructing $x$ along the way. Even this one-line example already depends on the material in this track; a production circuit is the same idea at a much larger scale.
+Making that work starts with turning the statement into a set of constraints a proof system can check. A toy example like this one needs only a handful of them; a real ZK circuit can involve millions. From there, **algebra, finite fields, and polynomials** do the work of verifying the claim without ever reconstructing $x$. Even this single line already touches everything in this track — a production circuit is the same idea, just at a much larger scale.
 
-One detail worth sitting with now: over the ordinary integers, $x \cdot x = 25$ has two solutions, $5$ and $-5$ — exactly the kind of ambiguity that disappears once you're working inside a finite field with a well-defined modulus. That's one of several reasons finite fields, not plain integers, are the ground real ZK systems are actually built on.
+One thing worth noticing already: over the ordinary integers, this equation has **two valid solutions**, $5$ and $-5$. That ambiguity disappears once the same equation is evaluated inside a finite field with a fixed modulus, which is one of several reasons real ZK systems are built on finite fields rather than plain integers.
 
 ## Nine mathematical ideas, used over and over
 
-Everything in this track comes back to a short list of topics. Here's the map before the territory — then a closer look at each one, with a worked example.
+Everything in this track traces back to a short list of ideas. Here's the overview first, then a closer, worked look at each one.
 
 <div class="topic-grid">
 
@@ -116,104 +116,102 @@ Curves chosen for arithmetic that's easy to compute but hard to reverse. The bas
 
 </div>
 
-### Arithmetic & algebra, worked
+### Arithmetic & algebra
 
-Nothing exotic yet — just solving for an unknown:
-
-<MathBox label="Worked example">
+<MathBox label="Example">
 
 $$x + 5 = 12 \implies x = 7$$
 
-Every cryptographic protocol is, underneath, a chain of steps like this one — the complexity comes from how many of them get chained together, not from any single step being hard.
+Nothing exotic here, just solving for an unknown. Every cryptographic protocol is, underneath, a chain of steps like this one. The complexity comes from how many get chained together, not from any single step being hard.
 
 </MathBox>
 
-### Number theory, worked
+### Number theory
 
-<MathBox label="Worked example">
+<MathBox label="Greatest common divisor">
 
 $$\gcd(12, 18) = 6$$
 
-The greatest common divisor — the largest number that divides both with no remainder. Number theory results like this one decide which numbers can serve as a modulus, and which pairs of numbers have a modular inverse at all (more on that in a couple of lessons).
+The largest number that divides both with no remainder. Results like this one decide which numbers can serve as a modulus, and which pairs of numbers even have a modular inverse — a question the next lesson picks up directly.
 
 </MathBox>
 
-### Modular arithmetic, a teaser
+### Modular arithmetic
 
-<MathBox label="Worked example">
+<MathBox label="Definition">
 
 $$17 \bmod 5 = 2$$
 
-The remainder when $17$ is divided by $5$. This single idea — arithmetic that wraps around instead of growing forever — is the subject of the entire next lesson, because almost everything downstream of it depends on getting comfortable here first.
+The remainder left over once $17$ is divided by $5$. Arithmetic that wraps around instead of growing forever is **the single idea the next lesson is built around**, because almost everything downstream of it depends on this clicking first.
 
 </MathBox>
 
-### Finite fields, worked
+### Finite fields
 
-<MathBox label="Worked example">
+<MathBox label="Example">
 
 $$5 + 4 \equiv 2 \pmod{7}$$
 
-Inside the field "modulo $7$," addition wraps back around as soon as it would leave the set $\{0, 1, \dots, 6\}$. Every ZK proof system picks one large prime field like this and does *all* of its arithmetic inside it.
+Inside the field "modulo $7$," addition wraps back around as soon as it would leave the set $\{0, 1, \dots, 6\}$. Every ZK proof system picks one large prime field like this and does **all** of its arithmetic inside it.
 
 </MathBox>
 
-### Polynomial mathematics, worked
+### Polynomial mathematics
 
-<MathBox label="Worked example">
+<MathBox label="Example">
 
 $$f(x) = x^2 + 2x + 1$$
 
-A polynomial encodes a whole computation as a single algebraic object — evaluate it, add it to another polynomial, or commit to it without revealing it. zk-SNARKs and zk-STARKs are, at their core, elaborate machinery for making statements like these checkable.
+A polynomial encodes a whole computation as a single algebraic object that can be evaluated, added to another polynomial, or committed to without revealing it. zk-SNARKs and zk-STARKs are, at their core, machinery for making statements like these checkable.
 
 </MathBox>
 
-### Linear algebra, worked
+### Linear algebra
 
-<MathBox label="Worked example">
+<MathBox label="Dot product">
 
 $$\begin{bmatrix} 1 & 2 \end{bmatrix} \cdot \begin{bmatrix} 3 \\ 4 \end{bmatrix} = 1 \cdot 3 + 2 \cdot 4 = 11$$
 
-A single dot product — and, scaled up to thousands of rows, exactly the operation a circuit's constraint system runs to check that a computation was performed correctly.
+A single dot product, scaled up to thousands of rows, is exactly the operation a circuit's constraint system runs to check that a computation was performed correctly.
 
 </MathBox>
 
-### Probability, worked
+### Probability
 
-<MathBox label="Worked example">
+<MathBox label="Example">
 
 $$P(\text{heads}) = \tfrac{1}{2}$$
 
-The simplest possible probability statement — but the same math that lets a protocol say "a cheating prover gets away with it with probability at most $1$ in a million," which is how security guarantees get turned into concrete numbers instead of vague confidence.
+The simplest possible probability statement, but the same math that lets a protocol claim "a cheating prover gets away with it with probability at most one in a million" — turning a security guarantee into a concrete number instead of a vague assurance.
 
 </MathBox>
 
-### Group theory, worked
+### Group theory
 
 <Figure caption="Fig. 2 — the integers 0 through 4 under addition, wrapping back to 0 after 4: a cyclic group of order 5.">
   <CyclicGroupFigure n={5} />
 </Figure>
 
-<MathBox label="Worked example">
+<MathBox label="Definition">
 
 $$\mathbb{Z}/5\mathbb{Z} = \{0, 1, 2, 3, 4\} \text{ under } +$$
 
-A *group* is just a set with an operation that follows a few simple rules — closure, an identity element, every element has an inverse. The integers mod $5$ under addition are one of the simplest examples. Elliptic curve cryptography is, underneath, a much larger and more useful group built the same way.
+A **group** is a set paired with an operation that follows a few simple rules: closure, an identity element, and an inverse for every element. The integers mod $5$ under addition are one of the simplest examples there is. Elliptic curve cryptography is, underneath, a much larger group built the same way.
 
 </MathBox>
 
-### Elliptic curves, worked
+### Elliptic curves
 
 <Figure caption="Fig. 3 — secp256k1: the elliptic curve behind Bitcoin and Ethereum keys.">
   <EllipticCurveFigure />
 </Figure>
 
-<MathBox label="Worked example">
+<MathBox label="secp256k1">
 
 $$y^2 = x^3 + 7$$
 
-This is secp256k1 — the exact curve used to generate Bitcoin and Ethereum key pairs. Pick a point on the curve, "add" it to itself a secret number of times, and you get a new point that's easy to compute forward but computationally infeasible to reverse. That one-way street is what elliptic curve cryptography — and a large share of pairing-based ZK proof systems — is built on.
+The exact curve used to generate Bitcoin and Ethereum key pairs. Pick a point on it, "add" that point to itself a secret number of times, and the result is **easy to compute forward and effectively impossible to reverse**. That one-way street is what elliptic curve cryptography, and a large share of pairing-based ZK proof systems, is built on.
 
 </MathBox>
 
-None of this needs to click in a single sitting — nobody picks up finite fields or polynomial commitments on the first pass. This track builds the nine ideas above one lesson at a time, starting with modular arithmetic next, and ties each one back to the cryptography and zero-knowledge systems it actually supports. Once the math stops being abstract and starts being something you can point to in an actual protocol, the rest of ZK stops looking like magic.
+None of this has to click on the first pass. Finite fields and polynomial commitments take more than one look for almost everyone. This track works through the nine ideas above one lesson at a time, starting with modular arithmetic next, and keeps tying each one back to the cryptography and zero-knowledge systems that actually use it. Once the math stops being abstract and turns into something you can point to inside a real protocol, **the rest of ZK gets a lot easier to follow**.
