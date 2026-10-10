@@ -15,12 +15,18 @@ import MathBox from "../../components/MathBox.astro";
 import Figure from "../../components/Figure.astro";
 import ModularClockFigure from "../../components/figures/ModularClockFigure.astro";
 import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
+import ClockWrapFigure from "../../components/figures/ClockWrapFigure.astro";
+import NormalVsModFigure from "../../components/figures/NormalVsModFigure.astro";
 
 Of everything in this track, **this is the one idea everything else sits on top of.** Every ZK proof system, every elliptic curve, every Circom circuit runs its arithmetic inside a modulus — and the surprising part is that you already use the same idea daily, just under a more familiar name.
 
 ## The clock analogy
 
 A clock only has 12 hours on its face. Past 12, it doesn't keep counting up to 13 — it wraps back to 1. If it's 9:00 and 4 hours pass, the clock doesn't read 13:00, it reads 1:00:
+
+<Figure caption="Fig. 1 — the hand never reaches 13. It wraps back around to 1.">
+  <ClockWrapFigure />
+</Figure>
 
 <MathBox label="A familiar wraparound">
 
@@ -32,9 +38,13 @@ The number you wrap around — $12$, for a clock — is called the **modulus**. 
 
 ## The mod operation
 
-Formally, the mod operation gives you the remainder left over after dividing by the modulus:
+Formally, the mod operation gives you the remainder left over after dividing by the modulus. It's worth seeing the same sum three ways, so the difference from plain arithmetic is unmistakable:
 
-<Figure caption="Fig. 1 — 15 wraps once around a 12-tick clock and lands on 3, which is exactly 15 mod 12.">
+<Figure caption="Fig. 2 — the same 10 + 5, read as plain arithmetic, as a sum inside mod 12, and as the remainder operation that produces it.">
+  <NormalVsModFigure />
+</Figure>
+
+<Figure caption="Fig. 3 — 15 wraps once around a 12-tick clock and lands on 3, which is exactly 15 mod 12.">
   <ModularClockFigure dividend={15} modulus={12} remainder={3} />
 </Figure>
 
@@ -66,9 +76,14 @@ Math has its own shorthand for "these two numbers leave the same remainder": **c
 
 <MathBox label="Congruence">
 
-$$17 \equiv 2 \pmod{5}$$
+$$
+\begin{aligned}
+17 &\equiv 2 \pmod{5} \quad (17 \bmod 5 = 2) \\
+22 &\equiv 2 \pmod{5} \quad (22 \bmod 5 = 2)
+\end{aligned}
+$$
 
-Read as "$17$ is congruent to $2$, modulo $5$." It doesn't claim $17$ and $2$ are the same number — only that dividing either one by $5$ leaves the same remainder, so inside mod $5$ they behave identically.
+Read $17 \equiv 2 \pmod 5$ as "$17$ is congruent to $2$, modulo $5$." It doesn't claim $17$ and $2$ are the same number — only that dividing either one by $5$ leaves the same remainder. $22$ lands in that same statement for exactly the same reason: three genuinely different numbers, all behaving identically inside mod $5$.
 
 </MathBox>
 
@@ -78,7 +93,7 @@ The three-bar symbol is doing real work here: two bars ($=$) means identical val
 
 Addition, subtraction, and multiplication all work inside a modulus too — compute normally, then reduce by the modulus. Whatever you started with, the answer always lands back inside $\{0, 1, \ldots, n-1\}$, which is what makes this a **closed system**: the operations can never produce a result that escapes the range.
 
-<Figure caption="Fig. 2 — every result of addition, subtraction, or multiplication mod 7 lands back on one of these seven points. Nothing escapes the ring.">
+<Figure caption="Fig. 4 — every result of addition, subtraction, or multiplication mod 7 lands back on one of these seven points. Nothing escapes the ring.">
   <CyclicGroupFigure n={7} />
 </Figure>
 
@@ -92,7 +107,7 @@ $$5 + 4 = 9, \quad 9 \bmod 7 = 2$$
 
 $$2 - 5 = -3$$
 
-Negative numbers aren't allowed in this range, so add the modulus back on: $-3 + 7 = 4$. That's the actual result — subtraction mod $7$ of $2 - 5$ is $4$, not $-3$.
+**Negative numbers aren't allowed in this range**, so add the modulus back on until the result turns positive: $-3 + 7 = 4$. That's the actual result — subtraction mod $7$ of $2 - 5$ is $4$, not $-3$.
 
 </MathBox>
 

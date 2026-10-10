@@ -1,0 +1,178 @@
+diff --git a/src/components/figures/ClockWrapFigure.astro b/src/components/figures/ClockWrapFigure.astro
+new file mode 100644
+index 0000000..c1ad3c6
+--- /dev/null
++++ b/src/components/figures/ClockWrapFigure.astro
+@@ -0,0 +1,56 @@
++---
++// Fig. for "Modular Arithmetic": the clock analogy made literal — a hand
++// at 9 o'clock, 4 hours pass, and it lands on 1, not 13. Residue-style
++// tick labels (0 at the top, not 12) to match how the rest of this lesson
++// talks about remainders.
++const r = 85;
++const leftCx = 120;
++const rightCx = 560;
++const cy = 120;
++
++function handPoint(cx: number, hour: number, len: number) {
++  const angle = (hour / 12) * 2 * Math.PI - Math.PI / 2;
++  return { x: cx + Math.cos(angle) * len, y: cy + Math.sin(angle) * len };
++}
++const ticks = [0, 3, 6, 9];
++function tickLabel(cx: number, hour: number) {
++  // Just inside the rim (not outside it), so labels never collide with the
++  // title text sitting above the circle.
++  const angle = (hour / 12) * 2 * Math.PI - Math.PI / 2;
++  return { x: cx + Math.cos(angle) * (r - 18), y: cy + Math.sin(angle) * (r - 18) + 5 };
++}
++const leftHand = handPoint(leftCx, 9, r * 0.72);
++const rightHand = handPoint(rightCx, 1, r * 0.72);
++---
++<svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x={leftCx} y="24" text-anchor="middle" fill="#8fdcff" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">9 o'clock</text>
++  <circle cx={leftCx} cy={cy} r={r} fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2.5" />
++  {ticks.map((h) => {
++    const p = tickLabel(leftCx, h);
++    return <text x={p.x} y={p.y} text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">{h}</text>;
++  })}
++  <line x1={leftCx} y1={cy} x2={leftHand.x} y2={leftHand.y} stroke="#3ab7ff" stroke-width="3.5" stroke-linecap="round" />
++  <circle cx={leftCx} cy={cy} r="4.5" fill="#3ab7ff" />
++
++  <text x="340" y="70" text-anchor="middle" fill="#c3cedd" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">+ 4 hrs</text>
++  <line x1="260" y1="110" x2="420" y2="110" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#clockwrap-arrow)" />
++  <text x="340" y="150" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">9 + 4 = 13</text>
++  <text x="340" y="172" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">13 mod 12 = 1</text>
++
++  <text x={rightCx} y="24" text-anchor="middle" fill="#8fdcff" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">1 o'clock</text>
++  <circle cx={rightCx} cy={cy} r={r} fill="url(#bodyGrad)" stroke="#8fdcff" stroke-width="2.5" />
++  {ticks.map((h) => {
++    const p = tickLabel(rightCx, h);
++    return <text x={p.x} y={p.y} text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">{h}</text>;
++  })}
++  <line x1={rightCx} y1={cy} x2={rightHand.x} y2={rightHand.y} stroke="#8fdcff" stroke-width="3.5" stroke-linecap="round" />
++  <circle cx={rightCx} cy={cy} r="4.5" fill="#8fdcff" />
++
++  <text x="340" y="240" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">wraps around — 13 becomes 1 inside mod 12</text>
++
++  <defs>
++    <marker id="clockwrap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/NormalVsModFigure.astro b/src/components/figures/NormalVsModFigure.astro
+new file mode 100644
+index 0000000..20e0a2e
+--- /dev/null
++++ b/src/components/figures/NormalVsModFigure.astro
+@@ -0,0 +1,35 @@
++---
++// Fig. for "Modular Arithmetic": the same 10 + 5, read three ways — plain
++// arithmetic (no limit), the same sum inside mod 12 (it wraps), and the
++// remainder operation that produces that wrapped value.
++interface Col {
++  eq: string;
++  note1: string;
++  note2: string;
++  verdict: string;
++  ok: boolean;
++}
++const cols: Col[] = [
++  { eq: "10 + 5 = 15", note1: "normal arithmetic", note2: "no limit — goes to 15", verdict: "✗ no wrapping", ok: false },
++  { eq: "10 + 5 = 3", note1: "mod 12 — like a clock", note2: "wraps around at 12", verdict: "✓ wraps around", ok: true },
++  { eq: "15 mod 12 = 3", note1: "remainder when 15 ÷ 12", note2: "15 = 1 × 12 + 3", verdict: "✓ remainder is 3", ok: true },
++];
++const colW = 240;
++---
++<svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <line x1="240" y1="14" x2="240" y2="196" stroke="#223049" stroke-width="1" />
++  <line x1="480" y1="14" x2="480" y2="196" stroke="#223049" stroke-width="1" />
++
++  {cols.map((col, i) => {
++    const cx = i * colW + colW / 2;
++    const color = col.ok ? "#5ddc8a" : "#ff8080";
++    return (
++      <>
++        <text x={cx} y="46" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.eq}</text>
++        <text x={cx} y="78" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note1}</text>
++        <text x={cx} y="98" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note2}</text>
++        <text x={cx} y="150" text-anchor="middle" fill={color} font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.verdict}</text>
++      </>
++    );
++  })}
++</svg>
+diff --git a/src/content/lessons/modular-arithmetic.mdx b/src/content/lessons/modular-arithmetic.mdx
+index fbd1af3..6ee6866 100644
+--- a/src/content/lessons/modular-arithmetic.mdx
++++ b/src/content/lessons/modular-arithmetic.mdx
+@@ -15,6 +15,8 @@ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+ import ModularClockFigure from "../../components/figures/ModularClockFigure.astro";
+ import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
++import ClockWrapFigure from "../../components/figures/ClockWrapFigure.astro";
++import NormalVsModFigure from "../../components/figures/NormalVsModFigure.astro";
+ 
+ Of everything in this track, **this is the one idea everything else sits on top of.** Every ZK proof system, every elliptic curve, every Circom circuit runs its arithmetic inside a modulus — and the surprising part is that you already use the same idea daily, just under a more familiar name.
+ 
+@@ -22,6 +24,10 @@ Of everything in this track, **this is the one idea everything else sits on top
+ 
+ A clock only has 12 hours on its face. Past 12, it doesn't keep counting up to 13 — it wraps back to 1. If it's 9:00 and 4 hours pass, the clock doesn't read 13:00, it reads 1:00:
+ 
++<Figure caption="Fig. 1 — the hand never reaches 13. It wraps back around to 1.">
++  <ClockWrapFigure />
++</Figure>
++
+ <MathBox label="A familiar wraparound">
+ 
+ $$9 + 4 = 13 \equiv 1 \pmod{12}$$
+@@ -32,9 +38,13 @@ The number you wrap around — $12$, for a clock — is called the **modulus**.
+ 
+ ## The mod operation
+ 
+-Formally, the mod operation gives you the remainder left over after dividing by the modulus:
++Formally, the mod operation gives you the remainder left over after dividing by the modulus. It's worth seeing the same sum three ways, so the difference from plain arithmetic is unmistakable:
++
++<Figure caption="Fig. 2 — the same 10 + 5, read as plain arithmetic, as a sum inside mod 12, and as the remainder operation that produces it.">
++  <NormalVsModFigure />
++</Figure>
+ 
+-<Figure caption="Fig. 1 — 15 wraps once around a 12-tick clock and lands on 3, which is exactly 15 mod 12.">
++<Figure caption="Fig. 3 — 15 wraps once around a 12-tick clock and lands on 3, which is exactly 15 mod 12.">
+   <ModularClockFigure dividend={15} modulus={12} remainder={3} />
+ </Figure>
+ 
+@@ -66,9 +76,14 @@ Math has its own shorthand for "these two numbers leave the same remainder": **c
+ 
+ <MathBox label="Congruence">
+ 
+-$$17 \equiv 2 \pmod{5}$$
++$$
++\begin{aligned}
++17 &\equiv 2 \pmod{5} \quad (17 \bmod 5 = 2) \\
++22 &\equiv 2 \pmod{5} \quad (22 \bmod 5 = 2)
++\end{aligned}
++$$
+ 
+-Read as "$17$ is congruent to $2$, modulo $5$." It doesn't claim $17$ and $2$ are the same number — only that dividing either one by $5$ leaves the same remainder, so inside mod $5$ they behave identically.
++Read $17 \equiv 2 \pmod 5$ as "$17$ is congruent to $2$, modulo $5$." It doesn't claim $17$ and $2$ are the same number — only that dividing either one by $5$ leaves the same remainder. $22$ lands in that same statement for exactly the same reason: three genuinely different numbers, all behaving identically inside mod $5$.
+ 
+ </MathBox>
+ 
+@@ -78,7 +93,7 @@ The three-bar symbol is doing real work here: two bars ($=$) means identical val
+ 
+ Addition, subtraction, and multiplication all work inside a modulus too — compute normally, then reduce by the modulus. Whatever you started with, the answer always lands back inside $\{0, 1, \ldots, n-1\}$, which is what makes this a **closed system**: the operations can never produce a result that escapes the range.
+ 
+-<Figure caption="Fig. 2 — every result of addition, subtraction, or multiplication mod 7 lands back on one of these seven points. Nothing escapes the ring.">
++<Figure caption="Fig. 4 — every result of addition, subtraction, or multiplication mod 7 lands back on one of these seven points. Nothing escapes the ring.">
+   <CyclicGroupFigure n={7} />
+ </Figure>
+ 
+@@ -92,7 +107,7 @@ $$5 + 4 = 9, \quad 9 \bmod 7 = 2$$
+ 
+ $$2 - 5 = -3$$
+ 
+-Negative numbers aren't allowed in this range, so add the modulus back on: $-3 + 7 = 4$. That's the actual result — subtraction mod $7$ of $2 - 5$ is $4$, not $-3$.
++**Negative numbers aren't allowed in this range**, so add the modulus back on until the result turns positive: $-3 + 7 = 4$. That's the actual result — subtraction mod $7$ of $2 - 5$ is $4$, not $-3$.
+ 
+ </MathBox>
+ 

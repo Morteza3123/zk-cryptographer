@@ -1,0 +1,35 @@
+---
+// Fig. for "Modular Arithmetic": the same 10 + 5, read three ways — plain
+// arithmetic (no limit), the same sum inside mod 12 (it wraps), and the
+// remainder operation that produces that wrapped value.
+interface Col {
+  eq: string;
+  note1: string;
+  note2: string;
+  verdict: string;
+  ok: boolean;
+}
+const cols: Col[] = [
+  { eq: "10 + 5 = 15", note1: "normal arithmetic", note2: "no limit — goes to 15", verdict: "✗ no wrapping", ok: false },
+  { eq: "10 + 5 = 3", note1: "mod 12 — like a clock", note2: "wraps around at 12", verdict: "✓ wraps around", ok: true },
+  { eq: "15 mod 12 = 3", note1: "remainder when 15 ÷ 12", note2: "15 = 1 × 12 + 3", verdict: "✓ remainder is 3", ok: true },
+];
+const colW = 240;
+---
+<svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <line x1="240" y1="14" x2="240" y2="196" stroke="#223049" stroke-width="1" />
+  <line x1="480" y1="14" x2="480" y2="196" stroke="#223049" stroke-width="1" />
+
+  {cols.map((col, i) => {
+    const cx = i * colW + colW / 2;
+    const color = col.ok ? "#5ddc8a" : "#ff8080";
+    return (
+      <>
+        <text x={cx} y="46" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.eq}</text>
+        <text x={cx} y="78" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note1}</text>
+        <text x={cx} y="98" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note2}</text>
+        <text x={cx} y="150" text-anchor="middle" fill={color} font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.verdict}</text>
+      </>
+    );
+  })}
+</svg>
