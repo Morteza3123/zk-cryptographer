@@ -4,60 +4,106 @@ module: "Modular Arithmetic"
 lessonNumber: "04"
 title: "Modular Arithmetic"
 duration: "5:22"
-description: "The single idea that makes finite fields, elliptic curve groups, and almost every ZK primitive work: arithmetic that wraps around instead of growing forever."
+description: "The single most important idea in this whole track: arithmetic that wraps around instead of growing forever — the clock math every ZK proof system, elliptic curve, and Circom circuit runs on."
 order: 4
+youtubeHref: "https://www.youtube.com/watch?v=uy2_NzoBbu4"
 prevTitle: "Divisibility, Factors & Primes"
 prevHref: "/learn/math/divisibility-factors-primes"
 nextTitle: "Modular Inverses & Fermat's"
 ---
 import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import ModularClockFigure from "../../components/figures/ModularClockFigure.astro";
+import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
 
-Modular arithmetic is the backbone of almost every cryptographic primitive you'll touch in ZK — from finite field operations to the elliptic curve groups used in pairing-based SNARKs. The idea is simple: instead of working with the infinite set of integers, we only care about the remainder after dividing by some fixed number, called the **modulus**.
+Of everything in this track, **this is the one idea everything else sits on top of.** Every ZK proof system, every elliptic curve, every Circom circuit runs its arithmetic inside a modulus — and the surprising part is that you already use the same idea daily, just under a more familiar name.
+
+## The clock analogy
+
+A clock only has 12 hours on its face. Past 12, it doesn't keep counting up to 13 — it wraps back to 1. If it's 9:00 and 4 hours pass, the clock doesn't read 13:00, it reads 1:00:
+
+<MathBox label="A familiar wraparound">
+
+$$9 + 4 = 13 \equiv 1 \pmod{12}$$
+
+</MathBox>
+
+The number you wrap around — $12$, for a clock — is called the **modulus**. In a ZK proof system, the modulus is a single, enormous prime number, but the wraparound behaves exactly the same way.
+
+## The mod operation
+
+Formally, the mod operation gives you the remainder left over after dividing by the modulus:
+
+<Figure caption="Fig. 1 — 15 wraps once around a 12-tick clock and lands on 3, which is exactly 15 mod 12.">
+  <ModularClockFigure dividend={15} modulus={12} remainder={3} />
+</Figure>
 
 <MathBox label="Definition">
 
-$$a \equiv b \pmod{n}$$
-
-means $n$ divides $(a - b)$. Example: $17 \equiv 5 \pmod{12}$, because $17 - 5 = 12$.
+$$15 = 1 \times 12 + 3 \implies 15 \bmod 12 = 3$$
 
 </MathBox>
 
-This is exactly how a 12-hour clock works — once you wrap past 12, you're back to the start. In code, this becomes a single operator:
+A few more, so the pattern sets in:
 
-```python
-def mod_reduce(a, n):
-    return a % n
+<MathBox label="More examples">
 
-print(mod_reduce(17, 12))   # 5
-print(mod_reduce(-3, 12))   # 9  (Python wraps negatives for you)
-```
+$$
+\begin{aligned}
+17 \bmod 5 &= 2 \quad (17 = 3 \times 5 + 2) \\
+20 \bmod 7 &= 6 \quad (20 = 2 \times 7 + 6) \\
+12 \bmod 4 &= 0 \quad (12 = 3 \times 4 + 0)
+\end{aligned}
+$$
 
-Addition and multiplication behave the way you'd expect under a modulus, but division is trickier — you can't just divide. Instead, you multiply by a **modular inverse**, which only exists if $a$ and $n$ share no common factors. When $n$ is prime, Fermat's Little Theorem hands you a shortcut.
-
-<MathBox label="Fermat's Little Theorem">
-
-$$a^{p-1} \equiv 1 \pmod{p}$$
-
-whenever $p$ is prime and $\gcd(a, p) = 1$. Rearranged, this gives the inverse directly: $a^{p-2} \equiv a^{-1} \pmod{p}$.
+A result of $0$ just means the division was exact — nothing left over.
 
 </MathBox>
 
-That means you can compute a modular inverse with nothing more than modular exponentiation — and because exponents get huge fast, you never compute $a^{p-2}$ one multiplication at a time. You use **square-and-multiply**:
+## Congruence notation
 
-```python
-def mod_pow(base, exp, mod):
-    result = 1
-    base %= mod
-    while exp > 0:
-        if exp & 1:
-            result = (result * base) % mod
-        exp >>= 1
-        base = (base * base) % mod
-    return result
+Math has its own shorthand for "these two numbers leave the same remainder": **congruence**, written with three bars instead of the usual two.
 
-# modular inverse of 7 mod 13 (13 is prime)
-inv = mod_pow(7, 13 - 2, 13)
-print(inv)   # 2, since 7 * 2 = 14 ≡ 1 (mod 13)
-```
+<MathBox label="Congruence">
 
-Every finite field you'll meet in ZK — the scalar field of an elliptic curve, the base field a circuit is built over — is just modular arithmetic with a prime modulus. Once square-and-multiply feels natural, the next lesson on modular inverses will mostly be filling in the *why* behind what you just used.
+$$17 \equiv 2 \pmod{5}$$
+
+Read as "$17$ is congruent to $2$, modulo $5$." It doesn't claim $17$ and $2$ are the same number — only that dividing either one by $5$ leaves the same remainder, so inside mod $5$ they behave identically.
+
+</MathBox>
+
+The three-bar symbol is doing real work here: two bars ($=$) means identical values; three bars ($\equiv$) means "same remainder, possibly very different numbers."
+
+## Arithmetic inside a modulus
+
+Addition, subtraction, and multiplication all work inside a modulus too — compute normally, then reduce by the modulus. Whatever you started with, the answer always lands back inside $\{0, 1, \ldots, n-1\}$, which is what makes this a **closed system**: the operations can never produce a result that escapes the range.
+
+<Figure caption="Fig. 2 — every result of addition, subtraction, or multiplication mod 7 lands back on one of these seven points. Nothing escapes the ring.">
+  <CyclicGroupFigure n={7} />
+</Figure>
+
+<MathBox label="Addition, mod 7">
+
+$$5 + 4 = 9, \quad 9 \bmod 7 = 2$$
+
+</MathBox>
+
+<MathBox label="Subtraction, mod 7">
+
+$$2 - 5 = -3$$
+
+Negative numbers aren't allowed in this range, so add the modulus back on: $-3 + 7 = 4$. That's the actual result — subtraction mod $7$ of $2 - 5$ is $4$, not $-3$.
+
+</MathBox>
+
+<MathBox label="Multiplication, mod 7">
+
+$$4 \times 5 = 20, \quad 20 \bmod 7 = 6$$
+
+</MathBox>
+
+Add, subtract, or multiply — the output is always back inside range, every time. That guarantee is the entire point.
+
+## Why Circom lives inside this
+
+Every Circom circuit does its arithmetic modulo $p$, the same enormous prime from the previous lesson. Every signal a circuit touches is a number somewhere in $\{0, 1, \ldots, p-1\}$, and every addition, subtraction, or multiplication wraps back into that same range, exactly like the examples above just at a far larger scale. This structure — modular arithmetic over a prime — has its own name: a **finite field**, written $GF(p)$. That's the entire reason a circuit's arithmetic stays predictable instead of spiraling into arbitrarily large numbers, and it's the subject the next-but-one lesson in this track covers in full. First, though, there's one more piece modular arithmetic needs: what it means to *divide* inside a modulus, which is where modular inverses and Fermat's little theorem come in.
