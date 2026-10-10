@@ -1,9 +1,11 @@
 ---
 // Video embed for a lesson page. When `href` is a real YouTube link, this
 // renders a click-to-play poster that swaps itself for an actual iframe on
-// click (keeps the page light until someone actually wants to watch) —
-// otherwise it falls back to the old static "coming soon" poster that just
-// links out, for lessons that don't have a video yet.
+// click (keeps the page light until someone actually wants to watch).
+// The poster itself is, in priority order: a custom <Fragment slot="poster">
+// passed by the caller (e.g. a bespoke illustration for one lesson), then
+// the video's own real YouTube thumbnail, then a generic placeholder for
+// lessons that don't have a video yet at all.
 interface Props {
   duration: string;
   href?: string;
@@ -15,18 +17,24 @@ function extractYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 const videoId = extractYouTubeId(href);
+const hasCustomPoster = Astro.slots.has("poster");
+const thumbnailUrl = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null;
 ---
 {videoId ? (
   <div class="yt-embed" data-yt-embed data-video-id={videoId}>
     <button class="yt-poster-btn" type="button" data-yt-poster aria-label={`Play video (${duration})`}>
       <div class="yt-poster">
-        <slot name="poster">
+        {hasCustomPoster ? (
+          <slot name="poster" />
+        ) : thumbnailUrl ? (
+          <img src={thumbnailUrl} alt="" loading="lazy" />
+        ) : (
           <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <rect width="800" height="450" fill="#0a0f19" />
             <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
             <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
           </svg>
-        </slot>
+        )}
       </div>
       <div class="yt-badge"><span class="dot"></span> LESSON VIDEO</div>
       <div class="play-btn"></div>
@@ -36,13 +44,15 @@ const videoId = extractYouTubeId(href);
 ) : (
   <a class="yt-embed" href={href} aria-label={`Watch this lesson (${duration})`}>
     <div class="yt-poster">
-      <slot name="poster">
+      {hasCustomPoster ? (
+        <slot name="poster" />
+      ) : (
         <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
           <rect width="800" height="450" fill="#0a0f19" />
           <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
           <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
         </svg>
-      </slot>
+      )}
     </div>
     <div class="yt-badge"><span class="dot"></span> LESSON VIDEO</div>
     <div class="play-btn"></div>
@@ -59,7 +69,10 @@ const videoId = extractYouTubeId(href);
     trigger?.addEventListener("click", () => {
       if (!videoId) return;
       const iframe = document.createElement("iframe");
-      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+      // Plain youtube.com (not the nocookie domain) — the privacy-enhanced
+      // nocookie domain is reported to trip YouTube's "sign in to confirm
+      // you're not a bot" wall noticeably more often for embeds.
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
       iframe.title = "Lesson video";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;

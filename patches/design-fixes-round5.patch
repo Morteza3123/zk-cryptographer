@@ -1,0 +1,130 @@
+diff --git a/src/components/YouTubeEmbed.astro b/src/components/YouTubeEmbed.astro
+index d0d2443..c3d3cfb 100644
+--- a/src/components/YouTubeEmbed.astro
++++ b/src/components/YouTubeEmbed.astro
+@@ -1,9 +1,11 @@
+ ---
+ // Video embed for a lesson page. When `href` is a real YouTube link, this
+ // renders a click-to-play poster that swaps itself for an actual iframe on
+-// click (keeps the page light until someone actually wants to watch) —
+-// otherwise it falls back to the old static "coming soon" poster that just
+-// links out, for lessons that don't have a video yet.
++// click (keeps the page light until someone actually wants to watch).
++// The poster itself is, in priority order: a custom <Fragment slot="poster">
++// passed by the caller (e.g. a bespoke illustration for one lesson), then
++// the video's own real YouTube thumbnail, then a generic placeholder for
++// lessons that don't have a video yet at all.
+ interface Props {
+   duration: string;
+   href?: string;
+@@ -15,18 +17,24 @@ function extractYouTubeId(url: string): string | null {
+   return match ? match[1] : null;
+ }
+ const videoId = extractYouTubeId(href);
++const hasCustomPoster = Astro.slots.has("poster");
++const thumbnailUrl = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null;
+ ---
+ {videoId ? (
+   <div class="yt-embed" data-yt-embed data-video-id={videoId}>
+     <button class="yt-poster-btn" type="button" data-yt-poster aria-label={`Play video (${duration})`}>
+       <div class="yt-poster">
+-        <slot name="poster">
++        {hasCustomPoster ? (
++          <slot name="poster" />
++        ) : thumbnailUrl ? (
++          <img src={thumbnailUrl} alt="" loading="lazy" />
++        ) : (
+           <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+             <rect width="800" height="450" fill="#0a0f19" />
+             <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
+             <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
+           </svg>
+-        </slot>
++        )}
+       </div>
+       <div class="yt-badge"><span class="dot"></span> LESSON VIDEO</div>
+       <div class="play-btn"></div>
+@@ -36,13 +44,15 @@ const videoId = extractYouTubeId(href);
+ ) : (
+   <a class="yt-embed" href={href} aria-label={`Watch this lesson (${duration})`}>
+     <div class="yt-poster">
+-      <slot name="poster">
++      {hasCustomPoster ? (
++        <slot name="poster" />
++      ) : (
+         <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+           <rect width="800" height="450" fill="#0a0f19" />
+           <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
+           <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
+         </svg>
+-      </slot>
++      )}
+     </div>
+     <div class="yt-badge"><span class="dot"></span> LESSON VIDEO</div>
+     <div class="play-btn"></div>
+@@ -59,7 +69,10 @@ const videoId = extractYouTubeId(href);
+     trigger?.addEventListener("click", () => {
+       if (!videoId) return;
+       const iframe = document.createElement("iframe");
+-      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
++      // Plain youtube.com (not the nocookie domain) — the privacy-enhanced
++      // nocookie domain is reported to trip YouTube's "sign in to confirm
++      // you're not a bot" wall noticeably more often for embeds.
++      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+       iframe.title = "Lesson video";
+       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+       iframe.allowFullscreen = true;
+diff --git a/src/layouts/LessonLayout.astro b/src/layouts/LessonLayout.astro
+index 19a1866..84708bd 100644
+--- a/src/layouts/LessonLayout.astro
++++ b/src/layouts/LessonLayout.astro
+@@ -49,6 +49,14 @@ const {
+   nextTitle,
+   nextHref,
+ } = Astro.props;
++
++// [lesson].astro is one shared template for every lesson (getStaticPaths),
++// so it always passes a `slot="poster"` child structurally — even on pages
++// where its own condition is false. That means `Astro.slots.has("poster")`
++// is always true here regardless of lesson, so we instead render the slot
++// and check whether anything actually came out of it.
++const posterHtml = (await Astro.slots.render("poster")).trim();
++const hasCustomPoster = posterHtml.length > 0;
+ ---
+ <BaseLayout title={title} description={description} active="learn">
+   <div class="crumbrow">
+@@ -81,9 +89,13 @@ const {
+       ))}
+     </aside>
+     <div class="course-main">
+-      <YouTubeEmbed duration={duration} href={youtubeHref}>
+-        <slot name="poster" slot="poster" />
+-      </YouTubeEmbed>
++      {hasCustomPoster ? (
++        <YouTubeEmbed duration={duration} href={youtubeHref}>
++          <Fragment slot="poster" set:html={posterHtml} />
++        </YouTubeEmbed>
++      ) : (
++        <YouTubeEmbed duration={duration} href={youtubeHref} />
++      )}
+       <div class="lesson-title">{lessonNumber}. {title}</div>
+       <div class="lesson-meta">{moduleLabel} · Lesson {Number(lessonNumber) + 1} of {lessonsInTrack} · {duration}</div>
+       <div class="lesson-desc">{description}</div>
+diff --git a/src/styles/components.css b/src/styles/components.css
+index 97843f3..bc374a9 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -1005,10 +1005,12 @@ a.sb-item:hover {
+   border: 0;
+ }
+ 
+-.yt-poster svg {
++.yt-poster svg,
++.yt-poster img {
+   width: 100%;
+   height: 100%;
+   display: block;
++  object-fit: cover;
+ }
+ 
+ .yt-embed .yt-badge {

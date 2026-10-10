@@ -49,6 +49,14 @@ const {
   nextTitle,
   nextHref,
 } = Astro.props;
+
+// [lesson].astro is one shared template for every lesson (getStaticPaths),
+// so it always passes a `slot="poster"` child structurally — even on pages
+// where its own condition is false. That means `Astro.slots.has("poster")`
+// is always true here regardless of lesson, so we instead render the slot
+// and check whether anything actually came out of it.
+const posterHtml = (await Astro.slots.render("poster")).trim();
+const hasCustomPoster = posterHtml.length > 0;
 ---
 <BaseLayout title={title} description={description} active="learn">
   <div class="crumbrow">
@@ -81,9 +89,13 @@ const {
       ))}
     </aside>
     <div class="course-main">
-      <YouTubeEmbed duration={duration} href={youtubeHref}>
-        <slot name="poster" slot="poster" />
-      </YouTubeEmbed>
+      {hasCustomPoster ? (
+        <YouTubeEmbed duration={duration} href={youtubeHref}>
+          <Fragment slot="poster" set:html={posterHtml} />
+        </YouTubeEmbed>
+      ) : (
+        <YouTubeEmbed duration={duration} href={youtubeHref} />
+      )}
       <div class="lesson-title">{lessonNumber}. {title}</div>
       <div class="lesson-meta">{moduleLabel} · Lesson {Number(lessonNumber) + 1} of {lessonsInTrack} · {duration}</div>
       <div class="lesson-desc">{description}</div>
