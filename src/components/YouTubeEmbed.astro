@@ -8,8 +8,15 @@ interface Props {
   href?: string;
 }
 const { duration, href = "#" } = Astro.props;
+const isExternal = href.startsWith("http");
 ---
-<a class="yt-embed" href={href} aria-label={`Watch this lesson (${duration})`}>
+<a
+  class="yt-embed"
+  href={href}
+  aria-label={`Watch this lesson (${duration})`}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}
+>
   <div class="yt-poster">
     <slot name="poster">
       <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">

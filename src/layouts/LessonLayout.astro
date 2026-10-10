@@ -25,6 +25,7 @@ interface Props {
   lessonsInTrack: number;
   duration: string;
   description: string;
+  youtubeHref?: string;
   prevTitle?: string;
   prevHref?: string;
   nextTitle?: string;
@@ -42,6 +43,7 @@ const {
   lessonsInTrack,
   duration,
   description,
+  youtubeHref,
   prevTitle,
   prevHref,
   nextTitle,
@@ -79,7 +81,7 @@ const {
       ))}
     </aside>
     <div class="course-main">
-      <YouTubeEmbed duration={duration}>
+      <YouTubeEmbed duration={duration} href={youtubeHref}>
         <slot name="poster" slot="poster" />
       </YouTubeEmbed>
       <div class="lesson-title">{lessonNumber}. {title}</div>

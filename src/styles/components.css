@@ -1085,15 +1085,46 @@ a.sb-item:hover {
 }
 
 .lesson-article p {
-  color: var(--muted);
+  color: var(--text-soft);
   line-height: 1.75;
   font-size: 15px;
   margin-bottom: 18px;
 }
 
+.lesson-article li {
+  color: var(--text-soft);
+  line-height: 1.75;
+  font-size: 15px;
+}
+
 .lesson-article b, .lesson-article strong {
   color: var(--text);
   font-weight: 700;
+}
+
+.lesson-article h2 {
+  color: var(--text);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.3;
+  margin: 40px 0 16px;
+}
+
+.lesson-article h2:first-child {
+  margin-top: 0;
+}
+
+.lesson-article h3 {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.35;
+  margin: 30px 0 12px;
+}
+
+@media (max-width: 640px) {
+  .lesson-article h2 { font-size: 19px; margin: 32px 0 14px; }
+  .lesson-article h3 { font-size: 16px; margin: 24px 0 10px; }
 }
 
 .lesson-article i, .lesson-article em {
@@ -1177,7 +1208,7 @@ a.sb-item:hover {
 }
 
 .math-box-body p {
-  color: var(--muted);
+  color: var(--text-soft);
   font-size: 13px;
   line-height: 1.6;
   margin: 0;
@@ -1285,7 +1316,7 @@ a.sb-item:hover {
 }
 
 .topic-card-body {
-  color: var(--muted);
+  color: var(--text-soft);
   line-height: 1.6;
   font-size: 13.5px;
 }

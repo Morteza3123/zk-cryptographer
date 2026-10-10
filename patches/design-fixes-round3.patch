@@ -1,0 +1,522 @@
+diff --git a/src/components/YouTubeEmbed.astro b/src/components/YouTubeEmbed.astro
+index 621a29f..eee6eae 100644
+--- a/src/components/YouTubeEmbed.astro
++++ b/src/components/YouTubeEmbed.astro
+@@ -8,8 +8,15 @@ interface Props {
+   href?: string;
+ }
+ const { duration, href = "#" } = Astro.props;
++const isExternal = href.startsWith("http");
+ ---
+-<a class="yt-embed" href={href} aria-label={`Watch this lesson (${duration})`}>
++<a
++  class="yt-embed"
++  href={href}
++  aria-label={`Watch this lesson (${duration})`}
++  target={isExternal ? "_blank" : undefined}
++  rel={isExternal ? "noopener noreferrer" : undefined}
++>
+   <div class="yt-poster">
+     <slot name="poster">
+       <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+diff --git a/src/components/figures/CyclicGroupFigure.astro b/src/components/figures/CyclicGroupFigure.astro
+new file mode 100644
+index 0000000..08e50da
+--- /dev/null
++++ b/src/components/figures/CyclicGroupFigure.astro
+@@ -0,0 +1,47 @@
++---
++// Fig. for "ZK Math — Introduction": the integers mod n under addition,
++// as a cyclic group — n points evenly spaced on a circle, connected in
++// sequence to show the "wrap around and keep going" structure that groups
++// formalize.
++interface Props {
++  n?: number;
++}
++const { n = 5 } = Astro.props;
++
++const cx = 240;
++const cy = 130;
++const r = 96;
++
++const points = Array.from({ length: n }, (_, i) => {
++  const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
++  return { i, x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r };
++});
++
++// A short arc from point 0 to point 1 (with an arrowhead) hints the
++// direction of travel around the otherwise-plain dashed ring.
++const arcStart = points[0];
++const arcEnd = points[1];
++---
++<svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <circle cx={cx} cy={cy} r={r} fill="none" stroke="#3ab7ff" stroke-width="2" stroke-dasharray="3 6" opacity="0.7" />
++  <path
++    d={`M ${arcStart.x.toFixed(1)} ${arcStart.y.toFixed(1)} A ${r} ${r} 0 0 1 ${arcEnd.x.toFixed(1)} ${arcEnd.y.toFixed(1)}`}
++    fill="none"
++    stroke="#8fdcff"
++    stroke-width="2.5"
++    marker-end="url(#cyclic-arrow)"
++  />
++
++  {points.map(({ i, x, y }) => (
++    <>
++      <circle cx={x} cy={y} r="17" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++      <text x={x} y={y + 5} text-anchor="middle" fill="#051625" font-size="13" font-weight="800" font-family="-apple-system,Arial,sans-serif">{i}</text>
++    </>
++  ))}
++
++  <defs>
++    <marker id="cyclic-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/EllipticCurveFigure.astro b/src/components/figures/EllipticCurveFigure.astro
+new file mode 100644
+index 0000000..2c527ba
+--- /dev/null
++++ b/src/components/figures/EllipticCurveFigure.astro
+@@ -0,0 +1,47 @@
++---
++// Fig. for "ZK Math — Introduction": y² = x³ + 7 — secp256k1, the curve
++// behind Bitcoin and Ethereum keys. Points are sampled at build time and
++// mapped from curve-space into the SVG viewBox.
++const A = 0;
++const B = 7;
++const xMin = -1.91; // just above the real root of x^3 + 7 = 0
++const xMax = 3.1;
++
++const W = 480;
++const H = 300;
++const padding = 36;
++
++const yAtX = (x: number) => Math.sqrt(Math.max(x * x * x + A * x + B, 0));
++const yMax = yAtX(xMax) * 1.05;
++
++const toScreenX = (x: number) => padding + ((x - xMin) / (xMax - xMin)) * (W - 2 * padding);
++const toScreenY = (y: number) => H / 2 - (y / yMax) * (H / 2 - padding);
++
++const N = 48;
++const upper: string[] = [];
++const lower: string[] = [];
++for (let i = 0; i <= N; i++) {
++  const x = xMin + (i / N) * (xMax - xMin);
++  const y = yAtX(x);
++  upper.push(`${toScreenX(x).toFixed(1)},${toScreenY(y).toFixed(1)}`);
++  lower.push(`${toScreenX(x).toFixed(1)},${toScreenY(-y).toFixed(1)}`);
++}
++
++// A sample point on the curve to call out, e.g. x = 2 -> y = sqrt(15)
++const sampleX = 2;
++const sampleY = yAtX(sampleX);
++const sx = toScreenX(sampleX);
++const sy = toScreenY(sampleY);
++---
++<svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <line x1={padding} y1={H / 2} x2={W - padding} y2={H / 2} stroke="#223049" stroke-width="1.5" />
++  <line x1={toScreenX(0)} y1={padding - 10} x2={toScreenX(0)} y2={H - padding + 10} stroke="#223049" stroke-width="1.5" />
++
++  <polyline points={upper.join(" ")} fill="none" stroke="#3ab7ff" stroke-width="2.5" stroke-linecap="round" />
++  <polyline points={lower.join(" ")} fill="none" stroke="#3ab7ff" stroke-width="2.5" stroke-linecap="round" />
++
++  <circle cx={sx} cy={sy} r="4.5" fill="#8fdcff" />
++  <text x={sx + 10} y={sy - 8} fill="#e9eef5" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">(2, √15)</text>
++
++  <text x={W / 2} y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">y² = x³ + 7</text>
++</svg>
+diff --git a/src/components/figures/ZKRevealFigure.astro b/src/components/figures/ZKRevealFigure.astro
+new file mode 100644
+index 0000000..0adec11
+--- /dev/null
++++ b/src/components/figures/ZKRevealFigure.astro
+@@ -0,0 +1,31 @@
++---
++// Fig. for "ZK Math — Introduction": the x·x = 25 example — a prover who
++// knows x convinces a verifier the claim is true while x itself stays
++// locked away.
++---
++<svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <circle cx="90" cy="95" r="34" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <text x="90" y="102" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
++  <text x="90" y="151" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">Prover — knows x</text>
++
++  <circle cx="470" cy="95" r="34" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <text x="470" y="102" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">V</text>
++  <text x="470" y="151" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">Verifier</text>
++
++  <line x1="134" y1="95" x2="236" y2="95" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#zkreveal-arrow)" />
++  <line x1="324" y1="95" x2="426" y2="95" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#zkreveal-arrow)" />
++  <text x="280" y="58" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">proof that x · x = 25</text>
++
++  <rect x="256" y="76" width="48" height="38" rx="7" fill="#0a0f19" stroke="#3ab7ff" stroke-width="2" />
++  <path d="M 266 76 L 266 64 a 14 14 0 0 1 28 0 L 294 76" fill="none" stroke="#3ab7ff" stroke-width="2.5" />
++  <circle cx="280" cy="95" r="3.5" fill="#8fdcff" />
++  <text x="280" y="134" text-anchor="middle" fill="#8b96a8" font-size="11" font-style="italic" font-family="-apple-system,Arial,sans-serif">x stays hidden</text>
++
++  <text x="280" y="190" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">convinced — without ever learning x = 5 (or −5)</text>
++
++  <defs>
++    <marker id="zkreveal-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/content/lessons/zk-math-introduction.mdx b/src/content/lessons/zk-math-introduction.mdx
+index b6c6b6d..52e17ee 100644
+--- a/src/content/lessons/zk-math-introduction.mdx
++++ b/src/content/lessons/zk-math-introduction.mdx
+@@ -6,26 +6,37 @@ title: "ZK Math — Introduction"
+ duration: "8:04"
+ description: "Why the math, not the code, is the hard part of learning zero-knowledge proofs — and the nine mathematical ideas this track builds from the ground up."
+ order: 0
++youtubeHref: "https://www.youtube.com/watch?v=lOqZyl2zUrg"
+ nextTitle: "Variables, Expressions & Equations"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import TopicCard from "../../components/TopicCard.astro";
++import Figure from "../../components/Figure.astro";
++import ZKRevealFigure from "../../components/figures/ZKRevealFigure.astro";
++import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
++import EllipticCurveFigure from "../../components/figures/EllipticCurveFigure.astro";
+ 
+ If you've tried to learn zero-knowledge proofs before, you've probably noticed something quickly: the hard part isn't the code, and it isn't the tooling — it's the math. Most developers come to ZK wanting to build privacy applications, scalable blockchains, identity systems, or advanced cryptographic protocols, and then run straight into terms like finite fields, modular arithmetic, elliptic curves, polynomial commitments, and group theory, usually with no on-ramp. That gap is exactly what this track exists to close.
+ 
+ You don't need a PhD in mathematics, and you don't need to already think of yourself as a "math person." You need curiosity, a willingness to work through a few equations by hand, and about as much patience as you'd give to learning a new programming language. By the end of this track you'll have the actual mathematical foundation that modern cryptography and zero-knowledge systems are built on — not an intuition-only version of it that falls apart the moment a paper gets specific.
+ 
+-**Why the math actually matters.** Almost everything you do online already depends on cryptography. Logging into a website, sending a message, making a payment, or submitting a blockchain transaction — all of it is protected by math, not by policy or good intentions. Without cryptography, there's no secure internet to speak of.
++## Why the math actually matters
++
++Almost everything you do online already depends on cryptography. Logging into a website, sending a message, making a payment, or submitting a blockchain transaction — all of it is protected by math, not by policy or good intentions. Without cryptography, there's no secure internet to speak of.
+ 
+ Zero-knowledge proofs push this a step further. They let one party prove a statement is true without revealing anything about *why* it's true beyond the statement itself — "I'm over 18" without your exact birthdate, "I know this password" without sending the password, "this transaction is valid" without exposing the sender, receiver, or amount. That's not a minor trick. It's one of the most significant developments in blockchain privacy and digital identity in the last decade, and it's the reason ZK has gone from an academic curiosity to production infrastructure in a few years.
+ 
+ The reason this needs so much math is simple: computers can be tricked, and people can lie, but mathematics can't be talked out of a true statement. Every cryptographic guarantee ultimately reduces to "this specific mathematical problem is too hard to solve in a reasonable amount of time, even with enormous computing power." You're not trusting a person or a company — you're trusting that a particular equation has no shortcut. That's a fundamentally different, and much stronger, kind of guarantee, and it's why cryptography is a branch of mathematics first and a branch of software engineering second.
+ 
+-**Why zero-knowledge feels different to learn.** Most programming topics build on things you already know. A new language still has variables, loops, and functions to anchor onto. Zero-knowledge doesn't give you that shortcut — instead of reasoning purely about code, you're reasoning about mathematical structures: fields, groups, polynomials. Most tutorials skip straight to the advanced material assuming this background already exists, which is exactly how people end up memorizing protocol steps without understanding why any of them actually work.
++## Why zero-knowledge feels different to learn
++
++Most programming topics build on things you already know. A new language still has variables, loops, and functions to anchor onto. Zero-knowledge doesn't give you that shortcut — instead of reasoning purely about code, you're reasoning about mathematical structures: fields, groups, polynomials. Most tutorials skip straight to the advanced material assuming this background already exists, which is exactly how people end up memorizing protocol steps without understanding why any of them actually work.
+ 
+ The good news: the whole field is built from a surprisingly small set of mathematical ideas, reused in different combinations. Once those ideas are genuinely familiar — not memorized, understood — reading a new ZK paper stops feeling like a different language and starts feeling like recognizing old friends in new outfits.
+ 
+-**A first taste of how the math gets used.** Take a simple equation:
++## A first taste of how the math gets used
++
++Take a simple equation:
+ 
+ <MathBox label="Example">
+ 
+@@ -35,68 +46,174 @@ Say I claim to know a value of $x$ that satisfies this, and I don't want to tell
+ 
+ </MathBox>
+ 
++<Figure caption="Fig. 1 — the prover convinces the verifier the claim holds without ever revealing x.">
++  <ZKRevealFigure />
++</Figure>
++
+ To make that work, the statement first gets converted into a set of mathematical constraints a proof system can check — a single toy equation like this one becomes a handful of constraints, and a real-world ZK circuit can involve millions of them. The system then leans on algebra, finite fields, and polynomials to verify the claim holds, without ever reconstructing $x$ along the way. Even this one-line example already depends on the material in this track; a production circuit is the same idea at a much larger scale.
+ 
+ One detail worth sitting with now: over the ordinary integers, $x \cdot x = 25$ has two solutions, $5$ and $-5$ — exactly the kind of ambiguity that disappears once you're working inside a finite field with a well-defined modulus. That's one of several reasons finite fields, not plain integers, are the ground real ZK systems are actually built on.
+ 
+-**Nine mathematical ideas, used over and over.** Everything in this track comes back to a short list of topics. You'll meet each one properly, with worked examples, as the track progresses — this is the map before the territory.
++## Nine mathematical ideas, used over and over
++
++Everything in this track comes back to a short list of topics. Here's the map before the territory — then a closer look at each one, with a worked example.
+ 
+ <div class="topic-grid">
+ 
+ <TopicCard num="01" title="Arithmetic & Algebra">
+ 
+-The foundation everything else sits on: solving for an unknown, rearranging an equation. Every cryptographic protocol is, underneath, a set of algebraic equations that have to hold — ZK proof systems exist to check that they do without revealing the variables that satisfy them.
++The foundation everything else sits on: solving for an unknown, rearranging an equation. Every cryptographic protocol is, underneath, a set of algebraic equations that have to hold.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="02" title="Number Theory">
+ 
+-The study of integers and the relationships between them — divisibility, greatest common divisors, primes. Number theory supplies building blocks like primality and coprimality that almost every other topic on this list depends on.
++The study of integers and the relationships between them — divisibility, greatest common divisors, primes. Supplies building blocks almost every other topic here depends on.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="03" title="Modular Arithmetic">
+ 
+-Arithmetic that wraps around instead of growing forever: $17 \bmod 5 = 2$, the remainder after division. It's often called the language of modern cryptography for a reason — nearly every operation inside a ZK circuit happens modulo some fixed number. Covered in full in the next lesson.
++Arithmetic that wraps around instead of growing forever. Often called the language of modern cryptography — covered in full in the next lesson.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="04" title="Finite Fields">
+ 
+-A number system with a fixed, finite number of elements — for example, the integers $0$ through $6$ under arithmetic modulo $7$. Every ZK proof system runs its arithmetic inside a finite field, because it needs a closed, well-behaved number system rather than the open-ended integers.
++A number system with a fixed, finite number of elements. Every ZK proof system runs its arithmetic inside one, instead of the open-ended integers.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="05" title="Polynomial Mathematics">
+ 
+-Polynomials — expressions like $f(x) = x^2 + 2x + 1$ — are the core building block of modern proof systems. zk-SNARKs, zk-STARKs, and polynomial commitment schemes all ultimately reduce a computation to statements about polynomials.
++The core building block of modern proof systems. zk-SNARKs, zk-STARKs, and polynomial commitment schemes all reduce a computation to statements about polynomials.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="06" title="Linear Algebra">
+ 
+-Vectors and matrices, and the operations that combine them. A circuit's constraints are naturally expressed as matrix equations — exactly how Rank-1 Constraint Systems (R1CS) represent a program before it's turned into a proof.
++Vectors and matrices. A circuit's constraints are naturally expressed as matrix equations — exactly how Rank-1 Constraint Systems (R1CS) represent a program.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="07" title="Probability">
+ 
+-The tool for reasoning about security guarantees in concrete numbers. When a protocol says a cheating prover can only succeed with probability one in a million, that number comes directly from probability theory applied to the protocol's structure.
++The tool for reasoning about security guarantees in concrete numbers, like "a cheating prover succeeds with probability one in a million."
+ 
+ </TopicCard>
+ 
+ <TopicCard num="08" title="Group Theory">
+ 
+-The study of mathematical structures that follow a specific set of rules — closure, an identity element, inverses. Groups show up everywhere in cryptography, and they're the structure elliptic curve cryptography is built on top of.
++Mathematical structures that follow a specific set of rules — closure, an identity element, inverses. The structure elliptic curve cryptography is built on top of.
+ 
+ </TopicCard>
+ 
+ <TopicCard num="09" title="Elliptic Curves">
+ 
+-Curves of the form $y^2 = x^3 + ax + b$, chosen for arithmetic that's easy to compute but hard to reverse. They're the basis of the cryptography behind Bitcoin and Ethereum, and they reappear throughout ZK in pairing-based proof systems.
++Curves chosen for arithmetic that's easy to compute but hard to reverse. The basis of the cryptography behind Bitcoin, Ethereum, and pairing-based proof systems.
+ 
+ </TopicCard>
+ 
+ </div>
+ 
++### Arithmetic & algebra, worked
++
++Nothing exotic yet — just solving for an unknown:
++
++<MathBox label="Worked example">
++
++$$x + 5 = 12 \implies x = 7$$
++
++Every cryptographic protocol is, underneath, a chain of steps like this one — the complexity comes from how many of them get chained together, not from any single step being hard.
++
++</MathBox>
++
++### Number theory, worked
++
++<MathBox label="Worked example">
++
++$$\gcd(12, 18) = 6$$
++
++The greatest common divisor — the largest number that divides both with no remainder. Number theory results like this one decide which numbers can serve as a modulus, and which pairs of numbers have a modular inverse at all (more on that in a couple of lessons).
++
++</MathBox>
++
++### Modular arithmetic, a teaser
++
++<MathBox label="Worked example">
++
++$$17 \bmod 5 = 2$$
++
++The remainder when $17$ is divided by $5$. This single idea — arithmetic that wraps around instead of growing forever — is the subject of the entire next lesson, because almost everything downstream of it depends on getting comfortable here first.
++
++</MathBox>
++
++### Finite fields, worked
++
++<MathBox label="Worked example">
++
++$$5 + 4 \equiv 2 \pmod{7}$$
++
++Inside the field "modulo $7$," addition wraps back around as soon as it would leave the set $\{0, 1, \dots, 6\}$. Every ZK proof system picks one large prime field like this and does *all* of its arithmetic inside it.
++
++</MathBox>
++
++### Polynomial mathematics, worked
++
++<MathBox label="Worked example">
++
++$$f(x) = x^2 + 2x + 1$$
++
++A polynomial encodes a whole computation as a single algebraic object — evaluate it, add it to another polynomial, or commit to it without revealing it. zk-SNARKs and zk-STARKs are, at their core, elaborate machinery for making statements like these checkable.
++
++</MathBox>
++
++### Linear algebra, worked
++
++<MathBox label="Worked example">
++
++$$\begin{bmatrix} 1 & 2 \end{bmatrix} \cdot \begin{bmatrix} 3 \\ 4 \end{bmatrix} = 1 \cdot 3 + 2 \cdot 4 = 11$$
++
++A single dot product — and, scaled up to thousands of rows, exactly the operation a circuit's constraint system runs to check that a computation was performed correctly.
++
++</MathBox>
++
++### Probability, worked
++
++<MathBox label="Worked example">
++
++$$P(\text{heads}) = \tfrac{1}{2}$$
++
++The simplest possible probability statement — but the same math that lets a protocol say "a cheating prover gets away with it with probability at most $1$ in a million," which is how security guarantees get turned into concrete numbers instead of vague confidence.
++
++</MathBox>
++
++### Group theory, worked
++
++<Figure caption="Fig. 2 — the integers 0 through 4 under addition, wrapping back to 0 after 4: a cyclic group of order 5.">
++  <CyclicGroupFigure n={5} />
++</Figure>
++
++<MathBox label="Worked example">
++
++$$\mathbb{Z}/5\mathbb{Z} = \{0, 1, 2, 3, 4\} \text{ under } +$$
++
++A *group* is just a set with an operation that follows a few simple rules — closure, an identity element, every element has an inverse. The integers mod $5$ under addition are one of the simplest examples. Elliptic curve cryptography is, underneath, a much larger and more useful group built the same way.
++
++</MathBox>
++
++### Elliptic curves, worked
++
++<Figure caption="Fig. 3 — secp256k1: the elliptic curve behind Bitcoin and Ethereum keys.">
++  <EllipticCurveFigure />
++</Figure>
++
++<MathBox label="Worked example">
++
++$$y^2 = x^3 + 7$$
++
++This is secp256k1 — the exact curve used to generate Bitcoin and Ethereum key pairs. Pick a point on the curve, "add" it to itself a secret number of times, and you get a new point that's easy to compute forward but computationally infeasible to reverse. That one-way street is what elliptic curve cryptography — and a large share of pairing-based ZK proof systems — is built on.
++
++</MathBox>
++
+ None of this needs to click in a single sitting — nobody picks up finite fields or polynomial commitments on the first pass. This track builds the nine ideas above one lesson at a time, starting with modular arithmetic next, and ties each one back to the cryptography and zero-knowledge systems it actually supports. Once the math stops being abstract and starts being something you can point to in an actual protocol, the rest of ZK stops looking like magic.
+diff --git a/src/layouts/LessonLayout.astro b/src/layouts/LessonLayout.astro
+index b4ca7fc..19a1866 100644
+--- a/src/layouts/LessonLayout.astro
++++ b/src/layouts/LessonLayout.astro
+@@ -25,6 +25,7 @@ interface Props {
+   lessonsInTrack: number;
+   duration: string;
+   description: string;
++  youtubeHref?: string;
+   prevTitle?: string;
+   prevHref?: string;
+   nextTitle?: string;
+@@ -42,6 +43,7 @@ const {
+   lessonsInTrack,
+   duration,
+   description,
++  youtubeHref,
+   prevTitle,
+   prevHref,
+   nextTitle,
+@@ -79,7 +81,7 @@ const {
+       ))}
+     </aside>
+     <div class="course-main">
+-      <YouTubeEmbed duration={duration}>
++      <YouTubeEmbed duration={duration} href={youtubeHref}>
+         <slot name="poster" slot="poster" />
+       </YouTubeEmbed>
+       <div class="lesson-title">{lessonNumber}. {title}</div>
+diff --git a/src/pages/learn/[track]/[lesson].astro b/src/pages/learn/[track]/[lesson].astro
+index 42c5a74..596c290 100644
+--- a/src/pages/learn/[track]/[lesson].astro
++++ b/src/pages/learn/[track]/[lesson].astro
+@@ -35,6 +35,7 @@ const lessonsInTrack = track.data.lessonCount;
+   lessonsInTrack={lessonsInTrack}
+   duration={entry.data.duration}
+   description={entry.data.description}
++  youtubeHref={entry.data.youtubeHref}
+   prevTitle={entry.data.prevTitle}
+   prevHref={entry.data.prevHref}
+   nextTitle={entry.data.nextTitle}
+diff --git a/src/styles/components.css b/src/styles/components.css
+index e8abcc4..8b5fb90 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -1085,17 +1085,48 @@ a.sb-item:hover {
+ }
+ 
+ .lesson-article p {
+-  color: var(--muted);
++  color: var(--text-soft);
+   line-height: 1.75;
+   font-size: 15px;
+   margin-bottom: 18px;
+ }
+ 
++.lesson-article li {
++  color: var(--text-soft);
++  line-height: 1.75;
++  font-size: 15px;
++}
++
+ .lesson-article b, .lesson-article strong {
+   color: var(--text);
+   font-weight: 700;
+ }
+ 
++.lesson-article h2 {
++  color: var(--text);
++  font-weight: 800;
++  font-size: 22px;
++  line-height: 1.3;
++  margin: 40px 0 16px;
++}
++
++.lesson-article h2:first-child {
++  margin-top: 0;
++}
++
++.lesson-article h3 {
++  color: var(--text);
++  font-weight: 700;
++  font-size: 17px;
++  line-height: 1.35;
++  margin: 30px 0 12px;
++}
++
++@media (max-width: 640px) {
++  .lesson-article h2 { font-size: 19px; margin: 32px 0 14px; }
++  .lesson-article h3 { font-size: 16px; margin: 24px 0 10px; }
++}
++
+ .lesson-article i, .lesson-article em {
+   color: var(--text);
+ }
+@@ -1177,7 +1208,7 @@ a.sb-item:hover {
+ }
+ 
+ .math-box-body p {
+-  color: var(--muted);
++  color: var(--text-soft);
+   font-size: 13px;
+   line-height: 1.6;
+   margin: 0;
+@@ -1285,7 +1316,7 @@ a.sb-item:hover {
+ }
+ 
+ .topic-card-body {
+-  color: var(--muted);
++  color: var(--text-soft);
+   line-height: 1.6;
+   font-size: 13.5px;
+ }
+diff --git a/src/styles/tokens.css b/src/styles/tokens.css
+index 3860c2c..6d671aa 100644
+--- a/src/styles/tokens.css
++++ b/src/styles/tokens.css
+@@ -14,6 +14,10 @@
+   /* Text */
+   --text: #e9eef5;
+   --muted: #8b96a8;
++  /* Brighter than --muted, used for long-form reading copy (lesson/post
++     body paragraphs, math boxes) where --muted reads too dim at length —
++     still softer than full --text so it doesn't compete with headings. */
++  --text-soft: #c3cedd;
+ 
+   /* Brand accent */
+   --accent: #3ab7ff;

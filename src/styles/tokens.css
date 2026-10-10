@@ -14,6 +14,10 @@
   /* Text */
   --text: #e9eef5;
   --muted: #8b96a8;
+  /* Brighter than --muted, used for long-form reading copy (lesson/post
+     body paragraphs, math boxes) where --muted reads too dim at length —
+     still softer than full --text so it doesn't compete with headings. */
+  --text-soft: #c3cedd;
 
   /* Brand accent */
   --accent: #3ab7ff;

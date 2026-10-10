@@ -1,0 +1,47 @@
+---
+// Fig. for "ZK Math — Introduction": the integers mod n under addition,
+// as a cyclic group — n points evenly spaced on a circle, connected in
+// sequence to show the "wrap around and keep going" structure that groups
+// formalize.
+interface Props {
+  n?: number;
+}
+const { n = 5 } = Astro.props;
+
+const cx = 240;
+const cy = 130;
+const r = 96;
+
+const points = Array.from({ length: n }, (_, i) => {
+  const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+  return { i, x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r };
+});
+
+// A short arc from point 0 to point 1 (with an arrowhead) hints the
+// direction of travel around the otherwise-plain dashed ring.
+const arcStart = points[0];
+const arcEnd = points[1];
+---
+<svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <circle cx={cx} cy={cy} r={r} fill="none" stroke="#3ab7ff" stroke-width="2" stroke-dasharray="3 6" opacity="0.7" />
+  <path
+    d={`M ${arcStart.x.toFixed(1)} ${arcStart.y.toFixed(1)} A ${r} ${r} 0 0 1 ${arcEnd.x.toFixed(1)} ${arcEnd.y.toFixed(1)}`}
+    fill="none"
+    stroke="#8fdcff"
+    stroke-width="2.5"
+    marker-end="url(#cyclic-arrow)"
+  />
+
+  {points.map(({ i, x, y }) => (
+    <>
+      <circle cx={x} cy={y} r="17" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
+      <text x={x} y={y + 5} text-anchor="middle" fill="#051625" font-size="13" font-weight="800" font-family="-apple-system,Arial,sans-serif">{i}</text>
+    </>
+  ))}
+
+  <defs>
+    <marker id="cyclic-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>
