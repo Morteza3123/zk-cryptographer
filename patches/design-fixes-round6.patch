@@ -1,0 +1,247 @@
+diff --git a/src/components/figures/EquationBalanceFigure.astro b/src/components/figures/EquationBalanceFigure.astro
+new file mode 100644
+index 0000000..4c5232a
+--- /dev/null
++++ b/src/components/figures/EquationBalanceFigure.astro
+@@ -0,0 +1,27 @@
++---
++// Fig. for "Variables, Expressions & Equations": an equation drawn as a
++// balance scale — whatever sits on each side, an equation is just a claim
++// that the two sides weigh the same. Takes the two sides as props so it
++// can illustrate any equation, not only the one lesson it first appears in.
++interface Props {
++  left: string;
++  right: string;
++}
++const { left, right } = Astro.props;
++---
++<svg viewBox="0 0 480 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <path d="M 240 100 L 212 170 L 268 170 Z" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <line x1="200" y1="172" x2="280" y2="172" stroke="#3ab7ff" stroke-width="4" stroke-linecap="round" />
++
++  <line x1="70" y1="100" x2="410" y2="100" stroke="#3ab7ff" stroke-width="5" stroke-linecap="round" />
++
++  <line x1="90" y1="100" x2="90" y2="155" stroke="#3ab7ff" stroke-width="2" />
++  <path d="M 42 155 Q 90 195 138 155" fill="none" stroke="#3ab7ff" stroke-width="2.5" />
++  <text x="90" y="150" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">{left}</text>
++
++  <line x1="390" y1="100" x2="390" y2="155" stroke="#3ab7ff" stroke-width="2" />
++  <path d="M 342 155 Q 390 195 438 155" fill="none" stroke="#3ab7ff" stroke-width="2.5" />
++  <text x="390" y="150" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">{right}</text>
++
++  <text x="240" y="216" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">balanced — both sides are equal</text>
++</svg>
+diff --git a/src/components/figures/FunctionRelationFigure.astro b/src/components/figures/FunctionRelationFigure.astro
+new file mode 100644
+index 0000000..b5863da
+--- /dev/null
++++ b/src/components/figures/FunctionRelationFigure.astro
+@@ -0,0 +1,28 @@
++---
++// Fig. for "Variables, Expressions & Equations": y = x + 10 as a small
++// machine — a value goes in, the equation does something to it, a second
++// variable comes out. The same shape every constraint in a real ZK
++// circuit has, just one step long here.
++---
++<svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <circle cx="70" cy="85" r="32" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <text x="70" y="92" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">x = 5</text>
++
++  <line x1="104" y1="85" x2="178" y2="85" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#fnrel-arrow)" />
++
++  <rect x="182" y="50" width="156" height="70" rx="10" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <text x="260" y="91" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">y = x + 10</text>
++
++  <line x1="340" y1="85" x2="414" y2="85" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#fnrel-arrow)" />
++
++  <circle cx="450" cy="85" r="32" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <text x="450" y="92" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">y = 15</text>
++
++  <text x="260" y="150" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">one equation, relating two variables</text>
++
++  <defs>
++    <marker id="fnrel-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/VariableBoxFigure.astro b/src/components/figures/VariableBoxFigure.astro
+new file mode 100644
+index 0000000..88fa52c
+--- /dev/null
++++ b/src/components/figures/VariableBoxFigure.astro
+@@ -0,0 +1,22 @@
++---
++// Fig. for "Variables, Expressions & Equations": a variable as a named
++// box holding a value — an ordinary one on the left, a secret one on the
++// right (the same box, just with its contents hidden), to bridge straight
++// into why cryptography cares about variables at all.
++---
++<svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="140" y="34" text-anchor="middle" fill="#c3cedd" font-size="14" font-weight="800" font-family="-apple-system,Arial,sans-serif">age</text>
++  <rect x="60" y="48" width="160" height="92" rx="10" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <text x="140" y="104" text-anchor="middle" fill="#e9eef5" font-size="30" font-weight="800" font-family="-apple-system,Arial,sans-serif">25</text>
++  <text x="140" y="168" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">a name, holding a value</text>
++
++  <text x="380" y="34" text-anchor="middle" fill="#c3cedd" font-size="14" font-weight="800" font-family="-apple-system,Arial,sans-serif">secret</text>
++  <rect x="300" y="48" width="160" height="92" rx="10" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
++  <path d="M 368 88 L 368 79 a 12 12 0 0 1 24 0 L 392 88" fill="none" stroke="#3ab7ff" stroke-width="2.5" />
++  <rect x="362" y="88" width="36" height="28" rx="5" fill="#0a0f19" stroke="#3ab7ff" stroke-width="2" />
++  <circle cx="380" cy="102" r="3" fill="#8fdcff" />
++  <text x="380" y="168" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">same box — value stays hidden</text>
++
++  <text x="140" y="196" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">age = 25</text>
++  <text x="380" y="196" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">secret = ?</text>
++</svg>
+diff --git a/src/content/lessons/variables-expressions-equations.mdx b/src/content/lessons/variables-expressions-equations.mdx
+new file mode 100644
+index 0000000..54300d2
+--- /dev/null
++++ b/src/content/lessons/variables-expressions-equations.mdx
+@@ -0,0 +1,121 @@
++---
++track: math
++module: "Foundations"
++lessonNumber: "01"
++title: "Variables, Expressions & Equations"
++duration: "5:11"
++description: "The three building blocks every ZK circuit is made of underneath: a name that holds a value, a calculation with no equals sign, and a claim that two things are equal."
++order: 1
++prevTitle: "ZK Math — Introduction"
++prevHref: "/learn/math/zk-math-introduction"
++nextTitle: "Exponents and Powers"
++---
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import VariableBoxFigure from "../../components/figures/VariableBoxFigure.astro";
++import EquationBalanceFigure from "../../components/figures/EquationBalanceFigure.astro";
++import FunctionRelationFigure from "../../components/figures/FunctionRelationFigure.astro";
++
++This one looks almost too simple to deserve its own lesson. It isn't. **Every cryptographic protocol and every ZK circuit, underneath all the theory, is a pile of variables tied together with equations** — look inside any real circuit and that's all you'll find: named values and the constraints that relate them. Modular arithmetic, finite fields, polynomial commitments — all of it is this same idea, just dressed up. So before any of that, it's worth being precise about what a variable, an expression, and an equation actually are.
++
++## Variables — a name for a value
++
++A variable is a symbol standing in for a value. Pick a letter, usually $x$, $y$, or $z$, and let it hold something:
++
++<MathBox label="Example">
++
++$$x = 5$$
++
++$x$ is the variable, $5$ is what it currently holds.
++
++</MathBox>
++
++It helps to picture a variable as a **labeled box**: the label is its name, and whatever's sitting inside is its value. `age = 25` is a box named "age" with `25` inside it — exactly the same idea a programming language uses when you write `age = 25` in Python or JavaScript.
++
++<Figure caption="Fig. 1 — a variable is a labeled box. Nothing stops that box from staying closed.">
++  <VariableBoxFigure />
++</Figure>
++
++That second box is the one cryptography actually cares about. Say there's a password, or any value someone wants to keep private — call it `secret`. Writing `secret = 12345` and then only ever referring to `secret` means the value itself never has to appear again. The box still exists, it's still a variable, it just isn't opened. That single habit — naming a value instead of writing it out — is the seed that **zero-knowledge proofs grow from**: proving something about a box without ever lifting the lid.
++
++## Expressions — a calculation, not yet a claim
++
++An expression combines values, variables, and operations into a single computed quantity. The giveaway is that it has **no equals sign** — it isn't asserting anything, it's just describing a calculation:
++
++<MathBox label="Example">
++
++$$x + 5 \qquad 2x \qquad x^2 + 3$$
++
++Three expressions. $2x$ is shorthand for $2 \cdot x$ — in algebra, a number written directly next to a variable always means multiplication.
++
++</MathBox>
++
++Expressions are where the actual work happens in a cryptographic system. If $x$ is a secret value, the expression $x^2$ means "take whatever is in that box and multiply it by itself" — and a surprising amount of real cryptography is exactly this: running a calculation over a hidden value without ever needing to see what's inside.
++
++## Equations — a claim that two things are equal
++
++An equation goes one step further than an expression: it states that two expressions are equal.
++
++<MathBox label="Example">
++
++$$x + 5 = 12$$
++
++Whatever $x$ is, adding $5$ to it produces $12$.
++
++</MathBox>
++
++<Figure caption="Fig. 2 — an equation is a balance: whatever sits on each side, the claim is that they weigh the same.">
++  <EquationBalanceFigure left="x + 5" right="12" />
++</Figure>
++
++Solving it means isolating $x$ — doing the same operation to both sides until $x$ stands alone:
++
++<MathBox label="Solving">
++
++$$
++\begin{aligned}
++x + 5 &= 12 \\
++x + 5 - 5 &= 12 - 5 \\
++x &= 7
++\end{aligned}
++$$
++
++Subtracting $5$ from both sides keeps the balance intact while peeling the $5$ away from $x$.
++
++</MathBox>
++
++And it's checkable — plug the answer back in and confirm both sides still agree:
++
++<MathBox label="Verifying">
++
++$$7 + 5 = 12 \quad \checkmark$$
++
++</MathBox>
++
++This solve-then-verify pattern shows up constantly in proof systems: a prover produces a value, and the whole protocol exists to let someone else check it satisfies the equation, without redoing the work of finding it.
++
++## One equation, two variables
++
++Equations don't have to pin a variable down to a single number — they can describe a relationship between two variables instead:
++
++<MathBox label="Example">
++
++$$y = x + 10$$
++
++If $x = 5$, then $y = 5 + 10 = 15$.
++
++</MathBox>
++
++<Figure caption="Fig. 3 — a value goes in, the equation acts on it, a second variable comes out.">
++  <FunctionRelationFigure />
++</Figure>
++
++That's a complete constraint: feed in $x$, the equation determines $y$. A real ZK circuit is built from a long chain of exactly these — thousands or millions of small relationships like this one, linked so that the output of one feeds the input of the next.
++
++## Back to the box that stays closed
++
++Pull these three ideas together and the earlier example from this track's introduction stops being a curiosity and starts being a template. Someone claims to know a value $x$ such that:
++
++$$x \cdot x = 25$$
++
++That's an equation. $x$ is a variable — the box that stays shut. $x \cdot x$ is the expression describing what gets checked. A zero-knowledge proof is a way to convince someone this equation holds **for some value inside that box, without ever opening it**. Strip away the cryptography and what's left is exactly what this lesson covered: a named value, a calculation, and a claim of equality. Everything from here — modular arithmetic, finite fields, polynomial constraints — is this same shape, scaled up.
+diff --git a/src/content/lessons/zk-math-introduction.mdx b/src/content/lessons/zk-math-introduction.mdx
+index 0f9f32c..23abbb2 100644
+--- a/src/content/lessons/zk-math-introduction.mdx
++++ b/src/content/lessons/zk-math-introduction.mdx
+@@ -8,6 +8,7 @@ description: "Why the math, not the code, is the hard part of learning zero-know
+ order: 0
+ youtubeHref: "https://www.youtube.com/watch?v=lOqZyl2zUrg"
+ nextTitle: "Variables, Expressions & Equations"
++nextHref: "/learn/math/variables-expressions-equations"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import TopicCard from "../../components/TopicCard.astro";
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index b40926c..2646188 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -65,7 +65,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+       module: "Foundations",
+       items: [
+         { num: "00", title: "ZK Math — Introduction", duration: "8:04", slug: "zk-math-introduction" },
+-        { num: "01", title: "Variables, Expressions & Equations", duration: "5:11" },
++        { num: "01", title: "Variables, Expressions & Equations", duration: "5:11", slug: "variables-expressions-equations" },
+         { num: "02", title: "Exponents and Powers", duration: "5:25" },
+         { num: "03", title: "Divisibility, Factors & Primes", duration: "6:46" },
+       ],

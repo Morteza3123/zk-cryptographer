@@ -1,0 +1,121 @@
+---
+track: math
+module: "Foundations"
+lessonNumber: "01"
+title: "Variables, Expressions & Equations"
+duration: "5:11"
+description: "The three building blocks every ZK circuit is made of underneath: a name that holds a value, a calculation with no equals sign, and a claim that two things are equal."
+order: 1
+prevTitle: "ZK Math — Introduction"
+prevHref: "/learn/math/zk-math-introduction"
+nextTitle: "Exponents and Powers"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import VariableBoxFigure from "../../components/figures/VariableBoxFigure.astro";
+import EquationBalanceFigure from "../../components/figures/EquationBalanceFigure.astro";
+import FunctionRelationFigure from "../../components/figures/FunctionRelationFigure.astro";
+
+This one looks almost too simple to deserve its own lesson. It isn't. **Every cryptographic protocol and every ZK circuit, underneath all the theory, is a pile of variables tied together with equations** — look inside any real circuit and that's all you'll find: named values and the constraints that relate them. Modular arithmetic, finite fields, polynomial commitments — all of it is this same idea, just dressed up. So before any of that, it's worth being precise about what a variable, an expression, and an equation actually are.
+
+## Variables — a name for a value
+
+A variable is a symbol standing in for a value. Pick a letter, usually $x$, $y$, or $z$, and let it hold something:
+
+<MathBox label="Example">
+
+$$x = 5$$
+
+$x$ is the variable, $5$ is what it currently holds.
+
+</MathBox>
+
+It helps to picture a variable as a **labeled box**: the label is its name, and whatever's sitting inside is its value. `age = 25` is a box named "age" with `25` inside it — exactly the same idea a programming language uses when you write `age = 25` in Python or JavaScript.
+
+<Figure caption="Fig. 1 — a variable is a labeled box. Nothing stops that box from staying closed.">
+  <VariableBoxFigure />
+</Figure>
+
+That second box is the one cryptography actually cares about. Say there's a password, or any value someone wants to keep private — call it `secret`. Writing `secret = 12345` and then only ever referring to `secret` means the value itself never has to appear again. The box still exists, it's still a variable, it just isn't opened. That single habit — naming a value instead of writing it out — is the seed that **zero-knowledge proofs grow from**: proving something about a box without ever lifting the lid.
+
+## Expressions — a calculation, not yet a claim
+
+An expression combines values, variables, and operations into a single computed quantity. The giveaway is that it has **no equals sign** — it isn't asserting anything, it's just describing a calculation:
+
+<MathBox label="Example">
+
+$$x + 5 \qquad 2x \qquad x^2 + 3$$
+
+Three expressions. $2x$ is shorthand for $2 \cdot x$ — in algebra, a number written directly next to a variable always means multiplication.
+
+</MathBox>
+
+Expressions are where the actual work happens in a cryptographic system. If $x$ is a secret value, the expression $x^2$ means "take whatever is in that box and multiply it by itself" — and a surprising amount of real cryptography is exactly this: running a calculation over a hidden value without ever needing to see what's inside.
+
+## Equations — a claim that two things are equal
+
+An equation goes one step further than an expression: it states that two expressions are equal.
+
+<MathBox label="Example">
+
+$$x + 5 = 12$$
+
+Whatever $x$ is, adding $5$ to it produces $12$.
+
+</MathBox>
+
+<Figure caption="Fig. 2 — an equation is a balance: whatever sits on each side, the claim is that they weigh the same.">
+  <EquationBalanceFigure left="x + 5" right="12" />
+</Figure>
+
+Solving it means isolating $x$ — doing the same operation to both sides until $x$ stands alone:
+
+<MathBox label="Solving">
+
+$$
+\begin{aligned}
+x + 5 &= 12 \\
+x + 5 - 5 &= 12 - 5 \\
+x &= 7
+\end{aligned}
+$$
+
+Subtracting $5$ from both sides keeps the balance intact while peeling the $5$ away from $x$.
+
+</MathBox>
+
+And it's checkable — plug the answer back in and confirm both sides still agree:
+
+<MathBox label="Verifying">
+
+$$7 + 5 = 12 \quad \checkmark$$
+
+</MathBox>
+
+This solve-then-verify pattern shows up constantly in proof systems: a prover produces a value, and the whole protocol exists to let someone else check it satisfies the equation, without redoing the work of finding it.
+
+## One equation, two variables
+
+Equations don't have to pin a variable down to a single number — they can describe a relationship between two variables instead:
+
+<MathBox label="Example">
+
+$$y = x + 10$$
+
+If $x = 5$, then $y = 5 + 10 = 15$.
+
+</MathBox>
+
+<Figure caption="Fig. 3 — a value goes in, the equation acts on it, a second variable comes out.">
+  <FunctionRelationFigure />
+</Figure>
+
+That's a complete constraint: feed in $x$, the equation determines $y$. A real ZK circuit is built from a long chain of exactly these — thousands or millions of small relationships like this one, linked so that the output of one feeds the input of the next.
+
+## Back to the box that stays closed
+
+Pull these three ideas together and the earlier example from this track's introduction stops being a curiosity and starts being a template. Someone claims to know a value $x$ such that:
+
+$$x \cdot x = 25$$
+
+That's an equation. $x$ is a variable — the box that stays shut. $x \cdot x$ is the expression describing what gets checked. A zero-knowledge proof is a way to convince someone this equation holds **for some value inside that box, without ever opening it**. Strip away the cryptography and what's left is exactly what this lesson covered: a named value, a calculation, and a claim of equality. Everything from here — modular arithmetic, finite fields, polynomial constraints — is this same shape, scaled up.

@@ -1,0 +1,27 @@
+---
+// Fig. for "Variables, Expressions & Equations": an equation drawn as a
+// balance scale — whatever sits on each side, an equation is just a claim
+// that the two sides weigh the same. Takes the two sides as props so it
+// can illustrate any equation, not only the one lesson it first appears in.
+interface Props {
+  left: string;
+  right: string;
+}
+const { left, right } = Astro.props;
+---
+<svg viewBox="0 0 480 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <path d="M 240 100 L 212 170 L 268 170 Z" fill="url(#bodyGrad)" stroke="#3ab7ff" stroke-width="2" />
+  <line x1="200" y1="172" x2="280" y2="172" stroke="#3ab7ff" stroke-width="4" stroke-linecap="round" />
+
+  <line x1="70" y1="100" x2="410" y2="100" stroke="#3ab7ff" stroke-width="5" stroke-linecap="round" />
+
+  <line x1="90" y1="100" x2="90" y2="155" stroke="#3ab7ff" stroke-width="2" />
+  <path d="M 42 155 Q 90 195 138 155" fill="none" stroke="#3ab7ff" stroke-width="2.5" />
+  <text x="90" y="150" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">{left}</text>
+
+  <line x1="390" y1="100" x2="390" y2="155" stroke="#3ab7ff" stroke-width="2" />
+  <path d="M 342 155 Q 390 195 438 155" fill="none" stroke="#3ab7ff" stroke-width="2.5" />
+  <text x="390" y="150" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">{right}</text>
+
+  <text x="240" y="216" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">balanced — both sides are equal</text>
+</svg>
