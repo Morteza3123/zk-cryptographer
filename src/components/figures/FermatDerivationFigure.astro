@@ -1,0 +1,23 @@
+---
+// Fig. for "Modular Inverses & Fermat's Little Theorem": three lines that
+// turn Fermat's little theorem into the inverse formula — split the
+// exponent, then match the result against the definition of an inverse.
+// Exponents are drawn as raised <tspan>s (not unicode superscript glyphs,
+// which render inconsistently) rebased back to the main line afterward.
+---
+<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="20" y="42" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">start from Fermat</text>
+  <text x="640" y="42" text-anchor="end" fill="#e9eef5" font-size="18" font-weight="700" font-family="-apple-system,Arial,sans-serif">a<tspan dy="-7" font-size="65%">p-1</tspan><tspan dy="7"> &#8801; 1 (mod p)</tspan></text>
+  <line x1="20" y1="64" x2="640" y2="64" stroke="#1a2436" stroke-width="1" />
+
+  <text x="20" y="98" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">split the exponent</text>
+  <text x="640" y="98" text-anchor="end" fill="#e9eef5" font-size="18" font-weight="700" font-family="-apple-system,Arial,sans-serif">a &#215; a<tspan dy="-7" font-size="65%">p-2</tspan><tspan dy="7"> &#8801; 1 (mod p)</tspan></text>
+  <line x1="20" y1="120" x2="640" y2="120" stroke="#1a2436" stroke-width="1" />
+
+  <text x="20" y="154" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">compare to the definition</text>
+  <text x="640" y="154" text-anchor="end" fill="#e9eef5" font-size="18" font-weight="700" font-family="-apple-system,Arial,sans-serif">a &#215; x &#8801; 1 (mod p)</text>
+  <line x1="20" y1="176" x2="640" y2="176" stroke="#1a2436" stroke-width="1" />
+
+  <rect x="20" y="206" width="620" height="56" rx="9" fill="#0d1f17" stroke="#5ddc8a" stroke-width="1.5" />
+  <text x="330" y="241" text-anchor="middle" fill="#5ddc8a" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">so: a<tspan dy="-7" font-size="65%">-1</tspan><tspan dy="7"> &#8801; a</tspan><tspan dy="-7" font-size="65%">p-2</tspan><tspan dy="7"> (mod p)</tspan></text>
+</svg>

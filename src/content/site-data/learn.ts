@@ -74,7 +74,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Modular Arithmetic",
       items: [
         { num: "04", title: "Modular Arithmetic", duration: "5:22", slug: "modular-arithmetic" },
-        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:31" },
+        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:31", slug: "modular-inverses-fermats" },
         { num: "06", title: "Finite Fields", duration: "4:08" },
       ],
     },

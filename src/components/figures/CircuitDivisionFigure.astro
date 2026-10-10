@@ -1,0 +1,21 @@
+---
+// Fig. for "Modular Inverses & Fermat's Little Theorem": division never
+// exists as a primitive inside a Circom circuit — every division the
+// language lets you write compiles down to a multiplication by a modular
+// inverse instead. A short vertical flow, red problem to green resolution.
+---
+<svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="240" y="48" text-anchor="middle" fill="#ff8080" font-size="25" font-weight="800" font-family="-apple-system,Arial,sans-serif">a &#247; b (mod p)</text>
+  <text x="240" y="74" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">this operation does not exist directly</text>
+
+  <line x1="240" y1="92" x2="240" y2="146" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#circdiv-arrow)" />
+
+  <text x="240" y="178" text-anchor="middle" fill="#5ddc8a" font-size="25" font-weight="800" font-family="-apple-system,Arial,sans-serif">a &#215; b<tspan dy="-8" font-size="60%">-1</tspan><tspan dy="8"> (mod p)</tspan></text>
+  <text x="240" y="204" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">multiply by b's modular inverse instead</text>
+
+  <defs>
+    <marker id="circdiv-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

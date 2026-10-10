@@ -1,0 +1,313 @@
+diff --git a/src/components/figures/CircuitDivisionFigure.astro b/src/components/figures/CircuitDivisionFigure.astro
+new file mode 100644
+index 0000000..3fe67bb
+--- /dev/null
++++ b/src/components/figures/CircuitDivisionFigure.astro
+@@ -0,0 +1,21 @@
++---
++// Fig. for "Modular Inverses & Fermat's Little Theorem": division never
++// exists as a primitive inside a Circom circuit — every division the
++// language lets you write compiles down to a multiplication by a modular
++// inverse instead. A short vertical flow, red problem to green resolution.
++---
++<svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="240" y="48" text-anchor="middle" fill="#ff8080" font-size="25" font-weight="800" font-family="-apple-system,Arial,sans-serif">a &#247; b (mod p)</text>
++  <text x="240" y="74" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">this operation does not exist directly</text>
++
++  <line x1="240" y1="92" x2="240" y2="146" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#circdiv-arrow)" />
++
++  <text x="240" y="178" text-anchor="middle" fill="#5ddc8a" font-size="25" font-weight="800" font-family="-apple-system,Arial,sans-serif">a &#215; b<tspan dy="-8" font-size="60%">-1</tspan><tspan dy="8"> (mod p)</tspan></text>
++  <text x="240" y="204" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">multiply by b's modular inverse instead</text>
++
++  <defs>
++    <marker id="circdiv-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/FermatDerivationFigure.astro b/src/components/figures/FermatDerivationFigure.astro
+new file mode 100644
+index 0000000..3c3b784
+--- /dev/null
++++ b/src/components/figures/FermatDerivationFigure.astro
+@@ -0,0 +1,23 @@
++---
++// Fig. for "Modular Inverses & Fermat's Little Theorem": three lines that
++// turn Fermat's little theorem into the inverse formula — split the
++// exponent, then match the result against the definition of an inverse.
++// Exponents are drawn as raised <tspan>s (not unicode superscript glyphs,
++// which render inconsistently) rebased back to the main line afterward.
++---
++<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="20" y="42" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">start from Fermat</text>
++  <text x="640" y="42" text-anchor="end" fill="#e9eef5" font-size="18" font-weight="700" font-family="-apple-system,Arial,sans-serif">a<tspan dy="-7" font-size="65%">p-1</tspan><tspan dy="7"> &#8801; 1 (mod p)</tspan></text>
++  <line x1="20" y1="64" x2="640" y2="64" stroke="#1a2436" stroke-width="1" />
++
++  <text x="20" y="98" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">split the exponent</text>
++  <text x="640" y="98" text-anchor="end" fill="#e9eef5" font-size="18" font-weight="700" font-family="-apple-system,Arial,sans-serif">a &#215; a<tspan dy="-7" font-size="65%">p-2</tspan><tspan dy="7"> &#8801; 1 (mod p)</tspan></text>
++  <line x1="20" y1="120" x2="640" y2="120" stroke="#1a2436" stroke-width="1" />
++
++  <text x="20" y="154" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">compare to the definition</text>
++  <text x="640" y="154" text-anchor="end" fill="#e9eef5" font-size="18" font-weight="700" font-family="-apple-system,Arial,sans-serif">a &#215; x &#8801; 1 (mod p)</text>
++  <line x1="20" y1="176" x2="640" y2="176" stroke="#1a2436" stroke-width="1" />
++
++  <rect x="20" y="206" width="620" height="56" rx="9" fill="#0d1f17" stroke="#5ddc8a" stroke-width="1.5" />
++  <text x="330" y="241" text-anchor="middle" fill="#5ddc8a" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">so: a<tspan dy="-7" font-size="65%">-1</tspan><tspan dy="7"> &#8801; a</tspan><tspan dy="-7" font-size="65%">p-2</tspan><tspan dy="7"> (mod p)</tspan></text>
++</svg>
+diff --git a/src/components/figures/ModularDivisionFigure.astro b/src/components/figures/ModularDivisionFigure.astro
+new file mode 100644
+index 0000000..c04b0e4
+--- /dev/null
++++ b/src/components/figures/ModularDivisionFigure.astro
+@@ -0,0 +1,39 @@
++---
++// Fig. for "Modular Inverses & Fermat's Little Theorem": the same 6 ÷ 2,
++// read three ways — plain division, the reciprocal rewrite that's
++// identical to it, and that same rewrite attempted inside mod 7, where
++// the reciprocal ½ simply isn't a number that exists.
++interface Col {
++  eq: string;
++  note1: string;
++  note2: string;
++  verdict: string | null;
++  ok: boolean;
++}
++const cols: Col[] = [
++  { eq: "6 ÷ 2 = 3", note1: "normal division", note2: "", verdict: null, ok: true },
++  { eq: "6 × ½ = 3", note1: "same thing — multiply by", note2: "the reciprocal", verdict: null, ok: true },
++  { eq: "6 × ½ mod 7 ?", note1: "½ is not a whole number", note2: "", verdict: "✗ this doesn't exist here", ok: false },
++];
++const colW = 240;
++---
++<svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <line x1="240" y1="14" x2="240" y2="186" stroke="#223049" stroke-width="1" />
++  <line x1="480" y1="14" x2="480" y2="186" stroke="#223049" stroke-width="1" />
++
++  {cols.map((col, i) => {
++    const cx = i * colW + colW / 2;
++    return (
++      <>
++        <text x={cx} y="56" text-anchor="middle" fill="#e9eef5" font-size="21" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.eq}</text>
++        <text x={cx} y="88" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note1}</text>
++        {col.note2 && (
++          <text x={cx} y="108" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note2}</text>
++        )}
++        {col.verdict && (
++          <text x={cx} y="150" text-anchor="middle" fill="#ff8080" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.verdict}</text>
++        )}
++      </>
++    );
++  })}
++</svg>
+diff --git a/src/components/figures/ModularInverseSearchFigure.astro b/src/components/figures/ModularInverseSearchFigure.astro
+new file mode 100644
+index 0000000..627133d
+--- /dev/null
++++ b/src/components/figures/ModularInverseSearchFigure.astro
+@@ -0,0 +1,49 @@
++---
++// Fig. for "Modular Inverses & Fermat's Little Theorem": the brute-force
++// search for an inverse, one candidate at a time — reused for both the
++// successful search (3, mod 7) and the one that never finds a match
++// (2, mod 6), which is what the optional `footer` prop is for.
++interface Props {
++  a: number;
++  n: number;
++  rows: number[];
++  matchIndex?: number;
++  footer?: string;
++}
++const { a, n, rows, matchIndex, footer } = Astro.props;
++const rowH = 44;
++const topPad = 34;
++const tableH = rows.length * rowH;
++const footerH = footer ? 74 : 0;
++const height = topPad + tableH + footerH + 16;
++---
++<svg viewBox={`0 0 720 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  {rows.map((x, i) => {
++    const y = topPad + i * rowH;
++    const product = a * x;
++    const remainder = product % n;
++    const isMatch = i === matchIndex;
++    const color = isMatch ? "#5ddc8a" : "#ff8080";
++    const verdict = isMatch ? "✓ found it!" : "✗ not 1";
++    return (
++      <>
++        <text x="60" y={y + 23} text-anchor="middle" fill="#c3cedd" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">x = {x}</text>
++        <text x="340" y={y + 23} text-anchor="middle" fill="#cdd9e8" font-size="14.5" font-family="SF Mono, Fira Code, Consolas, monospace">
++          {`${a} × ${x} = ${product} → mod ${n} = ${remainder}`}
++        </text>
++        <text x="630" y={y + 23} text-anchor="middle" fill={color} font-size="14" font-weight="800" font-family="-apple-system,Arial,sans-serif">{verdict}</text>
++        {i < rows.length - 1 && (
++          <line x1="20" y1={y + rowH - 8} x2="700" y2={y + rowH - 8} stroke="#1a2436" stroke-width="1" />
++        )}
++      </>
++    );
++  })}
++
++  {footer && (
++    <>
++      <rect x="20" y={topPad + tableH + 14} width="680" height={footerH - 16} rx="8" fill="#1a1016" stroke="#ff8080" stroke-width="1.5" />
++      <line x1="20" y1={topPad + tableH + 14} x2="20" y2={topPad + tableH + footerH - 2} stroke="#ff8080" stroke-width="4" />
++      <text x="360" y={topPad + tableH + 14 + (footerH - 16) / 2 + 5} text-anchor="middle" fill="#f2b8b8" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">{footer}</text>
++    </>
++  )}
++</svg>
+diff --git a/src/content/lessons/modular-arithmetic.mdx b/src/content/lessons/modular-arithmetic.mdx
+index 6ee6866..1c32992 100644
+--- a/src/content/lessons/modular-arithmetic.mdx
++++ b/src/content/lessons/modular-arithmetic.mdx
+@@ -10,6 +10,7 @@ youtubeHref: "https://www.youtube.com/watch?v=uy2_NzoBbu4"
+ prevTitle: "Divisibility, Factors & Primes"
+ prevHref: "/learn/math/divisibility-factors-primes"
+ nextTitle: "Modular Inverses & Fermat's"
++nextHref: "/learn/math/modular-inverses-fermats"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+diff --git a/src/content/lessons/modular-inverses-fermats.mdx b/src/content/lessons/modular-inverses-fermats.mdx
+new file mode 100644
+index 0000000..6fe3978
+--- /dev/null
++++ b/src/content/lessons/modular-inverses-fermats.mdx
+@@ -0,0 +1,126 @@
++---
++track: math
++module: "Modular Arithmetic"
++lessonNumber: "05"
++title: "Modular Inverses & Fermat's"
++duration: "4:31"
++description: "What it means to divide inside a modulus, where that operation quietly breaks, and the one theorem that turns a slow brute-force search into a single exponentiation — the same trick every Circom division constraint runs underneath."
++order: 5
++youtubeHref: "https://www.youtube.com/watch?v=P5W-Hhoe5IE"
++prevTitle: "Modular Arithmetic"
++prevHref: "/learn/math/modular-arithmetic"
++nextTitle: "Finite Fields"
++---
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import ModularDivisionFigure from "../../components/figures/ModularDivisionFigure.astro";
++import ModularInverseSearchFigure from "../../components/figures/ModularInverseSearchFigure.astro";
++import FermatDerivationFigure from "../../components/figures/FermatDerivationFigure.astro";
++import CircuitDivisionFigure from "../../components/figures/CircuitDivisionFigure.astro";
++
++The last lesson covered addition, subtraction, and multiplication inside a modulus, and quietly skipped the fourth operation. **That gap gets fixed here** — division turns out to be the one operation that doesn't survive the trip into modular arithmetic unchanged, and patching it back in is what this lesson is about.
++
++## Why division breaks
++
++In ordinary arithmetic, dividing by a number is identical to multiplying by its reciprocal: $6 \div 2$ and $6 \times \tfrac{1}{2}$ land on the same $3$. The trouble is that a modulus only has whole numbers to work with — there's no slot in $\{0, 1, \ldots, n-1\}$ for a fraction like $\tfrac{1}{2}$ to occupy.
++
++<Figure caption="Fig. 1 — the same division, rewritten as a reciprocal, breaks the moment it's asked to live inside mod 7.">
++  <ModularDivisionFigure />
++</Figure>
++
++What stands in for the reciprocal instead is called a **modular inverse**: a whole number that, multiplied by the original, lands on exactly $1$.
++
++<MathBox label="Modular inverse">
++
++$$a \times x \equiv 1 \pmod{n}$$
++
++$x$ is the **modular inverse** of $a$ — the number that undoes multiplying by $a$, the same job a reciprocal does everywhere else.
++
++</MathBox>
++
++## Finding one by brute force
++
++For small numbers, there's nothing cleverer to do than try every candidate. Take $3 \bmod 7$: run $x = 1$ through $x = 5$ and check which one lands on $1$.
++
++<Figure caption="Fig. 2 — checking 3 × x against every x from 1 to 5. x = 5 is the first one that lands on 1.">
++  <ModularInverseSearchFigure a={3} n={7} rows={[1, 2, 3, 4, 5]} matchIndex={4} />
++</Figure>
++
++<MathBox label="Verifying the result">
++
++$$3 \times 5 = 15, \quad 15 \bmod 7 = 1 \implies 3^{-1} \equiv 5 \pmod{7}$$
++
++</MathBox>
++
++## Why not every number has one
++
++Brute force doesn't always end in success. Try the same search for $2 \bmod 6$:
++
++<Figure caption="Fig. 3 — every x from 1 to 5, checked against 2 × x ≡ 1 (mod 6). None of them land on 1.">
++  <ModularInverseSearchFigure a={2} n={6} rows={[1, 2, 3, 4, 5]} footer="no x ever gives 1 — 2 has no inverse mod 6, because gcd(2, 6) = 2, not 1" />
++</Figure>
++
++No candidate works, and the reason is a single number: the **greatest common divisor** of $a$ and $n$.
++
++<MathBox label="When an inverse exists">
++
++$$\gcd(a, n) = 1$$
++
++An inverse exists only when $a$ and $n$ share no common factor besides $1$. $\gcd(2, 6) = 2$, which is exactly why the search above never found one. It's also why **ZK systems build their modulus out of a prime number**: every value from $1$ to $p-1$ automatically shares no factor with a prime $p$, so every one of them is guaranteed an inverse.
++
++</MathBox>
++
++## Fermat's little theorem: a shortcut for huge primes
++
++Brute force works fine for $6 \bmod 7$, and falls apart completely once the modulus is a 254-bit prime — no computer is checking that many candidates one at a time. **Fermat's little theorem** is the shortcut that replaces the search with a single formula.
++
++<MathBox label="Fermat's little theorem">
++
++$$a^{p-1} \equiv 1 \pmod{p}$$
++
++Holds whenever $p$ is prime and $a$ isn't a multiple of $p$ — true for every number from $1$ to $p-1$, no exceptions.
++
++</MathBox>
++
++Three lines turn that statement into a formula for the inverse itself, just by splitting the exponent apart and lining the result up against the definition from the start of this lesson:
++
++<Figure caption="Fig. 4 — splitting Fermat's exponent in two turns the theorem directly into the inverse formula.">
++  <FermatDerivationFigure />
++</Figure>
++
++<MathBox label="The inverse formula">
++
++$$a^{-1} \equiv a^{p-2} \pmod{p}$$
++
++Raise $a$ to the power of $p - 2$, reduce by $p$, and whatever comes out **is** the inverse — no search required.
++
++</MathBox>
++
++## Checking the formula against the brute-force answer
++
++The whole point of a formula is that it has to agree with the slow method it's replacing. Plug $a = 3$, $p = 7$ back in:
++
++<MathBox label="Worked example">
++
++$$
++\begin{aligned}
++3^{-1} &\equiv 3^{7-2} \pmod{7} \\
++&\equiv 3^5 \pmod{7} \\
++&\equiv 243 \bmod 7 \\
++&\equiv 5 \pmod{7}
++\end{aligned}
++$$
++
++**Matches** the brute-force answer from a few sections back exactly — $5$, both times.
++
++</MathBox>
++
++## Why Circom secretly computes this
++
++There's no division gate inside a finite field. A Circom circuit can't compute $a \div b \pmod{p}$ directly, because — same as everywhere else in this lesson — that operation doesn't exist there. What it computes instead is $a$ times $b$'s modular inverse.
++
++<Figure caption="Fig. 5 — every division written in a Circom circuit compiles down to a multiplication by a modular inverse.">
++  <CircuitDivisionFigure />
++</Figure>
++
++Every constraint in a circuit that looks like division is, underneath, running exactly the formula from this lesson. The next lesson gives this whole structure — a modulus, closed under addition, subtraction, multiplication, and now division too — its proper name: a **finite field**.
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 3980094..88c8b02 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -74,7 +74,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+       module: "Modular Arithmetic",
+       items: [
+         { num: "04", title: "Modular Arithmetic", duration: "5:22", slug: "modular-arithmetic" },
+-        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:31" },
++        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:31", slug: "modular-inverses-fermats" },
+         { num: "06", title: "Finite Fields", duration: "4:08" },
+       ],
+     },
