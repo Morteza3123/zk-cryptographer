@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from "astro:content";
 import LessonLayout from "../../../layouts/LessonLayout.astro";
 import { lessonManifest } from "../../../content/site-data/learn";
+import ModularClockFigure from "../../../components/figures/ModularClockFigure.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");
@@ -39,5 +40,8 @@ const lessonsInTrack = track.data.lessonCount;
   nextTitle={entry.data.nextTitle}
   nextHref={entry.data.nextHref}
 >
+  {entry.slug === "modular-arithmetic" && (
+    <ModularClockFigure slot="poster" dividend={17} modulus={12} remainder={5} />
+  )}
   <Content />
 </LessonLayout>

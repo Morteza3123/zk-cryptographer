@@ -2,6 +2,16 @@
 import BaseLayout from "./BaseLayout.astro";
 import "katex/dist/katex.min.css";
 
+interface SidebarItem {
+  num: string;
+  title: string;
+  duration: string;
+  slug: string;
+}
+interface SidebarGroup {
+  label: string;
+  items: SidebarItem[];
+}
 interface Props {
   title: string;
   description: string;
@@ -9,6 +19,8 @@ interface Props {
   dateLabel: string;
   readingTime: string;
   ogImage?: string;
+  activeSlug?: string;
+  sidebarGroups?: SidebarGroup[];
 }
 const {
   title,
@@ -17,6 +29,8 @@ const {
   dateLabel,
   readingTime,
   ogImage = "/images/og-square.png",
+  activeSlug,
+  sidebarGroups = [],
 } = Astro.props;
 ---
 <BaseLayout
@@ -31,6 +45,25 @@ const {
     <a href="/blog">Blog</a> / <a href={`/blog?category=${encodeURIComponent(category)}`}>{category}</a> / <b>{title}</b>
   </div>
   <div class="course-layout">
+    {sidebarGroups.length > 0 && (
+      <aside class="course-sidebar">
+        {sidebarGroups.map((group) => (
+          <>
+            <div class="sb-mod">{group.label}</div>
+            {group.items.map((item) => (
+              <a
+                class={`sb-item ${item.slug === activeSlug ? "active" : ""}`}
+                href={`/blog/${item.slug}`}
+              >
+                <span class="sb-num">{item.num}</span>
+                <span>{item.title}</span>
+                <span class="sb-dur">{item.duration}</span>
+              </a>
+            ))}
+          </>
+        ))}
+      </aside>
+    )}
     <div class="course-main">
       <div class="post-cat-pill">{category}</div>
       <div class="lesson-title">{title}</div>

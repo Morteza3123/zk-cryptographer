@@ -1,0 +1,381 @@
+diff --git a/src/components/YouTubeEmbed.astro b/src/components/YouTubeEmbed.astro
+index a664877..621a29f 100644
+--- a/src/components/YouTubeEmbed.astro
++++ b/src/components/YouTubeEmbed.astro
+@@ -11,11 +11,13 @@ const { duration, href = "#" } = Astro.props;
+ ---
+ <a class="yt-embed" href={href} aria-label={`Watch this lesson (${duration})`}>
+   <div class="yt-poster">
+-    <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+-      <rect width="800" height="450" fill="#0a0f19" />
+-      <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
+-      <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
+-    </svg>
++    <slot name="poster">
++      <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
++        <rect width="800" height="450" fill="#0a0f19" />
++        <circle cx="400" cy="225" r="130" fill="none" stroke="#223049" stroke-width="1.5" />
++        <circle cx="400" cy="225" r="86" fill="none" stroke="#223049" stroke-width="1.5" />
++      </svg>
++    </slot>
+   </div>
+   <div class="yt-badge"><span class="dot"></span> LESSON VIDEO</div>
+   <div class="play-btn"></div>
+diff --git a/src/components/figures/ModularClockFigure.astro b/src/components/figures/ModularClockFigure.astro
+new file mode 100644
+index 0000000..5841621
+--- /dev/null
++++ b/src/components/figures/ModularClockFigure.astro
+@@ -0,0 +1,79 @@
++---
++// Lesson-video poster for "Modular Arithmetic": a 12-hour clock face with
++// the wrap-around remainder highlighted, standing in for a generic video
++// thumbnail — e.g. 17 mod 12 = 5. Geometry is fixed to a 12-tick clock
++// (ticks 0–11); pass `dividend`/`remainder` to relabel it for a different
++// example against the same modulus.
++interface Props {
++  dividend?: number;
++  modulus?: number;
++  remainder?: number;
++}
++const { dividend = 17, modulus = 12, remainder = 5 } = Astro.props;
++
++const cx = 240;
++const cy = 180;
++const outerR = 112;
++const tickOuter = 10; // distance ticks sit outside the 100px label circle
++const labelR = 103;
++const tickR = 100;
++
++const ticks = Array.from({ length: modulus }, (_, i) => {
++  const angle = (i / modulus) * 2 * Math.PI - Math.PI / 2; // 0 at the top, clockwise
++  const isHighlight = i === remainder;
++  const x1 = cx + Math.cos(angle) * tickR;
++  const y1 = cy + Math.sin(angle) * tickR;
++  const x2 = cx + Math.cos(angle) * (tickR + tickOuter);
++  const y2 = cy + Math.sin(angle) * (tickR + tickOuter);
++  const lx = cx + Math.cos(angle) * labelR;
++  const ly = cy + Math.sin(angle) * labelR;
++  return { i, x1, y1, x2, y2, lx, ly, isHighlight };
++});
++
++const startAngle = -Math.PI / 2; // 12 o'clock
++const endAngle = (remainder / modulus) * 2 * Math.PI - Math.PI / 2;
++const arcStart = { x: cx + Math.cos(startAngle) * 136, y: cy + Math.sin(startAngle) * 136 };
++const arcEnd = { x: cx + Math.cos(endAngle) * 136, y: cy + Math.sin(endAngle) * 136 };
++---
++<svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
++  <rect width="480" height="360" fill="#0a0f19" />
++  <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#223049" stroke-width="2" />
++  <circle cx={cx} cy={cy} r={outerR - 2} fill="#111b2b" />
++  {ticks.map(({ i, x1, y1, x2, y2, lx, ly, isHighlight }) => (
++    <>
++      <line
++        x1={x1} y1={y1} x2={x2} y2={y2}
++        stroke={isHighlight ? "#8fdcff" : "#3ab7ff"}
++        stroke-width={isHighlight ? 3 : 1.5}
++        opacity={isHighlight ? 1 : 0.55}
++      />
++      <text
++        x={lx} y={ly + 4}
++        fill={isHighlight ? "#e9eef5" : "#8b96a8"}
++        font-family="Arial"
++        font-size={isHighlight ? 15 : 13}
++        font-weight={isHighlight ? 800 : 400}
++        text-anchor="middle"
++      >{i}</text>
++    </>
++  ))}
++  <path
++    d={`M ${arcStart.x.toFixed(1)} ${arcStart.y.toFixed(1)} A 136 136 0 1 1 ${arcEnd.x.toFixed(1)} ${arcEnd.y.toFixed(1)}`}
++    fill="none"
++    marker-end="url(#modclock-arrowhead)"
++    opacity="0.8"
++    stroke="#3ab7ff"
++    stroke-dasharray="2 7"
++    stroke-linecap="round"
++    stroke-width="2.5"
++  />
++  <circle cx={cx} cy={cy} r="4" fill="#3ab7ff" />
++  <text x={cx} y="330" fill="#e9eef5" font-family="Arial" font-size="17" font-weight="700" text-anchor="middle">
++    {dividend} mod {modulus} = {remainder}
++  </text>
++  <defs>
++    <marker id="modclock-arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
++      <path d="M0,0 L8,4 L0,8 Z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/layouts/LessonLayout.astro b/src/layouts/LessonLayout.astro
+index 795299b..b4ca7fc 100644
+--- a/src/layouts/LessonLayout.astro
++++ b/src/layouts/LessonLayout.astro
+@@ -79,7 +79,9 @@ const {
+       ))}
+     </aside>
+     <div class="course-main">
+-      <YouTubeEmbed duration={duration} />
++      <YouTubeEmbed duration={duration}>
++        <slot name="poster" slot="poster" />
++      </YouTubeEmbed>
+       <div class="lesson-title">{lessonNumber}. {title}</div>
+       <div class="lesson-meta">{moduleLabel} · Lesson {Number(lessonNumber) + 1} of {lessonsInTrack} · {duration}</div>
+       <div class="lesson-desc">{description}</div>
+diff --git a/src/layouts/PostLayout.astro b/src/layouts/PostLayout.astro
+index 01b9362..e8bb9aa 100644
+--- a/src/layouts/PostLayout.astro
++++ b/src/layouts/PostLayout.astro
+@@ -2,6 +2,16 @@
+ import BaseLayout from "./BaseLayout.astro";
+ import "katex/dist/katex.min.css";
+ 
++interface SidebarItem {
++  num: string;
++  title: string;
++  duration: string;
++  slug: string;
++}
++interface SidebarGroup {
++  label: string;
++  items: SidebarItem[];
++}
+ interface Props {
+   title: string;
+   description: string;
+@@ -9,6 +19,8 @@ interface Props {
+   dateLabel: string;
+   readingTime: string;
+   ogImage?: string;
++  activeSlug?: string;
++  sidebarGroups?: SidebarGroup[];
+ }
+ const {
+   title,
+@@ -17,6 +29,8 @@ const {
+   dateLabel,
+   readingTime,
+   ogImage = "/images/og-square.png",
++  activeSlug,
++  sidebarGroups = [],
+ } = Astro.props;
+ ---
+ <BaseLayout
+@@ -31,6 +45,25 @@ const {
+     <a href="/blog">Blog</a> / <a href={`/blog?category=${encodeURIComponent(category)}`}>{category}</a> / <b>{title}</b>
+   </div>
+   <div class="course-layout">
++    {sidebarGroups.length > 0 && (
++      <aside class="course-sidebar">
++        {sidebarGroups.map((group) => (
++          <>
++            <div class="sb-mod">{group.label}</div>
++            {group.items.map((item) => (
++              <a
++                class={`sb-item ${item.slug === activeSlug ? "active" : ""}`}
++                href={`/blog/${item.slug}`}
++              >
++                <span class="sb-num">{item.num}</span>
++                <span>{item.title}</span>
++                <span class="sb-dur">{item.duration}</span>
++              </a>
++            ))}
++          </>
++        ))}
++      </aside>
++    )}
+     <div class="course-main">
+       <div class="post-cat-pill">{category}</div>
+       <div class="lesson-title">{title}</div>
+diff --git a/src/pages/blog/[slug].astro b/src/pages/blog/[slug].astro
+index c1f9597..84b89ad 100644
+--- a/src/pages/blog/[slug].astro
++++ b/src/pages/blog/[slug].astro
+@@ -4,12 +4,32 @@ import PostLayout from "../../layouts/PostLayout.astro";
+ 
+ export async function getStaticPaths() {
+   const posts = await getCollection("posts", (p) => !p.data.draft);
+-  return posts.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
++  const allSorted = posts.slice().sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
++  return posts.map((entry) => ({
++    params: { slug: entry.slug },
++    props: { entry, allSorted },
++  }));
+ }
+ 
+-const { entry } = Astro.props;
++const { entry, allSorted } = Astro.props;
+ const { Content } = await entry.render();
+ const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
++
++// Sidebar: same-category posts first (most recent first), then up to four
++// "Recent Posts" from other categories — numbered continuously, matching
++// the approved design's grouping.
++const categoryPosts = allSorted.filter((p) => p.data.category === entry.data.category);
++const recentPosts = allSorted.filter((p) => p.data.category !== entry.data.category).slice(0, 4);
++const pad = (n: number) => String(n).padStart(2, "0");
++let counter = 0;
++const toItem = (p: (typeof allSorted)[number]) => {
++  counter += 1;
++  return { num: pad(counter), title: p.data.title, duration: p.data.readingTime, slug: p.slug };
++};
++const sidebarGroups = [
++  { label: entry.data.category, items: categoryPosts.map(toItem) },
++  ...(recentPosts.length > 0 ? [{ label: "Recent Posts", items: recentPosts.map(toItem) }] : []),
++];
+ ---
+ <PostLayout
+   title={entry.data.title}
+@@ -17,6 +37,8 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "n
+   category={entry.data.category}
+   dateLabel={dateFormatter.format(entry.data.date)}
+   readingTime={entry.data.readingTime}
++  activeSlug={entry.slug}
++  sidebarGroups={sidebarGroups}
+ >
+   <Content />
+ </PostLayout>
+diff --git a/src/pages/learn/[track]/[lesson].astro b/src/pages/learn/[track]/[lesson].astro
+index 6499e7e..42c5a74 100644
+--- a/src/pages/learn/[track]/[lesson].astro
++++ b/src/pages/learn/[track]/[lesson].astro
+@@ -2,6 +2,7 @@
+ import { getCollection, getEntry } from "astro:content";
+ import LessonLayout from "../../../layouts/LessonLayout.astro";
+ import { lessonManifest } from "../../../content/site-data/learn";
++import ModularClockFigure from "../../../components/figures/ModularClockFigure.astro";
+ 
+ export async function getStaticPaths() {
+   const lessons = await getCollection("lessons");
+@@ -39,5 +40,8 @@ const lessonsInTrack = track.data.lessonCount;
+   nextTitle={entry.data.nextTitle}
+   nextHref={entry.data.nextHref}
+ >
++  {entry.slug === "modular-arithmetic" && (
++    <ModularClockFigure slot="poster" dividend={17} modulus={12} remainder={5} />
++  )}
+   <Content />
+ </LessonLayout>
+diff --git a/src/styles/components.css b/src/styles/components.css
+index 118332a..3bdff35 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -33,6 +33,12 @@
+ .navlinks a {
+   text-decoration: none;
+   color: var(--text);
++  transition: color 0.15s ease, opacity 0.15s ease;
++}
++
++.navlinks a:hover {
++  color: var(--accent);
++  opacity: 1;
+ }
+ 
+ .navlinks a.active {
+@@ -250,10 +256,28 @@
+ }
+ 
+ .hub-card {
++  position: relative;
++  overflow: hidden;
+   background: var(--card);
+   border: 1px solid var(--card-border);
+-  border-radius: var(--radius-md);
++  border-radius: 14px;
+   padding: 28px;
++  transition: transform 0.15s ease, border-color 0.15s ease;
++}
++
++.hub-card::before {
++  content: "";
++  position: absolute;
++  top: 0;
++  left: 0;
++  right: 0;
++  height: 3px;
++  background: var(--gradient-accent);
++}
++
++.hub-card:hover {
++  transform: translateY(-3px);
++  border-color: var(--accent);
+ }
+ 
+ .hub-card-top {
+@@ -318,6 +342,11 @@
+   font-weight: 700;
+   font-size: 13.5px;
+   text-decoration: none;
++  transition: text-decoration 0.15s ease;
++}
++
++.hub-link:hover {
++  text-decoration: underline;
+ }
+ 
+ @media (max-width: 640px) {
+@@ -703,6 +732,12 @@
+   flex-direction: column;
+   text-decoration: none;
+   color: inherit;
++  transition: transform 0.15s ease, border-color 0.15s ease;
++}
++
++.post-card:hover {
++  transform: translateY(-3px);
++  border-color: var(--accent);
+ }
+ 
+ .post-thumb > svg {
+diff --git a/src/styles/global.css b/src/styles/global.css
+index e0cca16..960e3a1 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -101,6 +101,29 @@ svg {
+     inset 0 1px 0 rgba(255, 255, 255, 0.35);
+   padding: 13px 26px;
+   font-size: 14px;
++  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
++}
++
++.btn:hover {
++  transform: translateY(-2px);
++  filter: brightness(1.08);
++  box-shadow:
++    0 10px 24px rgba(58, 183, 255, 0.42),
++    inset 0 1px 0 rgba(255, 255, 255, 0.35);
++}
++
++.btn:active {
++  transform: translateY(0);
++  filter: brightness(0.96);
++  box-shadow:
++    0 4px 12px rgba(58, 183, 255, 0.3),
++    inset 0 1px 0 rgba(255, 255, 255, 0.35);
++}
++
++.btn:focus-visible,
++.btn-outline:focus-visible {
++  outline: 2px solid var(--accent);
++  outline-offset: 2px;
+ }
+ 
+ .btn-outline {
+@@ -115,6 +138,17 @@ svg {
+   padding: 13px 26px;
+   font-size: 14px;
+   background: transparent;
++  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
++}
++
++.btn-outline:hover {
++  background: rgba(58, 183, 255, 0.12);
++  transform: translateY(-2px);
++}
++
++.btn-outline:active {
++  background: rgba(58, 183, 255, 0.2);
++  transform: translateY(0);
+ }
+ 
+ .btnrow {

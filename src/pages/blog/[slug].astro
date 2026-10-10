@@ -4,12 +4,32 @@ import PostLayout from "../../layouts/PostLayout.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts", (p) => !p.data.draft);
-  return posts.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+  const allSorted = posts.slice().sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return posts.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry, allSorted },
+  }));
 }
 
-const { entry } = Astro.props;
+const { entry, allSorted } = Astro.props;
 const { Content } = await entry.render();
 const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+// Sidebar: same-category posts first (most recent first), then up to four
+// "Recent Posts" from other categories — numbered continuously, matching
+// the approved design's grouping.
+const categoryPosts = allSorted.filter((p) => p.data.category === entry.data.category);
+const recentPosts = allSorted.filter((p) => p.data.category !== entry.data.category).slice(0, 4);
+const pad = (n: number) => String(n).padStart(2, "0");
+let counter = 0;
+const toItem = (p: (typeof allSorted)[number]) => {
+  counter += 1;
+  return { num: pad(counter), title: p.data.title, duration: p.data.readingTime, slug: p.slug };
+};
+const sidebarGroups = [
+  { label: entry.data.category, items: categoryPosts.map(toItem) },
+  ...(recentPosts.length > 0 ? [{ label: "Recent Posts", items: recentPosts.map(toItem) }] : []),
+];
 ---
 <PostLayout
   title={entry.data.title}
@@ -17,6 +37,8 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "n
   category={entry.data.category}
   dateLabel={dateFormatter.format(entry.data.date)}
   readingTime={entry.data.readingTime}
+  activeSlug={entry.slug}
+  sidebarGroups={sidebarGroups}
 >
   <Content />
 </PostLayout>

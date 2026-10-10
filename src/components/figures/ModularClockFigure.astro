@@ -1,0 +1,79 @@
+---
+// Lesson-video poster for "Modular Arithmetic": a 12-hour clock face with
+// the wrap-around remainder highlighted, standing in for a generic video
+// thumbnail — e.g. 17 mod 12 = 5. Geometry is fixed to a 12-tick clock
+// (ticks 0–11); pass `dividend`/`remainder` to relabel it for a different
+// example against the same modulus.
+interface Props {
+  dividend?: number;
+  modulus?: number;
+  remainder?: number;
+}
+const { dividend = 17, modulus = 12, remainder = 5 } = Astro.props;
+
+const cx = 240;
+const cy = 180;
+const outerR = 112;
+const tickOuter = 10; // distance ticks sit outside the 100px label circle
+const labelR = 103;
+const tickR = 100;
+
+const ticks = Array.from({ length: modulus }, (_, i) => {
+  const angle = (i / modulus) * 2 * Math.PI - Math.PI / 2; // 0 at the top, clockwise
+  const isHighlight = i === remainder;
+  const x1 = cx + Math.cos(angle) * tickR;
+  const y1 = cy + Math.sin(angle) * tickR;
+  const x2 = cx + Math.cos(angle) * (tickR + tickOuter);
+  const y2 = cy + Math.sin(angle) * (tickR + tickOuter);
+  const lx = cx + Math.cos(angle) * labelR;
+  const ly = cy + Math.sin(angle) * labelR;
+  return { i, x1, y1, x2, y2, lx, ly, isHighlight };
+});
+
+const startAngle = -Math.PI / 2; // 12 o'clock
+const endAngle = (remainder / modulus) * 2 * Math.PI - Math.PI / 2;
+const arcStart = { x: cx + Math.cos(startAngle) * 136, y: cy + Math.sin(startAngle) * 136 };
+const arcEnd = { x: cx + Math.cos(endAngle) * 136, y: cy + Math.sin(endAngle) * 136 };
+---
+<svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+  <rect width="480" height="360" fill="#0a0f19" />
+  <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#223049" stroke-width="2" />
+  <circle cx={cx} cy={cy} r={outerR - 2} fill="#111b2b" />
+  {ticks.map(({ i, x1, y1, x2, y2, lx, ly, isHighlight }) => (
+    <>
+      <line
+        x1={x1} y1={y1} x2={x2} y2={y2}
+        stroke={isHighlight ? "#8fdcff" : "#3ab7ff"}
+        stroke-width={isHighlight ? 3 : 1.5}
+        opacity={isHighlight ? 1 : 0.55}
+      />
+      <text
+        x={lx} y={ly + 4}
+        fill={isHighlight ? "#e9eef5" : "#8b96a8"}
+        font-family="Arial"
+        font-size={isHighlight ? 15 : 13}
+        font-weight={isHighlight ? 800 : 400}
+        text-anchor="middle"
+      >{i}</text>
+    </>
+  ))}
+  <path
+    d={`M ${arcStart.x.toFixed(1)} ${arcStart.y.toFixed(1)} A 136 136 0 1 1 ${arcEnd.x.toFixed(1)} ${arcEnd.y.toFixed(1)}`}
+    fill="none"
+    marker-end="url(#modclock-arrowhead)"
+    opacity="0.8"
+    stroke="#3ab7ff"
+    stroke-dasharray="2 7"
+    stroke-linecap="round"
+    stroke-width="2.5"
+  />
+  <circle cx={cx} cy={cy} r="4" fill="#3ab7ff" />
+  <text x={cx} y="330" fill="#e9eef5" font-family="Arial" font-size="17" font-weight="700" text-anchor="middle">
+    {dividend} mod {modulus} = {remainder}
+  </text>
+  <defs>
+    <marker id="modclock-arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

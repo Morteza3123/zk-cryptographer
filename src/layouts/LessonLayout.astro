@@ -79,7 +79,9 @@ const {
       ))}
     </aside>
     <div class="course-main">
-      <YouTubeEmbed duration={duration} />
+      <YouTubeEmbed duration={duration}>
+        <slot name="poster" slot="poster" />
+      </YouTubeEmbed>
       <div class="lesson-title">{lessonNumber}. {title}</div>
       <div class="lesson-meta">{moduleLabel} · Lesson {Number(lessonNumber) + 1} of {lessonsInTrack} · {duration}</div>
       <div class="lesson-desc">{description}</div>
