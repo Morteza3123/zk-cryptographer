@@ -21,6 +21,7 @@ interface Props {
   ogImage?: string;
   activeSlug?: string;
   sidebarGroups?: SidebarGroup[];
+  nextPost?: { title: string; href: string };
 }
 const {
   title,
@@ -31,6 +32,7 @@ const {
   ogImage = "/images/og-square.png",
   activeSlug,
   sidebarGroups = [],
+  nextPost,
 } = Astro.props;
 ---
 <BaseLayout
@@ -71,6 +73,16 @@ const {
       <article class="lesson-article">
         <slot />
       </article>
+      <div class="prevnext">
+        <a href="/blog">
+          &larr; <span class="sub">Previous</span>Browse all posts
+        </a>
+        {nextPost && (
+          <a href={nextPost.href} style="text-align:right;">
+            {nextPost.title}<span class="sub">Next &rarr;</span>
+          </a>
+        )}
+      </div>
     </div>
   </div>
 </BaseLayout>

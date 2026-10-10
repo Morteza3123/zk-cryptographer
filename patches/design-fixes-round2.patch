@@ -1,0 +1,582 @@
+diff --git a/src/components/AboutHeroDiagram.astro b/src/components/AboutHeroDiagram.astro
+new file mode 100644
+index 0000000..f365256
+--- /dev/null
++++ b/src/components/AboutHeroDiagram.astro
+@@ -0,0 +1,80 @@
++---
++// About page's hero visual: a cascading stack of credential chips, visually
++// matching the Learning Hub's TrackStack pattern (same cascading-card
++// composition, different content — credentials instead of tracks).
++interface Chip {
++  sym: string;
++  label: string;
++  sub: string;
++}
++interface Props {
++  chips: Chip[];
++}
++const { chips } = Astro.props;
++---
++<div class="cred-stack">
++  {chips.map((c, i) => (
++    <div class={`cred-chip cred-chip-${i}`}>
++      <div class="cred-chip-badge" set:html={c.sym} />
++      <div class="cred-chip-text">
++        <div class="cred-chip-label">{c.label}</div>
++        <div class="cred-chip-sub">{c.sub}</div>
++      </div>
++    </div>
++  ))}
++</div>
++
++<style>
++  .cred-stack {
++    position: relative;
++    width: 100%;
++    max-width: 360px;
++  }
++  .cred-chip {
++    display: flex;
++    align-items: center;
++    gap: 14px;
++    background: var(--card);
++    border: 1px solid var(--card-border);
++    border-radius: 12px;
++    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
++    position: relative;
++    padding: 16px 18px;
++  }
++  .cred-chip-badge {
++    width: 38px;
++    height: 38px;
++    border-radius: 10px;
++    background: var(--gradient-accent);
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    font-weight: 800;
++    font-size: 16px;
++    color: var(--accent-ink);
++    flex-shrink: 0;
++    box-shadow: 0 4px 12px rgba(58, 183, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
++  }
++  .cred-chip-label {
++    font-weight: 800;
++    color: var(--text);
++    font-size: 16px;
++  }
++  .cred-chip-sub {
++    color: var(--muted);
++    font-size: 11.5px;
++    margin-top: 2px;
++  }
++  .cred-chip-0 { z-index: 4; transform: translateX(0) rotate(-1.5deg); }
++  .cred-chip-1 { z-index: 3; opacity: 0.96; transform: translateX(28px) rotate(1deg); margin-top: -16px; }
++  .cred-chip-2 { z-index: 2; opacity: 0.92; transform: translateX(50px) rotate(-1deg); margin-top: -16px; }
++
++  @media (max-width: 768px) {
++    .cred-stack { max-width: 100%; }
++    .cred-chip-0, .cred-chip-1, .cred-chip-2 {
++      transform: none;
++      margin-top: 10px;
++    }
++    .cred-chip-0 { margin-top: 0; }
++  }
++</style>
+diff --git a/src/components/TopicCard.astro b/src/components/TopicCard.astro
+new file mode 100644
+index 0000000..a65d23c
+--- /dev/null
++++ b/src/components/TopicCard.astro
+@@ -0,0 +1,16 @@
++---
++// A single topic in a TopicGrid — used by the "ZK Math — Introduction"
++// lesson to lay out the nine math pillars as on-brand cards (reusing the
++// hub-card visual language) instead of the generic stock illustrations
++// from the source video.
++interface Props {
++  num: string;
++  title: string;
++}
++const { num, title } = Astro.props;
++---
++<div class="topic-card">
++  <div class="topic-card-num">{num}</div>
++  <div class="topic-card-title">{title}</div>
++  <div class="topic-card-body"><slot /></div>
++</div>
+diff --git a/src/content/lessons/zk-math-introduction.mdx b/src/content/lessons/zk-math-introduction.mdx
+new file mode 100644
+index 0000000..b6c6b6d
+--- /dev/null
++++ b/src/content/lessons/zk-math-introduction.mdx
+@@ -0,0 +1,102 @@
++---
++track: math
++module: "Foundations"
++lessonNumber: "00"
++title: "ZK Math — Introduction"
++duration: "8:04"
++description: "Why the math, not the code, is the hard part of learning zero-knowledge proofs — and the nine mathematical ideas this track builds from the ground up."
++order: 0
++nextTitle: "Variables, Expressions & Equations"
++---
++import MathBox from "../../components/MathBox.astro";
++import TopicCard from "../../components/TopicCard.astro";
++
++If you've tried to learn zero-knowledge proofs before, you've probably noticed something quickly: the hard part isn't the code, and it isn't the tooling — it's the math. Most developers come to ZK wanting to build privacy applications, scalable blockchains, identity systems, or advanced cryptographic protocols, and then run straight into terms like finite fields, modular arithmetic, elliptic curves, polynomial commitments, and group theory, usually with no on-ramp. That gap is exactly what this track exists to close.
++
++You don't need a PhD in mathematics, and you don't need to already think of yourself as a "math person." You need curiosity, a willingness to work through a few equations by hand, and about as much patience as you'd give to learning a new programming language. By the end of this track you'll have the actual mathematical foundation that modern cryptography and zero-knowledge systems are built on — not an intuition-only version of it that falls apart the moment a paper gets specific.
++
++**Why the math actually matters.** Almost everything you do online already depends on cryptography. Logging into a website, sending a message, making a payment, or submitting a blockchain transaction — all of it is protected by math, not by policy or good intentions. Without cryptography, there's no secure internet to speak of.
++
++Zero-knowledge proofs push this a step further. They let one party prove a statement is true without revealing anything about *why* it's true beyond the statement itself — "I'm over 18" without your exact birthdate, "I know this password" without sending the password, "this transaction is valid" without exposing the sender, receiver, or amount. That's not a minor trick. It's one of the most significant developments in blockchain privacy and digital identity in the last decade, and it's the reason ZK has gone from an academic curiosity to production infrastructure in a few years.
++
++The reason this needs so much math is simple: computers can be tricked, and people can lie, but mathematics can't be talked out of a true statement. Every cryptographic guarantee ultimately reduces to "this specific mathematical problem is too hard to solve in a reasonable amount of time, even with enormous computing power." You're not trusting a person or a company — you're trusting that a particular equation has no shortcut. That's a fundamentally different, and much stronger, kind of guarantee, and it's why cryptography is a branch of mathematics first and a branch of software engineering second.
++
++**Why zero-knowledge feels different to learn.** Most programming topics build on things you already know. A new language still has variables, loops, and functions to anchor onto. Zero-knowledge doesn't give you that shortcut — instead of reasoning purely about code, you're reasoning about mathematical structures: fields, groups, polynomials. Most tutorials skip straight to the advanced material assuming this background already exists, which is exactly how people end up memorizing protocol steps without understanding why any of them actually work.
++
++The good news: the whole field is built from a surprisingly small set of mathematical ideas, reused in different combinations. Once those ideas are genuinely familiar — not memorized, understood — reading a new ZK paper stops feeling like a different language and starts feeling like recognizing old friends in new outfits.
++
++**A first taste of how the math gets used.** Take a simple equation:
++
++<MathBox label="Example">
++
++$$x \cdot x = 25$$
++
++Say I claim to know a value of $x$ that satisfies this, and I don't want to tell you what it is. A zero-knowledge system lets me convince you I know a valid $x$ — without revealing whether it's $5$, $-5$, or something else entirely.
++
++</MathBox>
++
++To make that work, the statement first gets converted into a set of mathematical constraints a proof system can check — a single toy equation like this one becomes a handful of constraints, and a real-world ZK circuit can involve millions of them. The system then leans on algebra, finite fields, and polynomials to verify the claim holds, without ever reconstructing $x$ along the way. Even this one-line example already depends on the material in this track; a production circuit is the same idea at a much larger scale.
++
++One detail worth sitting with now: over the ordinary integers, $x \cdot x = 25$ has two solutions, $5$ and $-5$ — exactly the kind of ambiguity that disappears once you're working inside a finite field with a well-defined modulus. That's one of several reasons finite fields, not plain integers, are the ground real ZK systems are actually built on.
++
++**Nine mathematical ideas, used over and over.** Everything in this track comes back to a short list of topics. You'll meet each one properly, with worked examples, as the track progresses — this is the map before the territory.
++
++<div class="topic-grid">
++
++<TopicCard num="01" title="Arithmetic & Algebra">
++
++The foundation everything else sits on: solving for an unknown, rearranging an equation. Every cryptographic protocol is, underneath, a set of algebraic equations that have to hold — ZK proof systems exist to check that they do without revealing the variables that satisfy them.
++
++</TopicCard>
++
++<TopicCard num="02" title="Number Theory">
++
++The study of integers and the relationships between them — divisibility, greatest common divisors, primes. Number theory supplies building blocks like primality and coprimality that almost every other topic on this list depends on.
++
++</TopicCard>
++
++<TopicCard num="03" title="Modular Arithmetic">
++
++Arithmetic that wraps around instead of growing forever: $17 \bmod 5 = 2$, the remainder after division. It's often called the language of modern cryptography for a reason — nearly every operation inside a ZK circuit happens modulo some fixed number. Covered in full in the next lesson.
++
++</TopicCard>
++
++<TopicCard num="04" title="Finite Fields">
++
++A number system with a fixed, finite number of elements — for example, the integers $0$ through $6$ under arithmetic modulo $7$. Every ZK proof system runs its arithmetic inside a finite field, because it needs a closed, well-behaved number system rather than the open-ended integers.
++
++</TopicCard>
++
++<TopicCard num="05" title="Polynomial Mathematics">
++
++Polynomials — expressions like $f(x) = x^2 + 2x + 1$ — are the core building block of modern proof systems. zk-SNARKs, zk-STARKs, and polynomial commitment schemes all ultimately reduce a computation to statements about polynomials.
++
++</TopicCard>
++
++<TopicCard num="06" title="Linear Algebra">
++
++Vectors and matrices, and the operations that combine them. A circuit's constraints are naturally expressed as matrix equations — exactly how Rank-1 Constraint Systems (R1CS) represent a program before it's turned into a proof.
++
++</TopicCard>
++
++<TopicCard num="07" title="Probability">
++
++The tool for reasoning about security guarantees in concrete numbers. When a protocol says a cheating prover can only succeed with probability one in a million, that number comes directly from probability theory applied to the protocol's structure.
++
++</TopicCard>
++
++<TopicCard num="08" title="Group Theory">
++
++The study of mathematical structures that follow a specific set of rules — closure, an identity element, inverses. Groups show up everywhere in cryptography, and they're the structure elliptic curve cryptography is built on top of.
++
++</TopicCard>
++
++<TopicCard num="09" title="Elliptic Curves">
++
++Curves of the form $y^2 = x^3 + ax + b$, chosen for arithmetic that's easy to compute but hard to reverse. They're the basis of the cryptography behind Bitcoin and Ethereum, and they reappear throughout ZK in pairing-based proof systems.
++
++</TopicCard>
++
++</div>
++
++None of this needs to click in a single sitting — nobody picks up finite fields or polynomial commitments on the first pass. This track builds the nine ideas above one lesson at a time, starting with modular arithmetic next, and ties each one back to the cryptography and zero-knowledge systems it actually supports. Once the math stops being abstract and starts being something you can point to in an actual protocol, the rest of ZK stops looking like magic.
+diff --git a/src/content/site-data/about.ts b/src/content/site-data/about.ts
+new file mode 100644
+index 0000000..37a54c7
+--- /dev/null
++++ b/src/content/site-data/about.ts
+@@ -0,0 +1,55 @@
++// Content for the About page.
++
++export const aboutHero = {
++  kicker: "ABOUT",
++  heading: "The engineer behind ZK Cryptographer",
++  sub: "I'm Morteza — a blockchain engineer who's spent the last 6+ years in blockchain and zero-knowledge engineering, with a focus on ZK identity and privacy. ZK Cryptographer is where that work turns into structured learning, 1:1 coaching, and hands-on help for teams shipping real ZK systems.",
++  stats: [
++    { num: "6+", label: "years in ZK & blockchain" },
++    { num: "ZK", label: "identity & privacy focus" },
++    { num: "1:1", label: "coaching, not cohorts" },
++  ],
++};
++
++export const aboutHeroChips = [
++  { sym: "&#9679;", label: "6+ Years", sub: "ZK & BLOCKCHAIN ENGINEERING" },
++  { sym: "&#9670;", label: "Identity & Privacy", sub: "ZK SPECIALIZATION" },
++  { sym: "&#9632;", label: "Teaching & Coaching", sub: "ZK CRYPTOGRAPHER" },
++];
++
++export const aboutStory = {
++  kicker: "BACKGROUND",
++  title: "Why ZK Cryptographer exists",
++  paragraphs: [
++    "I've spent the last 6+ years working in blockchain engineering, with the last stretch of that focused specifically on zero-knowledge — proof systems, circuits, and the identity and privacy applications that ZK makes possible. Most of that work has been hands-on: picking a proving system, writing and auditing circuits, and getting verifiers integrated into systems that actually ship.",
++    "Along the way I kept running into the same pattern: developers who wanted to build in ZK but got stuck well before the interesting engineering problems, because the math — finite fields, modular arithmetic, polynomial commitments — wasn't explained anywhere in a way that started from zero. ZK Cryptographer started as a way to fix that for myself, and turned into the structured learning tracks, coaching, and consulting you'll find across this site.",
++    "The throughline across all of it is the same: start from the actual math, not hand-waving, and connect it back to code you can run and circuits you can ship.",
++  ],
++};
++
++export const aboutFocus = {
++  kicker: "WHAT I FOCUS ON",
++  title: "Three things, done properly",
++  items: [
++    {
++      title: "ZK identity & privacy",
++      desc: "Proof systems and protocols for proving facts about identity and data without revealing the underlying information.",
++    },
++    {
++      title: "Circuits & proving systems",
++      desc: "Picking the right proving system for the job, then writing, testing, and auditing the circuits that implement it.",
++    },
++    {
++      title: "Teaching what I use",
++      desc: "The Learning Hub, 1:1 coaching, and the ZK math series all come from the same material I use on real engagements — not a separate, simplified track.",
++    },
++  ],
++};
++
++export const aboutFinalCta = {
++  kicker: "LET'S TALK",
++  heading: "Have something specific in mind?",
++  sub: "Whether it's a concept to understand, a skill to build, or a system that needs to ship — start with a free intro call.",
++  ctaLabel: "Book a free intro call",
++  ctaHref: "/coaching/apply",
++};
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index b654aba..b40926c 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -64,7 +64,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+     {
+       module: "Foundations",
+       items: [
+-        { num: "00", title: "ZK Math — Introduction", duration: "8:04" },
++        { num: "00", title: "ZK Math — Introduction", duration: "8:04", slug: "zk-math-introduction" },
+         { num: "01", title: "Variables, Expressions & Equations", duration: "5:11" },
+         { num: "02", title: "Exponents and Powers", duration: "5:25" },
+         { num: "03", title: "Divisibility, Factors & Primes", duration: "6:46" },
+diff --git a/src/layouts/PostLayout.astro b/src/layouts/PostLayout.astro
+index e8bb9aa..ffd6620 100644
+--- a/src/layouts/PostLayout.astro
++++ b/src/layouts/PostLayout.astro
+@@ -21,6 +21,7 @@ interface Props {
+   ogImage?: string;
+   activeSlug?: string;
+   sidebarGroups?: SidebarGroup[];
++  nextPost?: { title: string; href: string };
+ }
+ const {
+   title,
+@@ -31,6 +32,7 @@ const {
+   ogImage = "/images/og-square.png",
+   activeSlug,
+   sidebarGroups = [],
++  nextPost,
+ } = Astro.props;
+ ---
+ <BaseLayout
+@@ -71,6 +73,16 @@ const {
+       <article class="lesson-article">
+         <slot />
+       </article>
++      <div class="prevnext">
++        <a href="/blog">
++          &larr; <span class="sub">Previous</span>Browse all posts
++        </a>
++        {nextPost && (
++          <a href={nextPost.href} style="text-align:right;">
++            {nextPost.title}<span class="sub">Next &rarr;</span>
++          </a>
++        )}
++      </div>
+     </div>
+   </div>
+ </BaseLayout>
+diff --git a/src/pages/about.astro b/src/pages/about.astro
+new file mode 100644
+index 0000000..a7824b5
+--- /dev/null
++++ b/src/pages/about.astro
+@@ -0,0 +1,64 @@
++---
++import BaseLayout from "../layouts/BaseLayout.astro";
++import Hero from "../components/Hero.astro";
++import AboutHeroDiagram from "../components/AboutHeroDiagram.astro";
++import PersonaCard from "../components/PersonaCard.astro";
++import {
++  aboutHero,
++  aboutHeroChips,
++  aboutStory,
++  aboutFocus,
++  aboutFinalCta,
++} from "../content/site-data/about";
++---
++<BaseLayout
++  title="About"
++  description="Morteza — a blockchain engineer with 6+ years in ZK and blockchain engineering, focused on ZK identity and privacy. The background behind ZK Cryptographer's learning, coaching, and services."
++  active="about"
++>
++  <Hero
++    kicker={aboutHero.kicker}
++    heading={aboutHero.heading}
++    sub={aboutHero.sub}
++    primaryCta={{ label: "Book a coaching call", href: "/coaching" }}
++    secondaryCta={{ label: "See services", href: "/services" }}
++    stats={aboutHero.stats}
++  >
++    <AboutHeroDiagram chips={aboutHeroChips} slot="diagram" />
++  </Hero>
++
++  <section class="section">
++    <div class="container">
++      <div class="section-head">
++        <div class="section-kicker">{aboutStory.kicker}</div>
++        <h2 class="section-title">{aboutStory.title}</h2>
++      </div>
++      <div class="prose-centered">
++        {aboutStory.paragraphs.map((p) => <p>{p}</p>)}
++      </div>
++    </div>
++  </section>
++
++  <section class="section section-alt">
++    <div class="container">
++      <div class="section-head">
++        <div class="section-kicker">{aboutFocus.kicker}</div>
++        <h2 class="section-title">{aboutFocus.title}</h2>
++      </div>
++      <div class="persona-grid">
++        {aboutFocus.items.map((i) => (
++          <PersonaCard title={i.title} desc={i.desc} />
++        ))}
++      </div>
++    </div>
++  </section>
++
++  <section class="cta-band">
++    <div class="container">
++      <div class="cta-band-kicker">{aboutFinalCta.kicker}</div>
++      <h2 class="cta-band-title">{aboutFinalCta.heading}</h2>
++      <p class="cta-band-sub">{aboutFinalCta.sub}</p>
++      <a class="btn" href={aboutFinalCta.ctaHref}>{aboutFinalCta.ctaLabel}</a>
++    </div>
++  </section>
++</BaseLayout>
+diff --git a/src/pages/blog/[slug].astro b/src/pages/blog/[slug].astro
+index 84b89ad..3d096df 100644
+--- a/src/pages/blog/[slug].astro
++++ b/src/pages/blog/[slug].astro
+@@ -30,6 +30,15 @@ const sidebarGroups = [
+   { label: entry.data.category, items: categoryPosts.map(toItem) },
+   ...(recentPosts.length > 0 ? [{ label: "Recent Posts", items: recentPosts.map(toItem) }] : []),
+ ];
++
++// Footer "Next": the following post within the same category sequence
++// (older, one step down the sidebar list) — omitted when this post is the
++// last in its category.
++const categoryIndex = categoryPosts.findIndex((p) => p.slug === entry.slug);
++const nextInCategory = categoryPosts[categoryIndex + 1];
++const nextPost = nextInCategory
++  ? { title: nextInCategory.data.title, href: `/blog/${nextInCategory.slug}` }
++  : undefined;
+ ---
+ <PostLayout
+   title={entry.data.title}
+@@ -39,6 +48,7 @@ const sidebarGroups = [
+   readingTime={entry.data.readingTime}
+   activeSlug={entry.slug}
+   sidebarGroups={sidebarGroups}
++  nextPost={nextPost}
+ >
+   <Content />
+ </PostLayout>
+diff --git a/src/styles/components.css b/src/styles/components.css
+index 3bdff35..e8abcc4 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -368,6 +368,12 @@
+   border: 1px solid var(--card-border);
+   border-radius: var(--radius-md);
+   padding: 28px;
++  transition: transform 0.15s ease, border-color 0.15s ease;
++}
++
++.plan-card:hover {
++  transform: translateY(-3px);
++  border-color: var(--accent);
+ }
+ 
+ .plan-card.featured {
+@@ -375,6 +381,11 @@
+   box-shadow: 0 0 0 1px var(--accent);
+ }
+ 
++.plan-card.featured:hover {
++  transform: translateY(-3px);
++  box-shadow: 0 0 0 1px var(--accent);
++}
++
+ .plan-tag {
+   position: absolute;
+   top: 0;
+@@ -436,12 +447,46 @@
+   font-size: 14px;
+   border: 1px solid var(--accent);
+   color: var(--accent);
++  transition: background 0.15s ease, transform 0.15s ease;
++}
++
++.plan-cta:hover {
++  background: rgba(58, 183, 255, 0.12);
++  transform: translateY(-2px);
++}
++
++.plan-cta:active {
++  background: rgba(58, 183, 255, 0.2);
++  transform: translateY(0);
++}
++
++.plan-cta:focus-visible {
++  outline: 2px solid var(--accent);
++  outline-offset: 2px;
+ }
+ 
+ .plan-card.featured .plan-cta {
+   background: var(--gradient-accent);
+   color: var(--accent-ink);
+   border: 1px solid rgba(143, 220, 255, 0.5);
++  box-shadow:
++    0 6px 18px rgba(58, 183, 255, 0.32),
++    inset 0 1px 0 rgba(255, 255, 255, 0.35);
++  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
++}
++
++.plan-card.featured .plan-cta:hover {
++  background: var(--gradient-accent);
++  transform: translateY(-2px);
++  filter: brightness(1.08);
++  box-shadow:
++    0 10px 24px rgba(58, 183, 255, 0.42),
++    inset 0 1px 0 rgba(255, 255, 255, 0.35);
++}
++
++.plan-card.featured .plan-cta:active {
++  transform: translateY(0);
++  filter: brightness(0.96);
+ }
+ 
+ .plan-note {
+@@ -505,6 +550,12 @@
+   border: 1px solid var(--card-border);
+   border-radius: var(--radius-md);
+   padding: 32px;
++  transition: transform 0.15s ease, border-color 0.15s ease;
++}
++
++.service-card:hover {
++  transform: translateY(-3px);
++  border-color: var(--accent);
+ }
+ 
+ .service-card-top {
+@@ -1186,6 +1237,67 @@ a.sb-item:hover {
+   font-weight: 700;
+ }
+ 
++/* ---------- Topic grid (lesson pillar list, e.g. ZK Math Intro) ---------- */
++.topic-grid {
++  display: grid;
++  grid-template-columns: repeat(2, 1fr);
++  gap: 16px;
++  margin: 24px 0 28px;
++}
++
++.topic-card {
++  position: relative;
++  overflow: hidden;
++  background: var(--card);
++  border: 1px solid var(--card-border);
++  border-radius: 12px;
++  padding: 18px 20px;
++  transition: transform 0.15s ease, border-color 0.15s ease;
++}
++
++.topic-card::before {
++  content: "";
++  position: absolute;
++  top: 0;
++  left: 0;
++  right: 0;
++  height: 3px;
++  background: var(--gradient-accent);
++}
++
++.topic-card:hover {
++  transform: translateY(-2px);
++  border-color: var(--accent);
++}
++
++.topic-card-num {
++  color: var(--accent);
++  font-weight: 800;
++  font-size: 12px;
++  letter-spacing: 0.04em;
++  margin-bottom: 6px;
++}
++
++.topic-card-title {
++  font-weight: 800;
++  font-size: 15.5px;
++  margin-bottom: 8px;
++}
++
++.topic-card-body {
++  color: var(--muted);
++  line-height: 1.6;
++  font-size: 13.5px;
++}
++
++.topic-card-body p {
++  margin-bottom: 0;
++}
++
++@media (max-width: 640px) {
++  .topic-grid { grid-template-columns: 1fr; }
++}
++
+ /* ---------- Apply forms (coaching / services) ---------- */
+ .apply-page {
+   padding: 48px 0 64px;

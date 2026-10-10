@@ -30,6 +30,15 @@ const sidebarGroups = [
   { label: entry.data.category, items: categoryPosts.map(toItem) },
   ...(recentPosts.length > 0 ? [{ label: "Recent Posts", items: recentPosts.map(toItem) }] : []),
 ];
+
+// Footer "Next": the following post within the same category sequence
+// (older, one step down the sidebar list) — omitted when this post is the
+// last in its category.
+const categoryIndex = categoryPosts.findIndex((p) => p.slug === entry.slug);
+const nextInCategory = categoryPosts[categoryIndex + 1];
+const nextPost = nextInCategory
+  ? { title: nextInCategory.data.title, href: `/blog/${nextInCategory.slug}` }
+  : undefined;
 ---
 <PostLayout
   title={entry.data.title}
@@ -39,6 +48,7 @@ const sidebarGroups = [
   readingTime={entry.data.readingTime}
   activeSlug={entry.slug}
   sidebarGroups={sidebarGroups}
+  nextPost={nextPost}
 >
   <Content />
 </PostLayout>

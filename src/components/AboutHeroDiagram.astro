@@ -1,0 +1,80 @@
+---
+// About page's hero visual: a cascading stack of credential chips, visually
+// matching the Learning Hub's TrackStack pattern (same cascading-card
+// composition, different content — credentials instead of tracks).
+interface Chip {
+  sym: string;
+  label: string;
+  sub: string;
+}
+interface Props {
+  chips: Chip[];
+}
+const { chips } = Astro.props;
+---
+<div class="cred-stack">
+  {chips.map((c, i) => (
+    <div class={`cred-chip cred-chip-${i}`}>
+      <div class="cred-chip-badge" set:html={c.sym} />
+      <div class="cred-chip-text">
+        <div class="cred-chip-label">{c.label}</div>
+        <div class="cred-chip-sub">{c.sub}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .cred-stack {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+  }
+  .cred-chip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    position: relative;
+    padding: 16px 18px;
+  }
+  .cred-chip-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--gradient-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--accent-ink);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(58, 183, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .cred-chip-label {
+    font-weight: 800;
+    color: var(--text);
+    font-size: 16px;
+  }
+  .cred-chip-sub {
+    color: var(--muted);
+    font-size: 11.5px;
+    margin-top: 2px;
+  }
+  .cred-chip-0 { z-index: 4; transform: translateX(0) rotate(-1.5deg); }
+  .cred-chip-1 { z-index: 3; opacity: 0.96; transform: translateX(28px) rotate(1deg); margin-top: -16px; }
+  .cred-chip-2 { z-index: 2; opacity: 0.92; transform: translateX(50px) rotate(-1deg); margin-top: -16px; }
+
+  @media (max-width: 768px) {
+    .cred-stack { max-width: 100%; }
+    .cred-chip-0, .cred-chip-1, .cred-chip-2 {
+      transform: none;
+      margin-top: 10px;
+    }
+    .cred-chip-0 { margin-top: 0; }
+  }
+</style>

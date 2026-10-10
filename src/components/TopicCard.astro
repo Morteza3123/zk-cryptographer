@@ -1,0 +1,16 @@
+---
+// A single topic in a TopicGrid — used by the "ZK Math — Introduction"
+// lesson to lay out the nine math pillars as on-brand cards (reusing the
+// hub-card visual language) instead of the generic stock illustrations
+// from the source video.
+interface Props {
+  num: string;
+  title: string;
+}
+const { num, title } = Astro.props;
+---
+<div class="topic-card">
+  <div class="topic-card-num">{num}</div>
+  <div class="topic-card-title">{title}</div>
+  <div class="topic-card-body"><slot /></div>
+</div>
