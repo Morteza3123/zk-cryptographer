@@ -1,0 +1,113 @@
+---
+track: math
+module: "Foundations"
+lessonNumber: "02"
+title: "Exponents and Powers"
+duration: "5:25"
+description: "What 256-bit security, SHA-256, and x² all have in common — and why the gap between 2³⁰ and 2¹²⁸ is the entire reason brute-forcing a cryptographic key doesn't work."
+order: 2
+youtubeHref: "https://www.youtube.com/watch?v=QhHw3qtbXjE"
+prevTitle: "Variables, Expressions & Equations"
+prevHref: "/learn/math/variables-expressions-equations"
+nextTitle: "Divisibility, Factors & Primes"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import PowerAnatomyFigure from "../../components/figures/PowerAnatomyFigure.astro";
+import PowerGrowthFigure from "../../components/figures/PowerGrowthFigure.astro";
+
+"256-bit security." "SHA-256." "$2^{128}$ possible keys." "$x^2 = 25$." Every one of those phrases is a power in disguise, and **cryptography is saturated with them** — not as decoration, but because repeated multiplication is one of the few operations that gets hard to undo fast enough to be useful for security. Before going further into this track, powers need to stop being a vague memory from school and start being something you can read fluently.
+
+## What a power actually is
+
+A power is just repeated multiplication, written compactly:
+
+<MathBox label="Example">
+
+$$2^3 = 2 \times 2 \times 2 = 8$$
+
+</MathBox>
+
+<Figure caption="Fig. 1 — the two parts of a power: the base gets multiplied, the exponent says how many times.">
+  <PowerAnatomyFigure />
+</Figure>
+
+The bottom number is the **base** — the thing being multiplied. The small number sitting above it is the **exponent** — how many copies of the base get multiplied together. $5^2$ works the same way: $5 \times 5 = 25$.
+
+## Powers on variables
+
+Nothing about this changes when the base is a variable instead of a number:
+
+<MathBox label="Example">
+
+$$x^2 = x \times x \qquad x^3 = x \times x \times x$$
+
+If $x = 4$, then $x^2 = 4 \times 4 = 16$.
+
+</MathBox>
+
+This is the form powers actually take inside a circuit — not a fixed number raised to a fixed power, but a **secret value raised to a power**, which is exactly what makes the next section interesting.
+
+## Why this shows up everywhere
+
+Powers aren't a cryptography-specific trick — they're how plain geometry already works: the area of a square is $\text{side}^2$, the volume of a cube is $\text{side}^3$. Cryptography just leans on the same idea harder. Take the running example from this track: a secret value $x$, and a public claim that $x^2 = 25$.
+
+<MathBox label="Checking">
+
+$$x^2 = 25, \quad x = 5 \implies 5^2 = 5 \times 5 = 25 \quad \checkmark$$
+
+A zero-knowledge proof convinces a verifier that some $x$ satisfying this exists, without that $x$ ever appearing in the proof.
+
+</MathBox>
+
+That's the same claim this track keeps returning to, just written with a power instead of a product — proof that the two notations describe exactly the same kind of statement.
+
+## Growth that outruns intuition
+
+Powers of two climb a lot faster than they look like they should:
+
+<Figure caption="Fig. 2 — four powers of two, each roughly doubling the exponent of the last. The values on the right are what actually matters.">
+  <PowerGrowthFigure />
+</Figure>
+
+$2^{20}$ already clears a million. $2^{30}$ clears a billion. And cryptography doesn't stop at 30 — it goes to $2^{128}$ or $2^{256}$.
+
+<MathBox label="A 128-bit key space">
+
+$$2^{128} \approx 3.4 \times 10^{38}$$
+
+Roughly 340 undecillion — a number with no everyday referent, because nothing in ordinary experience is that large.
+
+</MathBox>
+
+That number is the entire basis for a phrase like **"128-bit security."** It means an attacker guessing blindly has to search, on average, half of $2^{128}$ possibilities before finding the right one — and even running through a trillion guesses a second, that search would still outlast the sun. Pick a big enough exponent, and brute force simply stops being a viable attack. That's the whole job powers do in cryptography: turning a search problem into one too large for raw computing power to matter.
+
+## Three rules worth keeping
+
+A handful of exponent rules come up constantly once polynomials and finite fields enter the picture.
+
+<MathBox label="Multiplying, same base">
+
+$$2^2 \times 2^3 = 2^{2+3} = 2^5 = 32$$
+
+Multiplying two powers of the same base adds their exponents.
+
+</MathBox>
+
+<MathBox label="Dividing, same base">
+
+$$\frac{2^5}{2^2} = 2^{5-2} = 2^3 = 8$$
+
+Dividing subtracts the exponents instead.
+
+</MathBox>
+
+<MathBox label="A power raised to a power">
+
+$$(2^3)^2 = 2^{3 \times 2} = 2^6 = 64$$
+
+Raising a power to another power multiplies the exponents.
+
+</MathBox>
+
+None of these need to be memorized as abstract rules — they fall straight out of what a power already means: a count of repeated multiplications, which is easy to add, subtract, or scale. **Number theory, polynomials, and elliptic curves all lean on this same exponent arithmetic**, so it's worth being quick with it before those topics arrive.
