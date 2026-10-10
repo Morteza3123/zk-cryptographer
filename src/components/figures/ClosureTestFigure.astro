@@ -1,0 +1,36 @@
+---
+// Fig. for "Finite Fields": the closure test run against GF(7) — all four
+// operations, each landing back inside {0, ..., 6}, which is the entire
+// definition of a field in action.
+interface Row {
+  label: string;
+  eq: string;
+}
+const rows: Row[] = [
+  { label: "add", eq: "5 + 4 mod 7 = 2" },
+  { label: "subtract", eq: "5 − 6 mod 7 = 6" },
+  { label: "multiply", eq: "5 × 6 mod 7 = 2" },
+  { label: "divide", eq: "5 ÷ 6 mod 7 = 4" },
+];
+const rowH = 56;
+const topPad = 46;
+const height = topPad + rows.length * rowH + 10;
+---
+<svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">closure test — GF(7) = {`{0, 1, 2, 3, 4, 5, 6}`}</text>
+  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
+
+  {rows.map((row, i) => {
+    const y = topPad + i * rowH;
+    return (
+      <>
+        <text x="40" y={y + 18} text-anchor="start" fill="#c3cedd" font-size="14.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">{row.label}</text>
+        <text x="360" y={y + 18} text-anchor="middle" fill="#cdd9e8" font-size="14.5" font-family="SF Mono, Fira Code, Consolas, monospace">{row.eq}</text>
+        <text x="640" y={y + 18} text-anchor="end" fill="#5ddc8a" font-size="14" font-weight="800" font-family="-apple-system,Arial,sans-serif">&#10003; inside the set</text>
+        {i < rows.length - 1 && (
+          <line x1="20" y1={y + rowH - 16} x2="660" y2={y + rowH - 16} stroke="#1a2436" stroke-width="1" />
+        )}
+      </>
+    );
+  })}
+</svg>

@@ -1,0 +1,33 @@
+---
+// Fig. for "Finite Fields": the counter-example from the modular-inverses
+// lesson, read as a field test — mod 6 fails closure under division (2
+// has no partner), mod 7 passes because 7 is prime.
+interface Col {
+  title: string;
+  eq: string;
+  note: string;
+  verdict: string;
+  ok: boolean;
+}
+const cols: Col[] = [
+  { title: "mod 6", eq: "2 × x ≡ 1 (mod 6)", note: "no x ever works", verdict: "✗ not a field — gcd(2,6) = 2", ok: false },
+  { title: "mod 7", eq: "2 × 4 = 8 ≡ 1 (mod 7)", note: "every non-zero number works", verdict: "✓ a true field — 7 is prime", ok: true },
+];
+const colW = 340;
+---
+<svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <line x1="340" y1="14" x2="340" y2="206" stroke="#223049" stroke-width="1" />
+
+  {cols.map((col, i) => {
+    const cx = i * colW + colW / 2;
+    const color = col.ok ? "#5ddc8a" : "#ff8080";
+    return (
+      <>
+        <text x={cx} y="46" text-anchor="middle" fill="#8fdcff" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.title}</text>
+        <text x={cx} y="86" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{col.eq}</text>
+        <text x={cx} y="114" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{col.note}</text>
+        <text x={cx} y="164" text-anchor="middle" fill={color} font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">{col.verdict}</text>
+      </>
+    );
+  })}
+</svg>

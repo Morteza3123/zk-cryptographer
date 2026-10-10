@@ -1,0 +1,100 @@
+---
+track: math
+module: "Modular Arithmetic"
+lessonNumber: "06"
+title: "Finite Fields"
+duration: "4:08"
+description: "The name for everything the last two lessons built — a closed system of addition, subtraction, multiplication, and division — and why every signal inside a Circom circuit is secretly an element of one."
+order: 6
+youtubeHref: "https://www.youtube.com/watch?v=Vr9qUXOesss"
+prevTitle: "Modular Inverses & Fermat's"
+prevHref: "/learn/math/modular-inverses-fermats"
+nextTitle: "Polynomials"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import ClosureTestFigure from "../../components/figures/ClosureTestFigure.astro";
+import FieldInverseTableFigure from "../../components/figures/FieldInverseTableFigure.astro";
+import FieldPrimalityFigure from "../../components/figures/FieldPrimalityFigure.astro";
+import CircuitFieldElementFigure from "../../components/figures/CircuitFieldElementFigure.astro";
+import FieldSizeComparisonFigure from "../../components/figures/FieldSizeComparisonFigure.astro";
+
+The last two lessons built modular addition, subtraction, multiplication, and — through modular inverses — division. **Today all four get packaged into one idea with a name**: a finite field.
+
+## What a field actually is
+
+Strip away the "modular" part for a moment. A **field** is just a set of numbers where addition, subtraction, multiplication, and division all work, and the result never leaves that same set. The real numbers are the everyday example: add, subtract, multiply, or divide any two of them (division by zero aside, which is never allowed anywhere) and the answer is still a real number.
+
+<MathBox label="A field, informally">
+
+A set where $+, -, \times, \div$ all stay inside the set. The real numbers are one example — division by $0$ is the one operation that's never defined, in any field.
+
+</MathBox>
+
+## Defining GF(p)
+
+A **finite field**, written $GF(p)$, is the exact same idea, just with a finite set to work in: the numbers $0$ through $p - 1$, with every operation done modulo $p$.
+
+<MathBox label="GF(p)">
+
+$$GF(p) = \{0, 1, 2, \ldots, p-1\}, \quad \text{arithmetic done } \bmod p$$
+
+Addition, subtraction, and multiplication mod $p$ were already covered two lessons back. Division works because of the lesson right before this one: **every nonzero number has a modular inverse, as long as $p$ is prime** — which is exactly why it's $GF(p)$, built on a prime, and not $GF(n)$ for just any modulus.
+
+</MathBox>
+
+## Closure: the property that makes it a field
+
+The one property that defines a field is **closure** — no matter which of the four operations gets used, the result can never escape the set. Running the test against $GF(7)$ makes this concrete:
+
+<Figure caption="Fig. 1 — all four operations on GF(7), each one landing back inside {0, ..., 6}.">
+  <ClosureTestFigure />
+</Figure>
+
+Every single result stays inside $\{0, 1, \ldots, 6\}$ — including the division, which only works at all because $6$ has a modular inverse mod $7$.
+
+## A full worked example: GF(5)
+
+The smallest field worth looking at closely is $GF(5)$ — the set $\{0, 1, 2, 3, 4\}$. Every nonzero element pairs up with exactly one other element as its inverse, with nothing left over:
+
+<Figure caption="Fig. 2 — every nonzero element of GF(5), matched with its inverse. Nothing is left out.">
+  <FieldInverseTableFigure />
+</Figure>
+
+$1$ is its own inverse, $4$ is its own inverse, and $2$ and $3$ pair up with each other — four numbers, two pairs, zero exceptions.
+
+## Why p has to be prime
+
+The previous lesson already supplied the counter-example: $2$ has no inverse mod $6$, because $\gcd(2, 6) = 2$, not $1$. Read as a field test, that single failure is enough to disqualify mod $6$ entirely.
+
+<Figure caption="Fig. 3 — mod 6 fails closure under division; mod 7 passes, because 7 is prime.">
+  <FieldPrimalityFigure />
+</Figure>
+
+One missing inverse is all it takes — if even a single nonzero element has no partner, division stops being defined for every input, and the set fails to be a field. **That single requirement, that the modulus be prime, is why every ZK system builds its arithmetic on a prime.**
+
+## Field elements are circuit signals
+
+Here's the payoff for all of this: in Circom, **every signal in a circuit is a finite field element** — a number somewhere between $0$ and $p - 1$, where $p$ is the same enormous BN254 prime introduced back in the divisibility lesson.
+
+<Figure caption="Fig. 4 — a Circom signal isn't just a number — it's an element of GF(p), with p the BN254 prime.">
+  <CircuitFieldElementFigure />
+</Figure>
+
+Every `+`, `-`, `*`, and `/` written in circuit code is, underneath, a finite field operation — the same four operations this lesson just finished defining, just running at a scale no one ever does by hand.
+
+## Why the field has to be huge
+
+A small prime like $7$ or $101$ would satisfy every definition in this lesson just as well as BN254's prime does — so why not use one? The field's size is exactly what determines how much room exists for a secret value to hide in.
+
+<Figure caption="Fig. 5 — GF(7) is small enough to search directly; GF(BN254 prime) is nowhere close.">
+  <FieldSizeComparisonFigure />
+</Figure>
+
+<MathBox label="The scale that matters">
+
+$GF(7)$ has $7$ elements — trivial to search by hand. The BN254 field has roughly $2^{254}$ elements: **computationally invisible to search**, even though it's built from exactly the same clean structure as $GF(7)$. Every idea in this lesson scales up unchanged; only the size of the haystack changes.
+
+</MathBox>
+
+Addition, subtraction, multiplication, division, all closed, all built on a single prime — that's the entire structure a Circom circuit runs on. The next lessons build on top of it: **polynomials**, which turn a field's numbers into something that can encode an entire computation at once.

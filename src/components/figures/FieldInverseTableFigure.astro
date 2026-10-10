@@ -1,0 +1,42 @@
+---
+// Fig. for "Finite Fields": every nonzero element of GF(5) paired with its
+// inverse — nothing left out, which is exactly what a prime modulus
+// guarantees.
+interface Row {
+  x: number;
+  eq: string;
+  inv: string;
+}
+const rows: Row[] = [
+  { x: 1, eq: "1 × 1 = 1 → mod 5 = 1", inv: "1⁻¹ = 1" },
+  { x: 2, eq: "2 × 3 = 6 → mod 5 = 1", inv: "2⁻¹ = 3" },
+  { x: 3, eq: "3 × 2 = 6 → mod 5 = 1", inv: "3⁻¹ = 2" },
+  { x: 4, eq: "4 × 4 = 16 → mod 5 = 1", inv: "4⁻¹ = 4" },
+];
+const rowH = 48;
+const topPad = 46;
+const tableH = rows.length * rowH;
+const footerH = 56;
+const height = topPad + tableH + footerH + 10;
+---
+<svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">GF(5) = {`{0, 1, 2, 3, 4}`} — every inverse</text>
+  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
+
+  {rows.map((row, i) => {
+    const y = topPad + i * rowH;
+    return (
+      <>
+        <text x="40" y={y + 16} text-anchor="start" fill="#c3cedd" font-size="16" font-weight="700" font-family="-apple-system,Arial,sans-serif">{row.x}</text>
+        <text x="360" y={y + 16} text-anchor="middle" fill="#cdd9e8" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">{row.eq}</text>
+        <text x="640" y={y + 16} text-anchor="end" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">{row.inv}</text>
+        {i < rows.length - 1 && (
+          <line x1="20" y1={y + rowH - 12} x2="660" y2={y + rowH - 12} stroke="#1a2436" stroke-width="1" />
+        )}
+      </>
+    );
+  })}
+
+  <rect x="20" y={topPad + tableH + 10} width="640" height={footerH - 14} rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
+  <text x="340" y={topPad + tableH + 10 + (footerH - 14) / 2 + 5} text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">every non-zero element pairs up with exactly one other — nothing is left out</text>
+</svg>
