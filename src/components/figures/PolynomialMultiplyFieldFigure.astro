@@ -1,0 +1,21 @@
+---
+// Fig. for "Polynomial Arithmetic": the same multiplication, now over
+// GF(7) — expand and combine as usual, then reduce every coefficient by
+// the modulus, exactly like the finite-fields lesson.
+---
+<svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">multiplying over GF(7)</text>
+  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(x + 5)(x + 4), coefficients mod 7</text>
+  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="94" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">expand normally</text>
+  <text x="640" y="94" text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 4x + 5x + 20</text>
+  <line x1="20" y1="112" x2="660" y2="112" stroke="#1a2436" stroke-width="1" />
+
+  <text x="40" y="146" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">combine like terms</text>
+  <text x="640" y="146" text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 9x + 20</text>
+  <line x1="20" y1="164" x2="660" y2="164" stroke="#1a2436" stroke-width="1" />
+
+  <text x="40" y="198" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">reduce coefficients mod 7</text>
+  <text x="640" y="198" text-anchor="end" fill="#5ddc8a" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 2x + 6</text>
+</svg>

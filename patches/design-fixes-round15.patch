@@ -1,0 +1,330 @@
+diff --git a/src/components/figures/PolynomialAddFigure.astro b/src/components/figures/PolynomialAddFigure.astro
+new file mode 100644
+index 0000000..e776f22
+--- /dev/null
++++ b/src/components/figures/PolynomialAddFigure.astro
+@@ -0,0 +1,19 @@
++---
++// Fig. for "Polynomial Arithmetic": adding two polynomials — group
++// matching powers of x, then add their coefficients.
++---
++<svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">adding polynomials</text>
++  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3x² + 2x + 5) + (x² + 4x + 1)</text>
++  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
++
++  <text x="40" y="94" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 1 — group like terms</text>
++  <text x="640" y="94" text-anchor="end" fill="#e9eef5" font-size="15.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3x²+x²) + (2x+4x) + (5+1)</text>
++  <line x1="20" y1="112" x2="660" y2="112" stroke="#1a2436" stroke-width="1" />
++
++  <text x="40" y="146" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 2 — add each group</text>
++  <text x="640" y="146" text-anchor="end" fill="#5ddc8a" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">4x² + 6x + 6</text>
++
++  <rect x="20" y="172" width="640" height="40" rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
++  <text x="340" y="198" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">add coefficients of matching powers of x</text>
++</svg>
+diff --git a/src/components/figures/PolynomialDivideFigure.astro b/src/components/figures/PolynomialDivideFigure.astro
+new file mode 100644
+index 0000000..ed8ebef
+--- /dev/null
++++ b/src/components/figures/PolynomialDivideFigure.astro
+@@ -0,0 +1,33 @@
++---
++// Fig. for "Polynomial Arithmetic": dividing (x² - 5x + 6) by (x - 2) —
++// polynomial long division, one leading term at a time, the same
++// polynomial whose roots were checked by hand in the previous lesson.
++const steps = [
++  { label: "step 1 — divide leading terms", eq: "x² ÷ x = x" },
++  { label: "step 2 — multiply back", eq: "x(x−2) = x² − 2x" },
++  { label: "step 3 — subtract", eq: "(x²−5x+6) − (x²−2x) = −3x+6" },
++  { label: "step 4 — repeat: −3x ÷ x = −3", eq: "−3(x−2) = −3x+6" },
++];
++---
++<svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">dividing polynomials</text>
++  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(x² − 5x + 6) ÷ (x − 2)</text>
++  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
++
++  {steps.map((s, i) => {
++    const y = 66 + i * 40;
++    return (
++      <>
++        <text x="40" y={y + 22} text-anchor="start" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">{s.label}</text>
++        <text x="640" y={y + 22} text-anchor="end" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{s.eq}</text>
++        <line x1="20" y1={y + 32} x2="660" y2={y + 32} stroke="#1a2436" stroke-width="1" />
++      </>
++    );
++  })}
++
++  <text x="40" y="248" text-anchor="start" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">step 5 — subtract again</text>
++  <text x="640" y="248" text-anchor="end" fill="#5ddc8a" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">(−3x+6) − (−3x+6) = 0</text>
++
++  <rect x="20" y="272" width="640" height="40" rx="8" fill="#0d1f17" stroke="#5ddc8a" stroke-width="1.5" />
++  <text x="340" y="298" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">quotient is x − 3, remainder is 0</text>
++</svg>
+diff --git a/src/components/figures/PolynomialMultiplyFieldFigure.astro b/src/components/figures/PolynomialMultiplyFieldFigure.astro
+new file mode 100644
+index 0000000..b812925
+--- /dev/null
++++ b/src/components/figures/PolynomialMultiplyFieldFigure.astro
+@@ -0,0 +1,21 @@
++---
++// Fig. for "Polynomial Arithmetic": the same multiplication, now over
++// GF(7) — expand and combine as usual, then reduce every coefficient by
++// the modulus, exactly like the finite-fields lesson.
++---
++<svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">multiplying over GF(7)</text>
++  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(x + 5)(x + 4), coefficients mod 7</text>
++  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
++
++  <text x="40" y="94" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">expand normally</text>
++  <text x="640" y="94" text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 4x + 5x + 20</text>
++  <line x1="20" y1="112" x2="660" y2="112" stroke="#1a2436" stroke-width="1" />
++
++  <text x="40" y="146" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">combine like terms</text>
++  <text x="640" y="146" text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 9x + 20</text>
++  <line x1="20" y1="164" x2="660" y2="164" stroke="#1a2436" stroke-width="1" />
++
++  <text x="40" y="198" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">reduce coefficients mod 7</text>
++  <text x="640" y="198" text-anchor="end" fill="#5ddc8a" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 2x + 6</text>
++</svg>
+diff --git a/src/components/figures/PolynomialMultiplyFigure.astro b/src/components/figures/PolynomialMultiplyFigure.astro
+new file mode 100644
+index 0000000..c5da847
+--- /dev/null
++++ b/src/components/figures/PolynomialMultiplyFigure.astro
+@@ -0,0 +1,38 @@
++---
++// Fig. for "Polynomial Arithmetic": multiplying two polynomials — every
++// term in the first distributes across every term in the second, then
++// the products get combined.
++interface Row {
++  eq: string;
++  result: string;
++}
++const rows: Row[] = [
++  { eq: "x × x", result: "x²" },
++  { eq: "x × 3", result: "3x" },
++  { eq: "2 × x", result: "2x" },
++  { eq: "2 × 3", result: "6" },
++];
++---
++<svg viewBox="0 0 680 290" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">multiplying polynomials</text>
++  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(x + 2)(x + 3)</text>
++  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
++
++  {rows.map((row, i) => {
++    const y = 66 + i * 36;
++    return (
++      <>
++        <text x="40" y={y + 24} text-anchor="start" fill="#c3cedd" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.eq}</text>
++        <text x="640" y={y + 24} text-anchor="end" fill="#8fdcff" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.result}</text>
++        {i < rows.length - 1 && (
++          <line x1="20" y1={y + 32} x2="660" y2={y + 32} stroke="#1a2436" stroke-width="1" />
++        )}
++      </>
++    );
++  })}
++
++  <line x1="20" y1="214" x2="660" y2="214" stroke="#223049" stroke-width="1" />
++  <text x="340" y="244" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x² + 3x + 2x + 6</text>
++
++  <text x="340" y="278" text-anchor="middle" fill="#5ddc8a" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">= x² + 5x + 6</text>
++</svg>
+diff --git a/src/components/figures/PolynomialSubtractFigure.astro b/src/components/figures/PolynomialSubtractFigure.astro
+new file mode 100644
+index 0000000..d2a118f
+--- /dev/null
++++ b/src/components/figures/PolynomialSubtractFigure.astro
+@@ -0,0 +1,23 @@
++---
++// Fig. for "Polynomial Arithmetic": subtracting two polynomials — flip
++// the sign of every term in the second one first, then add as usual.
++---
++<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">subtracting polynomials</text>
++  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3x² + 2x + 5) − (x² + 4x + 1)</text>
++  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
++
++  <text x="40" y="94" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 1 — flip signs of the second</text>
++  <text x="640" y="94" text-anchor="end" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3x² + 2x + 5 − x² − 4x − 1</text>
++  <line x1="20" y1="112" x2="660" y2="112" stroke="#1a2436" stroke-width="1" />
++
++  <text x="40" y="146" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 2 — group like terms</text>
++  <text x="640" y="146" text-anchor="end" fill="#e9eef5" font-size="15.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3x²−x²) + (2x−4x) + (5−1)</text>
++  <line x1="20" y1="164" x2="660" y2="164" stroke="#1a2436" stroke-width="1" />
++
++  <text x="40" y="198" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 3 — combine each group</text>
++  <text x="640" y="198" text-anchor="end" fill="#5ddc8a" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">2x² − 2x + 4</text>
++
++  <rect x="20" y="224" width="640" height="40" rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
++  <text x="340" y="250" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">subtraction is addition of the negated polynomial</text>
++</svg>
+diff --git a/src/components/figures/PolynomialZKDivisionFigure.astro b/src/components/figures/PolynomialZKDivisionFigure.astro
+new file mode 100644
+index 0000000..6e7d79e
+--- /dev/null
++++ b/src/components/figures/PolynomialZKDivisionFigure.astro
+@@ -0,0 +1,22 @@
++---
++// Fig. for "Polynomial Arithmetic": the payoff for polynomial division —
++// a zero remainder when dividing by (x - root) is exactly the check a
++// QAP runs to verify a ZK witness.
++---
++<svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="280" y="38" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">p(x) &#247; (x − root) &#8594; remainder 0</text>
++  <text x="280" y="64" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">if and only if the root really is a root</text>
++
++  <line x1="280" y1="82" x2="280" y2="130" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#polyzkdiv-arrow)" />
++
++  <text x="280" y="162" text-anchor="middle" fill="#5ddc8a" font-size="18" font-weight="800" font-family="-apple-system,Arial,sans-serif">zero remainder = valid computation</text>
++
++  <line x1="20" y1="184" x2="540" y2="184" stroke="#223049" stroke-width="1" />
++  <text x="280" y="208" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">this exact check is how QAP verifies a ZK witness</text>
++
++  <defs>
++    <marker id="polyzkdiv-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/content/lessons/polynomial-arithmetic.mdx b/src/content/lessons/polynomial-arithmetic.mdx
+new file mode 100644
+index 0000000..573a09d
+--- /dev/null
++++ b/src/content/lessons/polynomial-arithmetic.mdx
+@@ -0,0 +1,107 @@
++---
++track: math
++module: "Algebra for ZK"
++lessonNumber: "08"
++title: "Polynomial Arithmetic"
++duration: "3:41"
++description: "Addition, subtraction, multiplication, and division for polynomials — the same journey modular arithmetic took, one level up, including why a zero remainder is exactly what a ZK proof system checks for."
++order: 8
++youtubeHref: "https://www.youtube.com/watch?v=FP_v7De9NVc"
++prevTitle: "Polynomials"
++prevHref: "/learn/math/polynomials"
++nextTitle: "Lagrange Interpolation"
++---
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import PolynomialAddFigure from "../../components/figures/PolynomialAddFigure.astro";
++import PolynomialSubtractFigure from "../../components/figures/PolynomialSubtractFigure.astro";
++import PolynomialMultiplyFigure from "../../components/figures/PolynomialMultiplyFigure.astro";
++import PolynomialMultiplyFieldFigure from "../../components/figures/PolynomialMultiplyFieldFigure.astro";
++import PolynomialDivideFigure from "../../components/figures/PolynomialDivideFigure.astro";
++import PolynomialZKDivisionFigure from "../../components/figures/PolynomialZKDivisionFigure.astro";
++
++The last lesson covered what a polynomial is. **This one covers what you can do with it** — adding, subtracting, multiplying, and dividing polynomials, which turns out to be exactly the same journey plain numbers took a few lessons back, just one level up.
++
++## Adding polynomials
++
++Adding two polynomials means grouping their matching powers of $x$ together and adding the coefficients that sit on each one.
++
++<Figure caption="Fig. 1 — grouping matching powers of x, then adding the coefficient in each group.">
++  <PolynomialAddFigure />
++</Figure>
++
++<MathBox label="Addition">
++
++$$(3x^2 + 2x + 5) + (x^2 + 4x + 1) = 4x^2 + 6x + 6$$
++
++</MathBox>
++
++## Subtracting polynomials
++
++Subtraction works the same way, with one extra move first: **flip the sign of every term in the second polynomial**, then add as usual.
++
++<Figure caption="Fig. 2 — flip every sign in the second polynomial first, then group and combine exactly like addition.">
++  <PolynomialSubtractFigure />
++</Figure>
++
++<MathBox label="Subtraction">
++
++$$(3x^2 + 2x + 5) - (x^2 + 4x + 1) = 2x^2 - 2x + 4$$
++
++</MathBox>
++
++## Multiplying polynomials
++
++Multiplying two polynomials means every term in the first one multiplies every term in the second — then the products get combined.
++
++<Figure caption="Fig. 3 — every term in (x + 2) multiplied against every term in (x + 3), then summed.">
++  <PolynomialMultiplyFigure />
++</Figure>
++
++<MathBox label="Multiplication">
++
++$$(x + 2)(x + 3) = x^2 + 3x + 2x + 6 = x^2 + 5x + 6$$
++
++</MathBox>
++
++## Doing this over a finite field
++
++This is where the finite-fields lesson connects back in. In a ZK system, every coefficient lives inside $GF(p)$ — so after multiplying, every coefficient gets reduced mod $p$, same as it would for a plain number.
++
++<Figure caption="Fig. 4 — the same multiplication process, finished off with one extra step: reduce every coefficient mod 7.">
++  <PolynomialMultiplyFieldFigure />
++</Figure>
++
++<MathBox label="Multiplication over GF(7)">
++
++$$(x + 5)(x + 4) \equiv x^2 + 2x + 6 \pmod{7}$$
++
++$9 \bmod 7 = 2$ and $20 \bmod 7 = 6$ — every coefficient wraps around exactly like it did two lessons back, just attached to a power of $x$ instead of standing alone.
++
++</MathBox>
++
++## Dividing polynomials
++
++Division is the trickiest of the four, but it runs on the same long-division process as plain numbers: divide the leading terms, multiply back, subtract, and repeat.
++
++<Figure caption="Fig. 5 — long division of x² - 5x + 6 by x - 2, the same polynomial whose roots got checked by hand last lesson.">
++  <PolynomialDivideFigure />
++</Figure>
++
++<MathBox label="Division">
++
++$$(x^2 - 5x + 6) \div (x - 2) = x - 3, \quad \text{remainder } 0$$
++
++A remainder of $0$ isn't a coincidence here — $x - 2$ divides in cleanly because $2$ is one of this polynomial's roots, found the same way back in the previous lesson.
++
++</MathBox>
++
++## Why division matters for ZK
++
++That connection between roots and clean division is the entire reason this operation matters so much for ZK systems.
++
++<Figure caption="Fig. 6 — dividing by (x - root) leaves no remainder exactly when that value really is a root.">
++  <PolynomialZKDivisionFigure />
++</Figure>
++
++$p(x) \div (x - \text{root})$ leaves a remainder of $0$ **if and only if** that value really is a root of $p(x)$ — a zero remainder means a valid computation, a nonzero one means it isn't. **This exact check is how a QAP verifies a ZK witness**: not by recomputing everything, just by confirming one polynomial division comes out clean.
+diff --git a/src/content/lessons/polynomials.mdx b/src/content/lessons/polynomials.mdx
+index 72cbe7c..5f202b3 100644
+--- a/src/content/lessons/polynomials.mdx
++++ b/src/content/lessons/polynomials.mdx
+@@ -10,6 +10,7 @@ youtubeHref: "https://www.youtube.com/watch?v=n74Br4Cdr8o"
+ prevTitle: "Finite Fields"
+ prevHref: "/learn/math/finite-fields"
+ nextTitle: "Polynomial Arithmetic"
++nextHref: "/learn/math/polynomial-arithmetic"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 7952377..68a2ef3 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -82,7 +82,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+       module: "Algebra for ZK",
+       items: [
+         { num: "07", title: "Polynomials", duration: "4:25", slug: "polynomials" },
+-        { num: "08", title: "Polynomial Arithmetic", duration: "3:41" },
++        { num: "08", title: "Polynomial Arithmetic", duration: "3:41", slug: "polynomial-arithmetic" },
+         { num: "09", title: "Lagrange Interpolation", duration: "3:33" },
+         { num: "10", title: "Schwartz-Zippel Lemma", duration: "3:38" },
+       ],

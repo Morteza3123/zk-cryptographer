@@ -1,0 +1,107 @@
+---
+track: math
+module: "Algebra for ZK"
+lessonNumber: "08"
+title: "Polynomial Arithmetic"
+duration: "3:41"
+description: "Addition, subtraction, multiplication, and division for polynomials — the same journey modular arithmetic took, one level up, including why a zero remainder is exactly what a ZK proof system checks for."
+order: 8
+youtubeHref: "https://www.youtube.com/watch?v=FP_v7De9NVc"
+prevTitle: "Polynomials"
+prevHref: "/learn/math/polynomials"
+nextTitle: "Lagrange Interpolation"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import PolynomialAddFigure from "../../components/figures/PolynomialAddFigure.astro";
+import PolynomialSubtractFigure from "../../components/figures/PolynomialSubtractFigure.astro";
+import PolynomialMultiplyFigure from "../../components/figures/PolynomialMultiplyFigure.astro";
+import PolynomialMultiplyFieldFigure from "../../components/figures/PolynomialMultiplyFieldFigure.astro";
+import PolynomialDivideFigure from "../../components/figures/PolynomialDivideFigure.astro";
+import PolynomialZKDivisionFigure from "../../components/figures/PolynomialZKDivisionFigure.astro";
+
+The last lesson covered what a polynomial is. **This one covers what you can do with it** — adding, subtracting, multiplying, and dividing polynomials, which turns out to be exactly the same journey plain numbers took a few lessons back, just one level up.
+
+## Adding polynomials
+
+Adding two polynomials means grouping their matching powers of $x$ together and adding the coefficients that sit on each one.
+
+<Figure caption="Fig. 1 — grouping matching powers of x, then adding the coefficient in each group.">
+  <PolynomialAddFigure />
+</Figure>
+
+<MathBox label="Addition">
+
+$$(3x^2 + 2x + 5) + (x^2 + 4x + 1) = 4x^2 + 6x + 6$$
+
+</MathBox>
+
+## Subtracting polynomials
+
+Subtraction works the same way, with one extra move first: **flip the sign of every term in the second polynomial**, then add as usual.
+
+<Figure caption="Fig. 2 — flip every sign in the second polynomial first, then group and combine exactly like addition.">
+  <PolynomialSubtractFigure />
+</Figure>
+
+<MathBox label="Subtraction">
+
+$$(3x^2 + 2x + 5) - (x^2 + 4x + 1) = 2x^2 - 2x + 4$$
+
+</MathBox>
+
+## Multiplying polynomials
+
+Multiplying two polynomials means every term in the first one multiplies every term in the second — then the products get combined.
+
+<Figure caption="Fig. 3 — every term in (x + 2) multiplied against every term in (x + 3), then summed.">
+  <PolynomialMultiplyFigure />
+</Figure>
+
+<MathBox label="Multiplication">
+
+$$(x + 2)(x + 3) = x^2 + 3x + 2x + 6 = x^2 + 5x + 6$$
+
+</MathBox>
+
+## Doing this over a finite field
+
+This is where the finite-fields lesson connects back in. In a ZK system, every coefficient lives inside $GF(p)$ — so after multiplying, every coefficient gets reduced mod $p$, same as it would for a plain number.
+
+<Figure caption="Fig. 4 — the same multiplication process, finished off with one extra step: reduce every coefficient mod 7.">
+  <PolynomialMultiplyFieldFigure />
+</Figure>
+
+<MathBox label="Multiplication over GF(7)">
+
+$$(x + 5)(x + 4) \equiv x^2 + 2x + 6 \pmod{7}$$
+
+$9 \bmod 7 = 2$ and $20 \bmod 7 = 6$ — every coefficient wraps around exactly like it did two lessons back, just attached to a power of $x$ instead of standing alone.
+
+</MathBox>
+
+## Dividing polynomials
+
+Division is the trickiest of the four, but it runs on the same long-division process as plain numbers: divide the leading terms, multiply back, subtract, and repeat.
+
+<Figure caption="Fig. 5 — long division of x² - 5x + 6 by x - 2, the same polynomial whose roots got checked by hand last lesson.">
+  <PolynomialDivideFigure />
+</Figure>
+
+<MathBox label="Division">
+
+$$(x^2 - 5x + 6) \div (x - 2) = x - 3, \quad \text{remainder } 0$$
+
+A remainder of $0$ isn't a coincidence here — $x - 2$ divides in cleanly because $2$ is one of this polynomial's roots, found the same way back in the previous lesson.
+
+</MathBox>
+
+## Why division matters for ZK
+
+That connection between roots and clean division is the entire reason this operation matters so much for ZK systems.
+
+<Figure caption="Fig. 6 — dividing by (x - root) leaves no remainder exactly when that value really is a root.">
+  <PolynomialZKDivisionFigure />
+</Figure>
+
+$p(x) \div (x - \text{root})$ leaves a remainder of $0$ **if and only if** that value really is a root of $p(x)$ — a zero remainder means a valid computation, a nonzero one means it isn't. **This exact check is how a QAP verifies a ZK witness**: not by recomputing everything, just by confirming one polynomial division comes out clean.

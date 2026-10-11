@@ -1,0 +1,23 @@
+---
+// Fig. for "Polynomial Arithmetic": subtracting two polynomials — flip
+// the sign of every term in the second one first, then add as usual.
+---
+<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">subtracting polynomials</text>
+  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3x² + 2x + 5) − (x² + 4x + 1)</text>
+  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="94" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 1 — flip signs of the second</text>
+  <text x="640" y="94" text-anchor="end" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3x² + 2x + 5 − x² − 4x − 1</text>
+  <line x1="20" y1="112" x2="660" y2="112" stroke="#1a2436" stroke-width="1" />
+
+  <text x="40" y="146" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 2 — group like terms</text>
+  <text x="640" y="146" text-anchor="end" fill="#e9eef5" font-size="15.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3x²−x²) + (2x−4x) + (5−1)</text>
+  <line x1="20" y1="164" x2="660" y2="164" stroke="#1a2436" stroke-width="1" />
+
+  <text x="40" y="198" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 3 — combine each group</text>
+  <text x="640" y="198" text-anchor="end" fill="#5ddc8a" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">2x² − 2x + 4</text>
+
+  <rect x="20" y="224" width="640" height="40" rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
+  <text x="340" y="250" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">subtraction is addition of the negated polynomial</text>
+</svg>
