@@ -1,0 +1,64 @@
+---
+// Fig. for "Groups & Cyclic Groups": C7, the cyclic group of order 7 under
+// addition mod 7. Starting from 1 (highlighted) and repeatedly adding 1
+// visits every element before wrapping back to the start — that's what
+// makes 1 a generator. Node positions are computed on a circle at build
+// time; each arrow is a straight chord shortened so it clears both
+// node circles before the arrowhead.
+const n = 7;
+const cx = 200;
+const cy = 225;
+const r = 148;
+const nodeR = 21;
+
+const angleFor = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
+const nodes = Array.from({ length: n }, (_, i) => {
+  const a = angleFor(i);
+  return {
+    num: i + 1,
+    x: cx + r * Math.cos(a),
+    y: cy + r * Math.sin(a),
+  };
+});
+
+const shrink = nodeR + 10;
+const arrows = nodes.map((from, i) => {
+  const to = nodes[(i + 1) % n];
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  return {
+    x1: from.x + ux * shrink,
+    y1: from.y + uy * shrink,
+    x2: to.x - ux * shrink,
+    y2: to.y - uy * shrink,
+  };
+});
+---
+<svg viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="200" y="26" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">C&#8327; — generated entirely by the element 1</text>
+
+  <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1a2436" stroke-width="1.5" stroke-dasharray="3,5" />
+
+  {arrows.map((a) => (
+    <line x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2} stroke="#3ab7ff" stroke-width="2" marker-end="url(#ring-arrow)" />
+  ))}
+
+  {nodes.map((node) => (
+    <>
+      <circle cx={node.x} cy={node.y} r={nodeR} fill={node.num === 1 ? "#5ddc8a" : "#121c2c"} stroke={node.num === 1 ? "#5ddc8a" : "#3ab7ff"} stroke-width="2" />
+      <text x={node.x} y={node.y + 6} text-anchor="middle" fill={node.num === 1 ? "#0a0f19" : "#e9eef5"} font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{node.num}</text>
+    </>
+  ))}
+
+  <text x="200" y={cy + r + 44} text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">1 is the generator — start here</text>
+  <text x="200" y={cy + r + 64} text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">1 → 2 → 3 → 4 → 5 → 6 → 7 → 1 (mod 7), visiting every element</text>
+
+  <defs>
+    <marker id="ring-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

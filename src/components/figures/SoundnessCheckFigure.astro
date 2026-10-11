@@ -1,0 +1,23 @@
+---
+// Fig. for "Schwartz-Zippel Lemma": the payoff — instead of a verifier
+// reading an entire polynomial (potentially millions of terms), the
+// lemma lets them gamble on a single random point and call it a
+// shortcut rather than a gamble.
+---
+<svg viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="260" y="38" text-anchor="middle" fill="#e9eef5" font-size="18" font-weight="800" font-family="-apple-system,Arial,sans-serif">checking an entire polynomial</text>
+  <text x="260" y="62" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">which could have millions of terms</text>
+
+  <line x1="260" y1="80" x2="260" y2="134" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#sound-arrow)" />
+
+  <text x="260" y="166" text-anchor="middle" fill="#5ddc8a" font-size="21" font-weight="800" font-family="-apple-system,Arial,sans-serif">check ONE random point instead</text>
+
+  <line x1="40" y1="194" x2="480" y2="194" stroke="#223049" stroke-width="1" />
+  <text x="260" y="224" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">the soundness argument behind Groth16, PLONK, and STARKs</text>
+
+  <defs>
+    <marker id="sound-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

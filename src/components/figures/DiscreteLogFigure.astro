@@ -1,0 +1,23 @@
+---
+// Fig. for "Groups & Cyclic Groups": the payoff — elliptic curve groups
+// run on this exact cyclic structure. Going forward (scalar times
+// generator) is easy; going backward (recovering the scalar) is hard.
+// That one-way gap is the discrete log problem.
+---
+<svg viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="260" y="34" text-anchor="middle" fill="#e9eef5" font-size="16.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">elliptic curve groups used in ZK are cyclic too</text>
+  <text x="260" y="58" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">generator point G, scalar K &#8594; compute K &#183; G easily</text>
+
+  <line x1="260" y1="76" x2="260" y2="128" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#dlog-arrow)" />
+
+  <text x="260" y="160" text-anchor="middle" fill="#5ddc8a" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">but going backward from K &#183; G to K is HARD</text>
+
+  <line x1="40" y1="186" x2="480" y2="186" stroke="#223049" stroke-width="1" />
+  <text x="260" y="216" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">this one-way difficulty is the discrete log problem</text>
+
+  <defs>
+    <marker id="dlog-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

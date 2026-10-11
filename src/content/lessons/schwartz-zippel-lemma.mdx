@@ -1,0 +1,97 @@
+---
+track: math
+module: "Algebra for ZK"
+lessonNumber: "10"
+title: "Schwartz-Zippel Lemma"
+duration: "3:38"
+description: "How a verifier checks a polynomial without reading every term — a single random point turns out to be almost as good as reading the whole thing, and the probability bound behind that shortcut powers Groth16, PLONK, and STARKs."
+order: 10
+youtubeHref: "https://www.youtube.com/watch?v=2atrTk5mLkQ"
+prevTitle: "Lagrange Interpolation"
+prevHref: "/learn/math/lagrange-interpolation"
+nextTitle: "Groups & Cyclic Groups"
+nextHref: "/learn/math/groups-cyclic-groups"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import SchwartzZippelCurveFigure from "../../components/figures/SchwartzZippelCurveFigure.astro";
+import SchwartzZippelLemmaFigure from "../../components/figures/SchwartzZippelLemmaFigure.astro";
+import FalseMatchProbabilityFigure from "../../components/figures/FalseMatchProbabilityFigure.astro";
+import SoundnessCheckFigure from "../../components/figures/SoundnessCheckFigure.astro";
+
+The last lesson showed how Lagrange interpolation folds an entire circuit into a single polynomial. That raises an obvious follow-up question: **if a prover hands a verifier that polynomial and claims it represents a valid computation, how does the verifier check it without reading every single term?** The answer is one of the most useful tricks in all of cryptography — the Schwartz-Zippel lemma.
+
+## Can two polynomials look almost the same?
+
+Start with a strange-sounding question: can two completely different polynomials still sneak up on each other at a few spots? Take $p(x) = x$ and $q(x) = x^2$ — as shapes, a straight line and a curve, about as different as two polynomials can look. And yet they land on the exact same value at two points.
+
+<Figure caption="Fig. 1 — a line and a curve, two very different shapes, landing on the same value at (0, 0) and (1, 1).">
+  <SchwartzZippelCurveFigure />
+</Figure>
+
+Everywhere else on the graph, the line and the curve are somewhere completely different. That narrow, limited overlap is exactly the behavior this lesson explains.
+
+## The core rule
+
+A single fact from algebra accounts for that limited overlap, and it applies to any pair of polynomials, not just this one example:
+
+<MathBox label="The core rule">
+
+$$\deg(p) = d \quad \Longrightarrow \quad p \text{ has at most } d \text{ roots}$$
+
+It can never have more roots than its degree — not two roots on a degree-1 polynomial, not five roots on a degree-3 one.
+
+</MathBox>
+
+## Why the graph only crosses twice
+
+That rule confirms exactly what Fig. 1 showed. Turn the two curves into a single polynomial by subtracting one from the other, then look at where that difference hits zero.
+
+<MathBox label="Why only two crossings">
+
+$$
+\begin{aligned}
+p(x) - q(x) &= x - x^2 \\
+&= x(1 - x)
+\end{aligned}
+$$
+
+That difference is zero exactly at $x = 0$ and $x = 1$ — the two points where the line and the curve actually meet. It's a degree-2 polynomial, so **it can have at most two roots**, which means $p(x)$ and $q(x)$ can agree in at most two places. The graph isn't being generous; it's obeying the rule.
+
+</MathBox>
+
+## The Schwartz-Zippel lemma
+
+Two matching points out of the whole number line isn't very reassuring by itself. The real power shows up once this scales from a tiny graph up to an enormous field — which is exactly what the lemma formalizes.
+
+<Figure caption="Fig. 2 — compare two different degree-d polynomials at one random point in a huge field, and they almost certainly disagree.">
+  <SchwartzZippelLemmaFigure />
+</Figure>
+
+<MathBox label="Schwartz-Zippel lemma">
+
+$$\Pr(\text{false match}) \le \frac{d}{|F|}$$
+
+If two *different* degree-$d$ polynomials are compared at one random point, the chance that point happens to be one of their (at most $d$) shared roots is bounded by $d$ divided by the size of the field.
+
+</MathBox>
+
+## Putting numbers on it
+
+"Vanishingly small" is easy to say and hard to feel. Plugging in the field sizes real ZK systems actually use makes the probability concrete.
+
+<Figure caption="Fig. 3 — degree 2, checked over a field the size of a real ZK system's, and the false-match chance all but disappears.">
+  <FalseMatchProbabilityFigure />
+</Figure>
+
+A degree-2 polynomial, checked over a field of roughly $2^{254}$ elements, gives a false-match probability far below any risk worth worrying about — **smaller than the odds of picking out one specific atom in the entire observable universe**.
+
+## Why this matters for ZK
+
+That probability is exactly what lets a ZK verifier take a shortcut instead of doing the full amount of work.
+
+<Figure caption="Fig. 4 — instead of reading a massive polynomial term by term, the verifier checks one random point and trusts the odds.">
+  <SoundnessCheckFigure />
+</Figure>
+
+Instead of reading a polynomial that could run to millions of terms, the verifier evaluates both sides at a single random point and compares. Thanks to the numbers from Fig. 3, that isn't really a gamble at all — **this is the soundness argument underneath Groth16, PLONK, and STARKs**, the same shortcut this lesson just built from a line and a curve.

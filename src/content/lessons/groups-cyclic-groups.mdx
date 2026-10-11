@@ -1,0 +1,78 @@
+---
+track: math
+module: "Groups & Curves"
+lessonNumber: "11"
+title: "Groups & Cyclic Groups"
+duration: "3:23"
+description: "The lightest algebraic structure in this series — a set plus one operation — and the special property, cyclic, that makes a single generator enough to reach every element. The exact foundation elliptic curve groups are built on."
+order: 11
+youtubeHref: "https://www.youtube.com/watch?v=lqdhWqFieVs"
+prevTitle: "Schwartz-Zippel Lemma"
+prevHref: "/learn/math/schwartz-zippel-lemma"
+nextTitle: "Elliptic Curves"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import GroupAxiomsFigure from "../../components/figures/GroupAxiomsFigure.astro";
+import GroupExampleCheckFigure from "../../components/figures/GroupExampleCheckFigure.astro";
+import CyclicGroupRingFigure from "../../components/figures/CyclicGroupRingFigure.astro";
+import GeneratingGroupFigure from "../../components/figures/GeneratingGroupFigure.astro";
+import DiscreteLogFigure from "../../components/figures/DiscreteLogFigure.astro";
+
+That closes out phase two, polynomials. **Phase three starts here: groups, curves, and pairings** — the foundation everything from elliptic curves to bilinear pairings gets built on. Today stays simple: what is a group, and what makes one *cyclic*?
+
+## What is a group?
+
+A group is a much lighter structure than the finite fields built back in the finite fields lesson. It strips things down to the bare minimum that's still useful.
+
+<MathBox label="Group vs. field">
+
+A **field** needs all four operations — add, subtract, multiply, divide. A **group** needs only a set and *one* operation, plus a short list of rules that operation has to follow.
+
+</MathBox>
+
+## The four group rules
+
+Those rules have a name: the **group axioms**. Every one of them has to hold for a set and an operation to count as a group.
+
+<Figure caption="Fig. 1 — the four group axioms. Miss any one of these and it isn't a group.">
+  <GroupAxiomsFigure />
+</Figure>
+
+## A concrete example
+
+This should feel familiar — **this series has already been working with a group**, just without the name. Addition mod 7, the exact structure from the modular arithmetic lesson, satisfies these axioms directly.
+
+<Figure caption="Fig. 2 — three of the four axioms, checked against addition mod 7.">
+  <GroupExampleCheckFigure />
+</Figure>
+
+## What makes a group cyclic?
+
+Some groups have a special property: **every element can be reached by repeatedly applying the operation to just one starting element**. Starting from $1$ and adding $1$ over and over, under addition mod 7, visits every element in the group before landing back on the start.
+
+<Figure caption="Fig. 3 — C₇, the cyclic group of order 7. Starting from 1 and following the arrows reaches every element before wrapping back around.">
+  <CyclicGroupRingFigure />
+</Figure>
+
+An element that does this — reaches the whole group on its own — is called a **generator**.
+
+## Generating the group from one element
+
+Watching the running total confirms it directly: adding $1$ to itself, again and again, counts straight through every element of the group.
+
+<Figure caption="Fig. 4 — the running total of 1 + 1 + 1 + ... mod 7, landing on every element before wrapping back to the start.">
+  <GeneratingGroupFigure />
+</Figure>
+
+Seven additions of $1$ visit every element of $C_7$ exactly once, then land back on the identity — $1$ really does generate the whole group.
+
+## Why this matters for ZK
+
+The elliptic curve groups used throughout ZK cryptography are built on this exact same cyclic structure — just with **points on a curve** standing in for numbers on a ring.
+
+<Figure caption="Fig. 5 — the same one-way gap as C₇'s generator, scaled up to a curve: easy forward, hard backward.">
+  <DiscreteLogFigure />
+</Figure>
+
+There's a generator point $G$, and for a scalar $K$, computing $K \cdot G$ is easy. Going the other direction — recovering $K$ from $K \cdot G$ — is hard. **That one-way difficulty is the discrete log problem**, and it's what every elliptic curve scheme in this series will lean on from here forward.
