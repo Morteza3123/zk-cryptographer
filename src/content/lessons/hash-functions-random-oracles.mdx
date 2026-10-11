@@ -1,0 +1,88 @@
+---
+track: math
+module: "Hash Functions"
+lessonNumber: "14"
+title: "Hash Functions & Random Oracles"
+duration: "4:02"
+description: "The tool that doesn't come from algebra at all but shows up everywhere in ZK — how a hash function turns a live back-and-forth between a prover and a verifier into something the prover can do entirely alone."
+order: 14
+youtubeHref: "https://www.youtube.com/watch?v=55oVOIype58"
+prevTitle: "Bilinear Pairings"
+prevHref: "/learn/math/bilinear-pairings"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import HashFunctionFigure from "../../components/figures/HashFunctionFigure.astro";
+import OneWayHashFigure from "../../components/figures/OneWayHashFigure.astro";
+import CollisionResistanceFigure from "../../components/figures/CollisionResistanceFigure.astro";
+import RandomOracleFigure from "../../components/figures/RandomOracleFigure.astro";
+import FiatShamirFigure from "../../components/figures/FiatShamirFigure.astro";
+
+This series has spent thirteen lessons building up numbers, polynomials, fields, groups, and curves. **This lesson steps outside algebra entirely** — into a tool that doesn't come from any of that machinery, yet shows up everywhere in ZK anyway: the hash function. By the end, the goal is to see exactly how it turns a live, back-and-forth conversation between a prover and a verifier into something a prover can do completely alone.
+
+## What is a hash function?
+
+A hash function takes *anything* — a word, a sentence, an entire file — and always hands back an output of the exact same size.
+
+<Figure caption="Fig. 1 — three wildly different inputs, all passing through H(x), all coming out the same fixed length.">
+  <HashFunctionFigure />
+</Figure>
+
+<MathBox label="A hash function">
+
+$$H : \{0,1\}^{*} \rightarrow \{0,1\}^{n}$$
+
+Input of **any length** goes in; output of one **fixed length** $n$ comes out. Three properties make it useful: it's **deterministic** (the same input always gives the same digest), **fixed-size** (output length never varies), and **one-way** (there's no going backward).
+
+</MathBox>
+
+## The one-way property
+
+Going from $x$ to $f(x)$ — computing the function — is easy. Going backward, from $f(x)$ trying to recover $x$, is **infeasible**. There's no shortcut; the only option is searching through every possible $x$.
+
+<Figure caption="Fig. 2 — computing forward is trivial. Reversing it means brute-forcing every possible input.">
+  <OneWayHashFigure />
+</Figure>
+
+## Collision resistance
+
+That's the second property a good hash function needs, separate from being one-way, and just as important. Take two inputs one letter apart — `Hello` and `Hellp` — and run both through the same hash function. Landing on the same digest is exactly what's **not** supposed to happen.
+
+<Figure caption="Fig. 3 — two different inputs, even one character apart, must never land on the same digest.">
+  <CollisionResistanceFigure />
+</Figure>
+
+<MathBox label="Collision resistance">
+
+Finding **any** $x_1 \ne x_2$ with $H(x_1) = H(x_2)$ must be infeasible — not impossible in principle (pigeonhole guarantees collisions exist somewhere), just impossible to actually *find* one.
+
+</MathBox>
+
+## The random oracle model
+
+To reason about hash functions mathematically, cryptographers lean on a simplified mental model: pretend the hash function is a magic box that hands out pure randomness. Ask about $x_1$ for the first time, and the oracle hands back $r_1$ — a fresh random answer. Ask about a new input $x_2$, and it hands back a completely different random answer, $r_2$. The oracle remembers both. Ask about $x_1$ **again**, and it doesn't roll new randomness — it looks up what it already committed to and returns the exact same $r_1$.
+
+<Figure caption="Fig. 4 — a new query gets a fresh random answer; a repeated query gets back exactly what it got before.">
+  <RandomOracleFigure />
+</Figure>
+
+## Why this matters for ZK
+
+Here's the payoff for the whole lesson — the reason ZK proof systems care about any of this. Normally, an interactive proof needs both sides online at the same time: the prover sends a commitment $a$, the verifier fires back a random challenge $c$, and the prover replies with a response $z$. That live round-trip is a real constraint.
+
+The **Fiat-Shamir transform** removes it. Instead of waiting on a verifier, the prover derives that same challenge themselves — by hashing the transcript so far.
+
+<Figure caption="Fig. 5 — on the left, prover and verifier both have to be online. On the right, the prover hashes the transcript to produce its own challenge, and sends the whole proof as one package.">
+  <FiatShamirFigure />
+</Figure>
+
+<MathBox label="The Fiat-Shamir transform">
+
+$$c = H(\text{transcript})$$
+
+The hash **plays the verifier's role**. Because it behaves like a random oracle, $H(\text{transcript})$ gives a fresh, unpredictable challenge — exactly like a live verifier would, without a verifier needing to be there at all.
+
+</MathBox>
+
+That one substitution — a hash standing in for a verifier's random coin flip — **is what turns an interactive proof into something a prover can run alone**, and it's the trick underneath every non-interactive proof system that follows.

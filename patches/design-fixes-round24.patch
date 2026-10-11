@@ -1,0 +1,427 @@
+diff --git a/src/components/figures/CollisionResistanceFigure.astro b/src/components/figures/CollisionResistanceFigure.astro
+new file mode 100644
+index 0000000..18f8a35
+--- /dev/null
++++ b/src/components/figures/CollisionResistanceFigure.astro
+@@ -0,0 +1,50 @@
++---
++// Fig. for "Hash Functions & Random Oracles": collision resistance —
++// two different inputs landing on the same digest must be infeasible
++// to find, no matter how close the inputs are.
++const hx = { x: 300, y: 134, w: 130, h: 110 };
++const cx = hx.x + hx.w / 2;
++const cy = hx.y + hx.h / 2;
++---
++<svg viewBox="0 0 740 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="370" y="30" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">two different inputs, the same digest — blocked</text>
++  <text x="40" y="62" text-anchor="start" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">two different inputs</text>
++
++  <rect x="20" y="86" width="200" height="54" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="120" y="119" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x&#8321; : Hello</text>
++
++  <text x="120" y="185" text-anchor="middle" fill="#c3cedd" font-size="20" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#8800;</text>
++
++  <rect x="20" y="212" width="200" height="54" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="120" y="245" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x&#8322; : Hellp</text>
++
++  <line x1="220" y1="113" x2={hx.x - 4} y2={cy - 18} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#cr-arrow-in)" />
++  <line x1="220" y1="239" x2={hx.x - 4} y2={cy + 18} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#cr-arrow-in)" />
++
++  <rect x={hx.x} y={hx.y} width={hx.w} height={hx.h} rx="12" fill="#0a0f19" stroke="#e9eef5" stroke-width="2" />
++  <text x={cx} y={cy + 10} text-anchor="middle" fill="#e9eef5" font-size="26" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">H(x)</text>
++
++  <line x1={hx.x + hx.w + 6} y1={cy} x2="556" y2={cy} stroke="#ff8080" stroke-width="2" stroke-dasharray="6 6" />
++  <circle cx="588" cy={cy} r="24" fill="none" stroke="#ff8080" stroke-width="3" />
++  <line x1="571" y1={cy + 17} x2="605" y2={cy - 17} stroke="#ff8080" stroke-width="3" />
++  <line x1="612" y1={cy} x2="602" y2={cy} stroke="#ff8080" stroke-width="2" marker-end="url(#cr-arrow-block)" />
++
++  <text x="588" y={cy - 40} text-anchor="middle" fill="#ff8080" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">COLLISION</text>
++  <text x="700" y={cy - 40} text-anchor="middle" fill="#ff8080" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">same digest</text>
++
++  <rect x="602" y={cy - 27} width="128" height="54" rx="9" fill="#121c2c" stroke="#ff8080" stroke-width="1.6" />
++  <text x="666" y={cy + 6} text-anchor="middle" fill="#c3cedd" font-size="11" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2cf24dba&#8230;9824</text>
++
++  <line x1="20" y1="320" x2="720" y2="320" stroke="#223049" stroke-width="1" />
++  <text x="370" y="346" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">NO TWO INPUTS, ONE DIGEST</text>
++  <text x="370" y="370" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">finding x&#8321; &#8800; x&#8322; with H(x&#8321;) = H(x&#8322;) is infeasible</text>
++
++  <defs>
++    <marker id="cr-arrow-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++    <marker id="cr-arrow-block" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#ff8080" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/FiatShamirFigure.astro b/src/components/figures/FiatShamirFigure.astro
+new file mode 100644
+index 0000000..780aa3b
+--- /dev/null
++++ b/src/components/figures/FiatShamirFigure.astro
+@@ -0,0 +1,72 @@
++---
++// Fig. for "Hash Functions & Random Oracles": the payoff — the Fiat-Shamir
++// transform. On the left, an interactive proof needs prover and verifier
++// online together. On the right, the prover derives the verifier's
++// challenge itself by hashing the transcript, so the whole proof can be
++// sent as one package and checked later, offline.
++---
++<svg viewBox="0 0 920 540" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="460" y="30" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">the hash removes the verifier from the room</text>
++
++  <line x1="460" y1="52" x2="460" y2="420" stroke="#1a2436" stroke-width="1" stroke-dasharray="4 5" />
++
++  <!-- LEFT: interactive -->
++  <text x="225" y="66" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">INTERACTIVE</text>
++
++  <rect x="40" y="86" width="150" height="52" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="115" y="118" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">Prover</text>
++
++  <rect x="300" y="86" width="150" height="52" rx="9" fill="#121c2c" stroke="#ff8080" stroke-width="1.6" />
++  <text x="375" y="118" text-anchor="middle" fill="#ff8080" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">Verifier</text>
++
++  <line x1="115" y1="138" x2="115" y2="370" stroke="#223049" stroke-width="1" stroke-dasharray="3 4" />
++  <line x1="375" y1="138" x2="375" y2="370" stroke="#223049" stroke-width="1" stroke-dasharray="3 4" />
++
++  <text x="245" y="178" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">1. commitment a</text>
++  <line x1="115" y1="192" x2="375" y2="192" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#fs-arrow-w)" />
++
++  <text x="245" y="240" text-anchor="middle" fill="#8fdcff" font-size="13" font-family="-apple-system,Arial,sans-serif">2. random challenge c</text>
++  <line x1="375" y1="254" x2="115" y2="254" stroke="#8fdcff" stroke-width="1.8" marker-end="url(#fs-arrow-blue)" />
++
++  <text x="245" y="302" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">3. response z</text>
++  <line x1="115" y1="316" x2="375" y2="316" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#fs-arrow-w)" />
++
++  <text x="245" y="356" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">both online at once</text>
++
++  <!-- RIGHT: non-interactive -->
++  <text x="690" y="66" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">NON-INTERACTIVE</text>
++
++  <rect x="565" y="86" width="150" height="52" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="640" y="118" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">Prover</text>
++
++  <rect x="810" y="86" width="100" height="52" rx="9" fill="#0a0f19" stroke="#ff8080" stroke-width="1.6" stroke-dasharray="5 5" />
++  <text x="860" y="118" text-anchor="middle" fill="#ff8080" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">Verifier</text>
++
++  <line x1="640" y1="138" x2="640" y2="172" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#fs-arrow-cyan)" />
++
++  <text x="755" y="166" text-anchor="middle" fill="#8fdcff" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">prover derives the challenge</text>
++  <rect x="610" y="178" width="290" height="56" rx="10" fill="#0d1526" stroke="#8fdcff" stroke-width="1.8" />
++  <text x="755" y="213" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">c = H(transcript)</text>
++
++  <line x1="640" y1="234" x2="640" y2="296" stroke="#223049" stroke-width="1" />
++  <text x="755" y="286" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">proof (a, c, z)</text>
++  <line x1="640" y1="300" x2="858" y2="300" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#fs-arrow-w)" />
++
++  <text x="755" y="356" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">verifier checks later, offline</text>
++
++  <line x1="40" y1="398" x2="900" y2="398" stroke="#223049" stroke-width="1" />
++  <text x="460" y="424" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE HASH PLAYS THE VERIFIER'S ROLE</text>
++  <text x="460" y="448" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">it acts as a random oracle, so H(transcript) gives a fresh, unpredictable challenge</text>
++
++  <defs>
++    <marker id="fs-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++    <marker id="fs-arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="fs-arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/HashFunctionFigure.astro b/src/components/figures/HashFunctionFigure.astro
+new file mode 100644
+index 0000000..6e5852b
+--- /dev/null
++++ b/src/components/figures/HashFunctionFigure.astro
+@@ -0,0 +1,55 @@
++---
++// Fig. for "Hash Functions & Random Oracles": what a hash function does —
++// any-size input compresses to a fixed-size output, deterministically.
++interface Row {
++  y: number;
++  input: string;
++  output: string;
++}
++const rows: Row[] = [
++  { y: 96, input: "Hi", output: "2cf24dba… 9824" },
++  { y: 218, input: "Hello, world!", output: "315f5bdb… f2d3" },
++  { y: 340, input: "A 5 GB video file", output: "e3b0c442… b855" },
++];
++const hx = { x: 280, y: 158, w: 140, h: 120 };
++const cx = hx.x + hx.w / 2;
++const cy = hx.y + hx.h / 2;
++const boxW = 220;
++const boxH = 56;
++---
++<svg viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="350" y="30" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">any size in, the same size out</text>
++
++  <text x="40" y="64" text-anchor="start" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">input: any size</text>
++  <text x="660" y="64" text-anchor="end" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">digest: fixed size</text>
++
++  {rows.map((row) => (
++    <>
++      <rect x="20" y={row.y - boxH / 2} width={boxW} height={boxH} rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++      <text x={20 + boxW / 2} y={row.y + 6} text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">{row.input}</text>
++
++      <line x1="240" y1={row.y} x2={hx.x - 4} y2={cy} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#hf-arrow-in)" />
++
++      <line x1={hx.x + hx.w + 4} y1={cy} x2="460" y2={row.y} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#hf-arrow-out)" />
++
++      <rect x="460" y={row.y - boxH / 2} width={boxW} height={boxH} rx="9" fill="#121c2c" stroke="#8fdcff" stroke-width="1.6" />
++      <text x={460 + boxW / 2} y={row.y + 5} text-anchor="middle" fill="#c3cedd" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.output}</text>
++    </>
++  ))}
++
++  <rect x={hx.x} y={hx.y} width={hx.w} height={hx.h} rx="12" fill="#0a0f19" stroke="#e9eef5" stroke-width="2" />
++  <text x={cx} y={cy + 10} text-anchor="middle" fill="#e9eef5" font-size="30" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">H(x)</text>
++
++  <line x1="20" y1="402" x2="680" y2="402" stroke="#223049" stroke-width="1" />
++  <text x="350" y="426" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">DETERMINISTIC &#183; FIXED SIZE &#183; ONE-WAY</text>
++  <text x="350" y="448" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">same input always gives the same digest — change one bit and it changes completely</text>
++
++  <defs>
++    <marker id="hf-arrow-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++    <marker id="hf-arrow-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/OneWayHashFigure.astro b/src/components/figures/OneWayHashFigure.astro
+new file mode 100644
+index 0000000..9c7ca0b
+--- /dev/null
++++ b/src/components/figures/OneWayHashFigure.astro
+@@ -0,0 +1,37 @@
++---
++// Fig. for "Hash Functions & Random Oracles": the one-way property of a
++// hash function — computing H(x) from x is easy, but recovering x from
++// H(x) is infeasible. (Named distinctly from OneWayFunctionFigure, which
++// is the earlier prime-factorization one-way figure used in
++// "Divisibility, Factors & Primes" — same underlying idea, different
++// lesson and different visual.)
++---
++<svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="320" y="30" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">easy to compute, infeasible to reverse</text>
++
++  <circle cx="120" cy="170" r="66" fill="#0a0f19" stroke="#5ddc8a" stroke-width="2.4" />
++  <text x="120" y="182" text-anchor="middle" fill="#e9eef5" font-size="30" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">x</text>
++
++  <circle cx="520" cy="170" r="66" fill="#0a0f19" stroke="#3ab7ff" stroke-width="2.4" />
++  <text x="520" y="182" text-anchor="middle" fill="#e9eef5" font-size="26" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">f(x)</text>
++
++  <line x1="196" y1="150" x2="444" y2="150" stroke="#5ddc8a" stroke-width="2" marker-end="url(#owf-arrow-fwd)" />
++  <text x="320" y="126" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">EASY</text>
++  <text x="320" y="142" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">compute f(x) from x</text>
++
++  <line x1="444" y1="200" x2="196" y2="200" stroke="#ff8080" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#owf-arrow-back)" />
++  <text x="320" y="228" text-anchor="middle" fill="#ff8080" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">INFEASIBLE</text>
++  <text x="320" y="244" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">cannot recover x from f(x)</text>
++
++  <line x1="20" y1="276" x2="620" y2="276" stroke="#223049" stroke-width="1" />
++  <text x="320" y="300" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">EASY FORWARD &#183; IMPOSSIBLE BACKWARD</text>
++
++  <defs>
++    <marker id="owf-arrow-fwd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
++    </marker>
++    <marker id="owf-arrow-back" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#ff8080" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/RandomOracleFigure.astro b/src/components/figures/RandomOracleFigure.astro
+new file mode 100644
+index 0000000..e9d0336
+--- /dev/null
++++ b/src/components/figures/RandomOracleFigure.astro
+@@ -0,0 +1,59 @@
++---
++// Fig. for "Hash Functions & Random Oracles": the random oracle model —
++// a magic box that hands back fresh randomness on a new query, and the
++// exact same answer again on a repeated query.
++interface Row {
++  y: number;
++  query: string;
++  response: string;
++  repeat?: boolean;
++}
++const rows: Row[] = [
++  { y: 100, query: "x₁", response: "r₁ random" },
++  { y: 222, query: "x₂", response: "r₂ random" },
++  { y: 344, query: "x₁ again", response: "r₁ again", repeat: true },
++];
++const ox = { x: 280, y: 158, w: 140, h: 170 };
++const cx = ox.x + ox.w / 2;
++const boxW = 220;
++const boxH = 56;
++---
++<svg viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="350" y="30" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">O(x): truly random, yet consistent</text>
++
++  <text x="40" y="64" text-anchor="start" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">queries</text>
++  <text x="660" y="64" text-anchor="end" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">responses</text>
++
++  {rows.map((row) => (
++    <>
++      <rect x="20" y={row.y - boxH / 2} width={boxW} height={boxH} rx="9" fill="#121c2c" stroke={row.repeat ? "#8fdcff" : "#5ddc8a"} stroke-width="1.6" />
++      <text x={20 + boxW / 2} y={row.y + 6} text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.query}</text>
++
++      <line x1="240" y1={row.y} x2={ox.x - 4} y2={row.y} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#ro-arrow-in)" />
++      <line x1={ox.x + ox.w + 4} y1={row.y} x2="460" y2={row.y} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#ro-arrow-out)" />
++
++      <rect x="460" y={row.y - boxH / 2} width={boxW} height={boxH} rx="9" fill="#121c2c" stroke={row.repeat ? "#8fdcff" : "#ff8080"} stroke-width="1.6" />
++      <text x={460 + boxW / 2} y={row.y + 6} text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.response}</text>
++    </>
++  ))}
++
++  <rect x={ox.x} y={ox.y} width={ox.w} height={ox.h} rx="12" fill="#0a0f19" stroke="#e9eef5" stroke-width="2" />
++  <text x={cx} y={ox.y + 32} text-anchor="middle" fill="#e9eef5" font-size="24" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">O(x)</text>
++  <text x={cx} y={ox.y + 58} text-anchor="middle" fill="#8fdcff" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">MEMORY TABLE</text>
++  <line x1={ox.x + 16} y1={ox.y + 70} x2={ox.x + ox.w - 16} y2={ox.y + 70} stroke="#223049" stroke-width="1" />
++  <text x={cx} y={ox.y + 96} text-anchor="middle" fill="#c3cedd" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">x&#8321; &#8594; r&#8321;</text>
++  <text x={cx} y={ox.y + 120} text-anchor="middle" fill="#c3cedd" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">x&#8322; &#8594; r&#8322;</text>
++  <text x={cx} y={ox.y + 150} text-anchor="middle" fill="#8b96a8" font-size="11" font-family="-apple-system,Arial,sans-serif">random on first use</text>
++
++  <line x1="20" y1="402" x2="680" y2="402" stroke="#223049" stroke-width="1" />
++  <text x="350" y="426" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">NEW INPUT: FRESH OUTPUT &#183; REPEAT INPUT: SAME OUTPUT</text>
++
++  <defs>
++    <marker id="ro-arrow-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++    <marker id="ro-arrow-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/content/lessons/bilinear-pairings.mdx b/src/content/lessons/bilinear-pairings.mdx
+index 69fd91a..495f631 100644
+--- a/src/content/lessons/bilinear-pairings.mdx
++++ b/src/content/lessons/bilinear-pairings.mdx
+@@ -9,6 +9,8 @@ order: 13
+ youtubeHref: "https://www.youtube.com/watch?v=xqAGcFTgEl0"
+ prevTitle: "Elliptic Curves"
+ prevHref: "/learn/math/elliptic-curves"
++nextTitle: "Hash Functions & Random Oracles"
++nextHref: "/learn/math/hash-functions-random-oracles"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+diff --git a/src/content/lessons/hash-functions-random-oracles.mdx b/src/content/lessons/hash-functions-random-oracles.mdx
+new file mode 100644
+index 0000000..761bf72
+--- /dev/null
++++ b/src/content/lessons/hash-functions-random-oracles.mdx
+@@ -0,0 +1,88 @@
++---
++track: math
++module: "Hash Functions"
++lessonNumber: "14"
++title: "Hash Functions & Random Oracles"
++duration: "4:02"
++description: "The tool that doesn't come from algebra at all but shows up everywhere in ZK — how a hash function turns a live back-and-forth between a prover and a verifier into something the prover can do entirely alone."
++order: 14
++youtubeHref: "https://www.youtube.com/watch?v=55oVOIype58"
++prevTitle: "Bilinear Pairings"
++prevHref: "/learn/math/bilinear-pairings"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import HashFunctionFigure from "../../components/figures/HashFunctionFigure.astro";
++import OneWayHashFigure from "../../components/figures/OneWayHashFigure.astro";
++import CollisionResistanceFigure from "../../components/figures/CollisionResistanceFigure.astro";
++import RandomOracleFigure from "../../components/figures/RandomOracleFigure.astro";
++import FiatShamirFigure from "../../components/figures/FiatShamirFigure.astro";
++
++This series has spent thirteen lessons building up numbers, polynomials, fields, groups, and curves. **This lesson steps outside algebra entirely** — into a tool that doesn't come from any of that machinery, yet shows up everywhere in ZK anyway: the hash function. By the end, the goal is to see exactly how it turns a live, back-and-forth conversation between a prover and a verifier into something a prover can do completely alone.
++
++## What is a hash function?
++
++A hash function takes *anything* — a word, a sentence, an entire file — and always hands back an output of the exact same size.
++
++<Figure caption="Fig. 1 — three wildly different inputs, all passing through H(x), all coming out the same fixed length.">
++  <HashFunctionFigure />
++</Figure>
++
++<MathBox label="A hash function">
++
++$$H : \{0,1\}^{*} \rightarrow \{0,1\}^{n}$$
++
++Input of **any length** goes in; output of one **fixed length** $n$ comes out. Three properties make it useful: it's **deterministic** (the same input always gives the same digest), **fixed-size** (output length never varies), and **one-way** (there's no going backward).
++
++</MathBox>
++
++## The one-way property
++
++Going from $x$ to $f(x)$ — computing the function — is easy. Going backward, from $f(x)$ trying to recover $x$, is **infeasible**. There's no shortcut; the only option is searching through every possible $x$.
++
++<Figure caption="Fig. 2 — computing forward is trivial. Reversing it means brute-forcing every possible input.">
++  <OneWayHashFigure />
++</Figure>
++
++## Collision resistance
++
++That's the second property a good hash function needs, separate from being one-way, and just as important. Take two inputs one letter apart — `Hello` and `Hellp` — and run both through the same hash function. Landing on the same digest is exactly what's **not** supposed to happen.
++
++<Figure caption="Fig. 3 — two different inputs, even one character apart, must never land on the same digest.">
++  <CollisionResistanceFigure />
++</Figure>
++
++<MathBox label="Collision resistance">
++
++Finding **any** $x_1 \ne x_2$ with $H(x_1) = H(x_2)$ must be infeasible — not impossible in principle (pigeonhole guarantees collisions exist somewhere), just impossible to actually *find* one.
++
++</MathBox>
++
++## The random oracle model
++
++To reason about hash functions mathematically, cryptographers lean on a simplified mental model: pretend the hash function is a magic box that hands out pure randomness. Ask about $x_1$ for the first time, and the oracle hands back $r_1$ — a fresh random answer. Ask about a new input $x_2$, and it hands back a completely different random answer, $r_2$. The oracle remembers both. Ask about $x_1$ **again**, and it doesn't roll new randomness — it looks up what it already committed to and returns the exact same $r_1$.
++
++<Figure caption="Fig. 4 — a new query gets a fresh random answer; a repeated query gets back exactly what it got before.">
++  <RandomOracleFigure />
++</Figure>
++
++## Why this matters for ZK
++
++Here's the payoff for the whole lesson — the reason ZK proof systems care about any of this. Normally, an interactive proof needs both sides online at the same time: the prover sends a commitment $a$, the verifier fires back a random challenge $c$, and the prover replies with a response $z$. That live round-trip is a real constraint.
++
++The **Fiat-Shamir transform** removes it. Instead of waiting on a verifier, the prover derives that same challenge themselves — by hashing the transcript so far.
++
++<Figure caption="Fig. 5 — on the left, prover and verifier both have to be online. On the right, the prover hashes the transcript to produce its own challenge, and sends the whole proof as one package.">
++  <FiatShamirFigure />
++</Figure>
++
++<MathBox label="The Fiat-Shamir transform">
++
++$$c = H(\text{transcript})$$
++
++The hash **plays the verifier's role**. Because it behaves like a random oracle, $H(\text{transcript})$ gives a fresh, unpredictable challenge — exactly like a live verifier would, without a verifier needing to be there at all.
++
++</MathBox>
++
++That one substitution — a hash standing in for a verifier's random coin flip — **is what turns an interactive proof into something a prover can run alone**, and it's the trick underneath every non-interactive proof system that follows.
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 8afc010..d3a633f 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -95,6 +95,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "13", title: "Bilinear Pairings", duration: "3:28", slug: "bilinear-pairings" },
+       ],
+     },
++    {
++      module: "Hash Functions",
++      items: [
++        { num: "14", title: "Hash Functions & Random Oracles", duration: "4:02", slug: "hash-functions-random-oracles" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],

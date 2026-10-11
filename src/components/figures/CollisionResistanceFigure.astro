@@ -1,0 +1,50 @@
+---
+// Fig. for "Hash Functions & Random Oracles": collision resistance —
+// two different inputs landing on the same digest must be infeasible
+// to find, no matter how close the inputs are.
+const hx = { x: 300, y: 134, w: 130, h: 110 };
+const cx = hx.x + hx.w / 2;
+const cy = hx.y + hx.h / 2;
+---
+<svg viewBox="0 0 740 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="370" y="30" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">two different inputs, the same digest — blocked</text>
+  <text x="40" y="62" text-anchor="start" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">two different inputs</text>
+
+  <rect x="20" y="86" width="200" height="54" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
+  <text x="120" y="119" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x&#8321; : Hello</text>
+
+  <text x="120" y="185" text-anchor="middle" fill="#c3cedd" font-size="20" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#8800;</text>
+
+  <rect x="20" y="212" width="200" height="54" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
+  <text x="120" y="245" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x&#8322; : Hellp</text>
+
+  <line x1="220" y1="113" x2={hx.x - 4} y2={cy - 18} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#cr-arrow-in)" />
+  <line x1="220" y1="239" x2={hx.x - 4} y2={cy + 18} stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#cr-arrow-in)" />
+
+  <rect x={hx.x} y={hx.y} width={hx.w} height={hx.h} rx="12" fill="#0a0f19" stroke="#e9eef5" stroke-width="2" />
+  <text x={cx} y={cy + 10} text-anchor="middle" fill="#e9eef5" font-size="26" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">H(x)</text>
+
+  <line x1={hx.x + hx.w + 6} y1={cy} x2="556" y2={cy} stroke="#ff8080" stroke-width="2" stroke-dasharray="6 6" />
+  <circle cx="588" cy={cy} r="24" fill="none" stroke="#ff8080" stroke-width="3" />
+  <line x1="571" y1={cy + 17} x2="605" y2={cy - 17} stroke="#ff8080" stroke-width="3" />
+  <line x1="612" y1={cy} x2="602" y2={cy} stroke="#ff8080" stroke-width="2" marker-end="url(#cr-arrow-block)" />
+
+  <text x="588" y={cy - 40} text-anchor="middle" fill="#ff8080" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">COLLISION</text>
+  <text x="700" y={cy - 40} text-anchor="middle" fill="#ff8080" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">same digest</text>
+
+  <rect x="602" y={cy - 27} width="128" height="54" rx="9" fill="#121c2c" stroke="#ff8080" stroke-width="1.6" />
+  <text x="666" y={cy + 6} text-anchor="middle" fill="#c3cedd" font-size="11" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2cf24dba&#8230;9824</text>
+
+  <line x1="20" y1="320" x2="720" y2="320" stroke="#223049" stroke-width="1" />
+  <text x="370" y="346" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">NO TWO INPUTS, ONE DIGEST</text>
+  <text x="370" y="370" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">finding x&#8321; &#8800; x&#8322; with H(x&#8321;) = H(x&#8322;) is infeasible</text>
+
+  <defs>
+    <marker id="cr-arrow-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+    <marker id="cr-arrow-block" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff8080" />
+    </marker>
+  </defs>
+</svg>

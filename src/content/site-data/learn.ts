@@ -95,6 +95,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
         { num: "13", title: "Bilinear Pairings", duration: "3:28", slug: "bilinear-pairings" },
       ],
     },
+    {
+      module: "Hash Functions",
+      items: [
+        { num: "14", title: "Hash Functions & Random Oracles", duration: "4:02", slug: "hash-functions-random-oracles" },
+      ],
+    },
   ],
   cryptography: [],
   fundamentals: [],
