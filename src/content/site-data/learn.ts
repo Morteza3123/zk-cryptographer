@@ -91,7 +91,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Groups & Curves",
       items: [
         { num: "11", title: "Groups & Cyclic Groups", duration: "3:23", slug: "groups-cyclic-groups" },
-        { num: "12", title: "Elliptic Curves", duration: "3:47" },
+        { num: "12", title: "Elliptic Curves", duration: "3:47", slug: "elliptic-curves" },
         { num: "13", title: "Bilinear Pairings", duration: "3:28" },
       ],
     },

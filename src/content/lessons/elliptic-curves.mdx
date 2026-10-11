@@ -1,0 +1,95 @@
+---
+track: math
+module: "Groups & Curves"
+lessonNumber: "12"
+title: "Elliptic Curves"
+duration: "3:47"
+description: "The most important group in ZK cryptography — a cubic curve where addition is drawn, not calculated, and the exact structure every Groth16 proof, KZG commitment, and BN254 reference in Circom runs on."
+order: 12
+youtubeHref: "https://www.youtube.com/watch?v=RxoF_kFvst8"
+prevTitle: "Groups & Cyclic Groups"
+prevHref: "/learn/math/groups-cyclic-groups"
+nextTitle: "Bilinear Pairings"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import EllipticCurveAdditionFigure from "../../components/figures/EllipticCurveAdditionFigure.astro";
+import ScalarMultiplicationFigure from "../../components/figures/ScalarMultiplicationFigure.astro";
+
+The last lesson covered groups and cyclic groups: a set, one operation, four simple rules. **Today meets the most important group in all of ZK cryptography — the elliptic curve.** Every Groth16 proof, every KZG commitment, every `BN254` reference seen in Circom runs on exactly this structure.
+
+## What is an elliptic curve?
+
+An elliptic curve isn't an ellipse — it's the set of points satisfying a specific cubic equation.
+
+<MathBox label="An elliptic curve">
+
+$$y^2 = x^3 + ax + b$$
+
+This lesson uses one curve throughout as a running example: $y^2 = x^3 - 3x + 5$.
+
+</MathBox>
+
+## The group of points
+
+Just like $C_7$ from the last lesson was a set of numbers, an elliptic curve group is a set of points — plus one special extra member needed to make the group rules actually work.
+
+<MathBox label="The group of points">
+
+Every $(x, y)$ satisfying the equation, plus one extra element: $O$.
+
+$O$ — the **point at infinity** — is the group's identity element. Adding $O$ to any point $P$ gives back $P$, unchanged.
+
+</MathBox>
+
+## Point addition, geometrically
+
+Here's the strange and beautiful part: adding two points on this curve isn't algebra, it's **geometry**. Draw a straight line through any two points on the curve, and that line always hits the curve at exactly one more place.
+
+<Figure caption="Fig. 1 — the curve y² = x³ − 3x + 5, with two points P and Q. The line through them crosses the curve again at a third point, R.">
+  <EllipticCurveAdditionFigure />
+</Figure>
+
+## One last step — reflect
+
+There's a final twist before $R$ actually equals $P + Q$: a reflection. Flip that third point's $y$-coordinate over the $x$-axis — the flipped point is the true result.
+
+<Figure caption="Fig. 2 — R reflected over the x-axis. That flipped point, not R itself, is P + Q.">
+  <EllipticCurveAdditionFigure showReflection />
+</Figure>
+
+<MathBox label="Point addition, summarized">
+
+Draw a line through $P$ and $Q$ &rarr; find the third intersection point &rarr; reflect it over the $x$-axis. **That reflected point is $P + Q$.**
+
+</MathBox>
+
+## Doubling a point — P + P
+
+What if the goal is to add a point to itself? There's no second point left to draw a line through, so the rule adapts slightly.
+
+<MathBox label="Doubling a point">
+
+With no second point available, use the **tangent line** at $P$ instead. From there, the same rule applies: find the third intersection, then reflect.
+
+</MathBox>
+
+## The same curve over GF(p)
+
+Everything so far used real numbers, which is what gives the smooth curve in Figs. 1 and 2. But ZK systems can't use real numbers — they need the finite fields built back in the finite fields lesson.
+
+<MathBox label="Elliptic curves over a finite field">
+
+$x$ and $y$ are no longer real numbers — they're elements of $GF(p)$. The smooth curve becomes a scattered cloud of points, but **the same addition rules still apply**, using mod $p$ arithmetic throughout.
+
+</MathBox>
+
+## Why this matters for ZK
+
+Here's the payoff. Take one point, a **generator**, and add it to itself over and over. That's called scalar multiplication, and it's the trapdoor at the center of elliptic curve cryptography.
+
+<Figure caption="Fig. 3 — scalar multiplication: the same repeated-addition idea from C₇'s generator, now running on curve points instead of numbers.">
+  <ScalarMultiplicationFigure />
+</Figure>
+
+Computing $K \cdot G$ this way is easy; as the last lesson showed, going backward — recovering $K$ from $K \cdot G$ — is hard. **BN254 and BLS12-381 are the curves real ZK systems actually use**, and Groth16, PLONK, and KZG all run on this exact structure.
