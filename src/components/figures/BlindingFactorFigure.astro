@@ -1,0 +1,47 @@
+---
+// Fig. for "Commitment Schemes": why the blinding factor r matters —
+// committing to the exact same message three times, with three
+// different random r values, produces three unrelated-looking points.
+interface Row {
+  y: number;
+  input: string;
+  sub: string;
+  dot: { x: number; y: number };
+}
+const rows: Row[] = [
+  { y: 92, input: "m = 42, r = 7", sub: "C₁", dot: { x: 560, y: 104 } },
+  { y: 208, input: "m = 42, r = 91", sub: "C₂", dot: { x: 630, y: 232 } },
+  { y: 324, input: "m = 42, r = 5,006", sub: "C₃", dot: { x: 530, y: 342 } },
+];
+---
+<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="30" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">same message, different commitments</text>
+
+  {rows.map((row) => (
+    <>
+      <rect x="20" y={row.y} width="270" height="56" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
+      <text x="155" y={row.y + 34} text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.input}</text>
+
+      <line x1="290" y1={row.y + 28} x2="330" y2={row.y + 28} stroke="#e9eef5" stroke-width="1.8" marker-end="url(#bf-arrow)" />
+
+      <text x="345" y={row.y + 34} text-anchor="start" fill="#8fdcff" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{row.sub} =</text>
+
+      <rect x="420" y={row.y - 10} width="320" height="76" rx="10" fill="#0a0f19" stroke="#223049" stroke-width="1.3" stroke-dasharray="4 4" />
+      <circle cx={row.dot.x} cy={row.dot.y} r="7" fill="#3ab7ff" />
+    </>
+  ))}
+
+  <rect x="20" y="408" width="720" height="70" rx="12" fill="#0d1526" stroke="#5ddc8a" stroke-width="1.6" />
+  <text x="380" y="438" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">same m every time &#8212;</text>
+  <text x="380" y="458" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">but C&#8321;, C&#8322;, C&#8323; look totally unrelated</text>
+
+  <line x1="20" y1="496" x2="740" y2="496" stroke="#223049" stroke-width="1" />
+  <text x="380" y="520" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">RANDOMNESS IS WHAT HIDES YOU</text>
+  <text x="380" y="544" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">without r, committing to the same value twice would look identical — and leak that fact</text>
+
+  <defs>
+    <marker id="bf-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
+    </marker>
+  </defs>
+</svg>

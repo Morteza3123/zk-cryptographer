@@ -1,0 +1,523 @@
+diff --git a/src/components/figures/BlindingFactorFigure.astro b/src/components/figures/BlindingFactorFigure.astro
+new file mode 100644
+index 0000000..b8d55d4
+--- /dev/null
++++ b/src/components/figures/BlindingFactorFigure.astro
+@@ -0,0 +1,47 @@
++---
++// Fig. for "Commitment Schemes": why the blinding factor r matters —
++// committing to the exact same message three times, with three
++// different random r values, produces three unrelated-looking points.
++interface Row {
++  y: number;
++  input: string;
++  sub: string;
++  dot: { x: number; y: number };
++}
++const rows: Row[] = [
++  { y: 92, input: "m = 42, r = 7", sub: "C₁", dot: { x: 560, y: 104 } },
++  { y: 208, input: "m = 42, r = 91", sub: "C₂", dot: { x: 630, y: 232 } },
++  { y: 324, input: "m = 42, r = 5,006", sub: "C₃", dot: { x: 530, y: 342 } },
++];
++---
++<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="30" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">same message, different commitments</text>
++
++  {rows.map((row) => (
++    <>
++      <rect x="20" y={row.y} width="270" height="56" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++      <text x="155" y={row.y + 34} text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.input}</text>
++
++      <line x1="290" y1={row.y + 28} x2="330" y2={row.y + 28} stroke="#e9eef5" stroke-width="1.8" marker-end="url(#bf-arrow)" />
++
++      <text x="345" y={row.y + 34} text-anchor="start" fill="#8fdcff" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{row.sub} =</text>
++
++      <rect x="420" y={row.y - 10} width="320" height="76" rx="10" fill="#0a0f19" stroke="#223049" stroke-width="1.3" stroke-dasharray="4 4" />
++      <circle cx={row.dot.x} cy={row.dot.y} r="7" fill="#3ab7ff" />
++    </>
++  ))}
++
++  <rect x="20" y="408" width="720" height="70" rx="12" fill="#0d1526" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="380" y="438" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">same m every time &#8212;</text>
++  <text x="380" y="458" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">but C&#8321;, C&#8322;, C&#8323; look totally unrelated</text>
++
++  <line x1="20" y1="496" x2="740" y2="496" stroke="#223049" stroke-width="1" />
++  <text x="380" y="520" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">RANDOMNESS IS WHAT HIDES YOU</text>
++  <text x="380" y="544" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">without r, committing to the same value twice would look identical — and leak that fact</text>
++
++  <defs>
++    <marker id="bf-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/CommitOrderFigure.astro b/src/components/figures/CommitOrderFigure.astro
+new file mode 100644
+index 0000000..b561e7b
+--- /dev/null
++++ b/src/components/figures/CommitOrderFigure.astro
+@@ -0,0 +1,50 @@
++---
++// Fig. for "Commitment Schemes": why the ordering matters — the prover
++// locks in their commitments before the random challenge even exists,
++// so there's no way back to change them once the challenge arrives.
++// This is the Fiat-Shamir transform (topic 14) combined with binding.
++---
++<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">why the order of operations is the whole point</text>
++
++  <rect x="60" y="44" width="640" height="56" rx="10" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="78" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">prover commits to their polynomials FIRST</text>
++
++  <rect x="248" y="112" width="76" height="38" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" />
++  <text x="286" y="137" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">C&#8321;</text>
++  <rect x="342" y="112" width="76" height="38" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" />
++  <text x="380" y="137" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">C&#8322;</text>
++  <rect x="436" y="112" width="76" height="38" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" />
++  <text x="474" y="137" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">C&#8323;</text>
++
++  <line x1="380" y1="150" x2="380" y2="184" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#co-arrow)" />
++
++  <rect x="60" y="186" width="640" height="80" rx="10" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="380" y="214" text-anchor="middle" fill="#3ab7ff" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">THEN the random challenge is generated</text>
++  <text x="380" y="238" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">c = H(commitments)</text>
++  <text x="380" y="258" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="-apple-system,Arial,sans-serif">Fiat-Shamir, Topic 14.</text>
++
++  <line x1="380" y1="266" x2="380" y2="300" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#co-arrow)" />
++
++  <rect x="60" y="302" width="640" height="60" rx="10" fill="#0d1526" stroke="#e9eef5" stroke-width="1.6" />
++  <text x="380" y="328" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">prover can't go back and change their polynomials &#8212;</text>
++  <text x="380" y="348" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">they're already locked in by binding</text>
++
++  <path d="M 56,226 C 10,226 10,72 56,72" fill="none" stroke="#ff8080" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#co-arrow-r)" />
++  <circle cx="26" cy="149" r="13" fill="none" stroke="#ff8080" stroke-width="2.4" />
++  <line x1="18" y1="141" x2="34" y2="157" stroke="#ff8080" stroke-width="2.4" />
++
++  <line x1="30" y1="384" x2="730" y2="384" stroke="#223049" stroke-width="1" />
++  <text x="380" y="408" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">COMMIT BEFORE YOU SEE THE QUESTION</text>
++  <text x="380" y="432" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">this exact ordering — commit, then challenge — is what stops a prover</text>
++  <text x="380" y="452" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">from cheating in Groth16, PLONK, and KZG</text>
++
++  <defs>
++    <marker id="co-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++    <marker id="co-arrow-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#ff8080" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/CommitRevealFigure.astro b/src/components/figures/CommitRevealFigure.astro
+new file mode 100644
+index 0000000..07e93d1
+--- /dev/null
++++ b/src/components/figures/CommitRevealFigure.astro
+@@ -0,0 +1,78 @@
++---
++// Fig. for "Commitment Schemes": the core commit-then-reveal shape — the
++// commit phase locks in a secret m behind C without revealing it; the
++// reveal phase, later, lets the receiver check that m and the opening
++// key r actually produce that same C.
++---
++<svg viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="460" y="30" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">lock it in now, open it later</text>
++
++  <line x1="450" y1="48" x2="450" y2="400" stroke="#1a2436" stroke-width="1" stroke-dasharray="4 5" />
++
++  <!-- LEFT: commit phase -->
++  <text x="225" y="66" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">COMMIT PHASE</text>
++
++  <rect x="40" y="82" width="190" height="52" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="135" y="113" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">m = 42 (secret)</text>
++
++  <line x1="135" y1="134" x2="135" y2="164" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#cr-arrow)" />
++
++  <rect x="40" y="166" width="190" height="52" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.8" />
++  <text x="135" y="197" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">Commit(m, r)</text>
++
++  <line x1="135" y1="218" x2="135" y2="248" stroke="#8fdcff" stroke-width="2" marker-end="url(#cr-arrow-c)" />
++
++  <rect x="95" y="250" width="80" height="52" rx="9" fill="#0a0f19" stroke="#8fdcff" stroke-width="2" />
++  <text x="135" y="282" text-anchor="middle" fill="#8fdcff" font-size="20" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C</text>
++
++  <line x1="135" y1="302" x2="135" y2="332" stroke="#8fdcff" stroke-width="2" marker-end="url(#cr-arrow-c)" />
++
++  <rect x="40" y="334" width="190" height="52" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.8" />
++  <text x="135" y="365" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">Receiver</text>
++
++  <text x="135" y="398" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">receiver sees C —</text>
++  <text x="135" y="414" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">learns nothing about m</text>
++
++  <!-- RIGHT: reveal phase -->
++  <text x="685" y="66" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">REVEAL PHASE</text>
++  <text x="685" y="84" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">(later)</text>
++
++  <rect x="480" y="110" width="160" height="52" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="560" y="141" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">m = 42</text>
++
++  <rect x="480" y="196" width="220" height="52" rx="9" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.6" />
++  <text x="590" y="227" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">r (opening key)</text>
++
++  <line x1="640" y1="146" x2="748" y2="178" stroke="#5ddc8a" stroke-width="1.8" marker-end="url(#cr-arrow-g)" />
++  <line x1="700" y1="212" x2="750" y2="184" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#cr-arrow-b)" />
++
++  <rect x="752" y="156" width="74" height="52" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.8" />
++  <text x="789" y="188" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">?=</text>
++
++  <line x1="826" y1="182" x2="856" y2="182" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#cr-arrow)" />
++
++  <rect x="858" y="156" width="46" height="52" rx="9" fill="#0a0f19" stroke="#8fdcff" stroke-width="2" />
++  <text x="881" y="188" text-anchor="middle" fill="#8fdcff" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C</text>
++
++  <text x="685" y="286" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">receiver verifies m and r</text>
++  <text x="685" y="304" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">actually produce C</text>
++
++  <line x1="40" y1="420" x2="900" y2="420" stroke="#223049" stroke-width="1" />
++  <text x="460" y="444" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">LOCK IT IN, PROVE IT LATER</text>
++  <text x="460" y="462" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">the committer can't be shown to lie about m once C is sent</text>
++
++  <defs>
++    <marker id="cr-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++    <marker id="cr-arrow-c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="cr-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
++    </marker>
++    <marker id="cr-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/HidingBindingFigure.astro b/src/components/figures/HidingBindingFigure.astro
+new file mode 100644
+index 0000000..d3ecd5c
+--- /dev/null
++++ b/src/components/figures/HidingBindingFigure.astro
+@@ -0,0 +1,79 @@
++---
++// Fig. for "Commitment Schemes": the two properties a commitment scheme
++// must have at once — hiding (C alone reveals nothing about m) and
++// binding (the same C can never be opened to two different messages).
++---
++<svg viewBox="0 0 920 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="460" y="30" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">two promises, both have to hold at once</text>
++
++  <line x1="450" y1="48" x2="450" y2="400" stroke="#1a2436" stroke-width="1" stroke-dasharray="4 5" />
++
++  <!-- LEFT: hiding -->
++  <text x="225" y="68" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="800" font-family="-apple-system,Arial,sans-serif">HIDING</text>
++
++  <rect x="40" y="86" width="110" height="48" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="95" y="115" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">m = 42</text>
++  <line x1="150" y1="110" x2="184" y2="110" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#hb-arrow-w)" />
++
++  <rect x="186" y="86" width="100" height="48" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.8" />
++  <text x="236" y="115" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Commit</text>
++  <line x1="286" y1="110" x2="320" y2="110" stroke="#8fdcff" stroke-width="1.8" marker-end="url(#hb-arrow-c)" />
++
++  <rect x="322" y="86" width="60" height="48" rx="9" fill="#0a0f19" stroke="#8fdcff" stroke-width="2" />
++  <text x="352" y="117" text-anchor="middle" fill="#8fdcff" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C</text>
++
++  <text x="235" y="196" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">C alone reveals</text>
++  <text x="235" y="214" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">NOTHING about m</text>
++
++  <line x1="330" y1="134" x2="270" y2="236" stroke="#5ddc8a" stroke-width="1" stroke-dasharray="3 3" />
++  <line x1="370" y1="134" x2="400" y2="236" stroke="#5ddc8a" stroke-width="1" stroke-dasharray="3 3" />
++
++  <rect x="40" y="238" width="170" height="40" rx="18" fill="none" stroke="#5ddc8a" stroke-width="1.4" stroke-dasharray="5 4" />
++  <text x="125" y="263" text-anchor="middle" fill="#5ddc8a" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">m = 42 ?</text>
++
++  <rect x="320" y="238" width="140" height="40" rx="18" fill="none" stroke="#5ddc8a" stroke-width="1.4" stroke-dasharray="5 4" />
++  <text x="390" y="263" text-anchor="middle" fill="#5ddc8a" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">m = 7 ?</text>
++
++  <text x="225" y="312" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">both are equally plausible</text>
++
++  <!-- RIGHT: binding -->
++  <text x="685" y="68" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="800" font-family="-apple-system,Arial,sans-serif">BINDING</text>
++
++  <rect x="480" y="78" width="150" height="46" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="555" y="106" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">m&#8321; = 42</text>
++
++  <text x="645" y="155" text-anchor="middle" fill="#c3cedd" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#8800;</text>
++
++  <rect x="480" y="162" width="150" height="46" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="555" y="190" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">m&#8322; = 7</text>
++
++  <line x1="630" y1="101" x2="678" y2="128" stroke="#5ddc8a" stroke-width="1.6" marker-end="url(#hb-arrow-g)" />
++  <line x1="630" y1="185" x2="678" y2="158" stroke="#5ddc8a" stroke-width="1.6" marker-end="url(#hb-arrow-g)" />
++
++  <rect x="680" y="108" width="100" height="70" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.8" />
++  <text x="730" y="148" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Commit</text>
++
++  <line x1="780" y1="143" x2="824" y2="143" stroke="#ff8080" stroke-width="2" stroke-dasharray="5 5" />
++  <circle cx="840" cy="143" r="15" fill="none" stroke="#ff8080" stroke-width="2.6" />
++  <line x1="830" y1="133" x2="850" y2="153" stroke="#ff8080" stroke-width="2.6" />
++  <text x="800" y="120" text-anchor="middle" fill="#ff8080" font-size="11.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">BLOCKED</text>
++
++  <text x="730" y="222" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">same C cannot open to</text>
++  <text x="730" y="240" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">two different messages</text>
++
++  <line x1="40" y1="332" x2="900" y2="332" stroke="#223049" stroke-width="1" />
++  <text x="460" y="356" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">TWO PROMISES, NEVER BROKEN</text>
++  <text x="460" y="380" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">hiding: C reveals nothing — binding: C can only ever open to one message</text>
++
++  <defs>
++    <marker id="hb-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++    <marker id="hb-arrow-c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="hb-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/KZGCommitmentFigure.astro b/src/components/figures/KZGCommitmentFigure.astro
+new file mode 100644
+index 0000000..01c8d26
+--- /dev/null
++++ b/src/components/figures/KZGCommitmentFigure.astro
+@@ -0,0 +1,55 @@
++---
++// Fig. for "Commitment Schemes": KZG commits to an entire polynomial —
++// potentially thousands of terms — compressed down to a single curve
++// point, then opened at one random location with a short pairing-based
++// proof instead of revealing the polynomial itself.
++---
++<svg viewBox="0 0 920 440" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="460" y="30" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">committing to an entire polynomial</text>
++
++  <line x1="450" y1="48" x2="450" y2="330" stroke="#1a2436" stroke-width="1" stroke-dasharray="4 5" />
++
++  <!-- LEFT: commit -->
++  <text x="225" y="66" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">COMMIT</text>
++
++  <path d="M 50,120 C 85,80 115,160 150,120 C 185,80 215,160 250,120 C 275,95 295,135 310,112" fill="none" stroke="#3ab7ff" stroke-width="3.5" stroke-linecap="round" />
++  <text x="180" y="166" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">p(x) &#8212; could have thousands of terms</text>
++
++  <line x1="180" y1="180" x2="180" y2="218" stroke="#8fdcff" stroke-width="2" marker-end="url(#kz-arrow)" />
++
++  <circle cx="180" cy="238" r="15" fill="#0a0f19" stroke="#8fdcff" stroke-width="2.6" />
++  <text x="180" y="276" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">C = commitment to p(x)</text>
++  <text x="180" y="296" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">just ONE elliptic curve point</text>
++
++  <!-- RIGHT: open / prove -->
++  <text x="685" y="66" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">OPEN / PROVE</text>
++
++  <rect x="480" y="78" width="380" height="46" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.6" />
++  <text x="670" y="106" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">verifier picks random x = a</text>
++
++  <line x1="670" y1="124" x2="670" y2="150" stroke="#223049" stroke-width="1.6" marker-end="url(#kz-arrow-w)" />
++
++  <rect x="480" y="152" width="380" height="56" rx="9" fill="#0d1526" stroke="#e9eef5" stroke-width="1.6" />
++  <text x="670" y="176" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">prover reveals y = p(a),</text>
++  <text x="670" y="196" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">plus proof &#960;</text>
++
++  <line x1="670" y1="208" x2="670" y2="234" stroke="#223049" stroke-width="1.6" marker-end="url(#kz-arrow-w)" />
++
++  <rect x="480" y="236" width="380" height="50" rx="9" fill="#0d1526" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="670" y="266" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">verifier checks e(&#8230;) = e(&#8230;)</text>
++
++  <text x="460" y="318" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">&#8230;without ever seeing the rest of p(x)</text>
++
++  <line x1="40" y1="340" x2="900" y2="340" stroke="#223049" stroke-width="1" />
++  <text x="460" y="364" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">PROVE ONE POINT, WITHOUT SHOWING THE POLYNOMIAL</text>
++  <text x="460" y="388" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">this is what a Groth16 or PLONK proof actually sends you — not the polynomial, just this</text>
++
++  <defs>
++    <marker id="kz-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="kz-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/PedersenCommitmentFigure.astro b/src/components/figures/PedersenCommitmentFigure.astro
+new file mode 100644
+index 0000000..77f0feb
+--- /dev/null
++++ b/src/components/figures/PedersenCommitmentFigure.astro
+@@ -0,0 +1,45 @@
++---
++// Fig. for "Commitment Schemes": the Pedersen commitment — a real,
++// working construction built entirely from the elliptic curve group
++// introduced in topic 12. C is a single curve point with two secrets
++// (m and r) baked into it; recovering either back out is exactly the
++// discrete log problem from topic 11.
++---
++<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">a real construction, built from elliptic curve points</text>
++
++  <rect x="170" y="44" width="420" height="80" rx="14" fill="#0d1526" stroke="#e9eef5" stroke-width="2" />
++  <text x="380" y="96" text-anchor="middle" fill="#8fdcff" font-size="32" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C = g&#183;m + h&#183;r</text>
++
++  <line x1="155" y1="256" x2="258" y2="134" stroke="#c3cedd" stroke-width="1.6" marker-end="url(#pc-arrow-w)" />
++  <line x1="380" y1="256" x2="380" y2="134" stroke="#5ddc8a" stroke-width="1.6" marker-end="url(#pc-arrow-g)" />
++  <line x1="605" y1="256" x2="502" y2="134" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#pc-arrow-b)" />
++
++  <rect x="20" y="258" width="270" height="70" rx="10" fill="#121c2c" stroke="#c3cedd" stroke-width="1.6" />
++  <text x="155" y="286" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">g, h &#8212; two fixed</text>
++  <text x="155" y="306" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">generator points (public)</text>
++
++  <rect x="310" y="258" width="140" height="70" rx="10" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.6" />
++  <text x="380" y="286" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">m &#8212; the secret</text>
++  <text x="380" y="306" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">message</text>
++
++  <rect x="470" y="258" width="270" height="70" rx="10" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.6" />
++  <text x="605" y="286" text-anchor="middle" fill="#3ab7ff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">r &#8212; a random blinding</text>
++  <text x="605" y="306" text-anchor="middle" fill="#3ab7ff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">factor (secret)</text>
++
++  <line x1="20" y1="344" x2="740" y2="344" stroke="#223049" stroke-width="1" />
++  <text x="380" y="368" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">ONE POINT, TWO SECRETS BAKED IN</text>
++  <text x="380" y="390" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">C is a single curve point — recovering m or r is exactly the discrete log problem</text>
++
++  <defs>
++    <marker id="pc-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
++    </marker>
++    <marker id="pc-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
++    </marker>
++    <marker id="pc-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/content/lessons/commitment-schemes.mdx b/src/content/lessons/commitment-schemes.mdx
+new file mode 100644
+index 0000000..ea8a329
+--- /dev/null
++++ b/src/content/lessons/commitment-schemes.mdx
+@@ -0,0 +1,97 @@
++---
++track: math
++module: "Commitments"
++lessonNumber: "15"
++title: "Commitment Schemes"
++duration: "5:43"
++description: "The second building block alongside hashing that almost every ZK proof system is built from — how to lock in a value now, keep it completely secret, and still prove later you never changed it."
++order: 15
++youtubeHref: "https://www.youtube.com/watch?v=UBLUmCA0tQI"
++prevTitle: "Hash Functions & Random Oracles"
++prevHref: "/learn/math/hash-functions-random-oracles"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import CommitRevealFigure from "../../components/figures/CommitRevealFigure.astro";
++import HidingBindingFigure from "../../components/figures/HidingBindingFigure.astro";
++import PedersenCommitmentFigure from "../../components/figures/PedersenCommitmentFigure.astro";
++import BlindingFactorFigure from "../../components/figures/BlindingFactorFigure.astro";
++import KZGCommitmentFigure from "../../components/figures/KZGCommitmentFigure.astro";
++import CommitOrderFigure from "../../components/figures/CommitOrderFigure.astro";
++
++The last lesson showed a hash replacing a live verifier with a single computation. **This lesson tackles a different problem entirely: how does someone lock in a value now, prove later they never changed it, while keeping that value completely secret the whole time in between?** That's a commitment scheme — the second building block, alongside hashing, that almost every ZK proof system is built from.
++
++## The core idea: commit, then reveal
++
++Think of a sealed envelope. Write something down, seal it, hand it over — nobody can see what's inside, but it also can't be swapped for a different piece of paper later. A commitment scheme does exactly that with numbers instead of paper.
++
++<Figure caption="Fig. 1 — commit now, locked and sealed. Reveal later, and the receiver can check it against what was sent.">
++  <CommitRevealFigure />
++</Figure>
++
++<MathBox label="A commitment scheme">
++
++Two phases: $C = \text{Commit}(m, r)$ sends only $C$ — the receiver learns nothing about $m$ yet. Later, revealing $m$ and the opening key $r$ lets the receiver check that they really do produce that same $C$.
++
++</MathBox>
++
++## Two promises: hiding and binding
++
++That envelope metaphor only holds together if two separate promises are both kept at once. Break either one, and the scheme is useless.
++
++<Figure caption="Fig. 2 — hiding: C alone could belong to any message. Binding: once C is sent, it can never be reopened to a different one.">
++  <HidingBindingFigure />
++</Figure>
++
++<MathBox label="Hiding and binding">
++
++**Hiding** — $C$ on its own reveals nothing about $m$; every possible message stays equally plausible. **Binding** — the committer can never produce a valid opening of $C$ to a message other than the one they actually started with.
++
++</MathBox>
++
++## A real construction — the Pedersen commitment
++
++So far this has all been conceptual. Here's an actual working construction, built entirely from tools already in this series: elliptic curve points, from topic 12.
++
++<MathBox label="The Pedersen commitment">
++
++$$C = g \cdot m + h \cdot r$$
++
++$g$ and $h$ are two fixed generator points — both public, known to everyone. $m$ is the secret message being committed to. $r$ is a random **blinding factor**, chosen fresh and kept secret too.
++
++</MathBox>
++
++<Figure caption="Fig. 3 — one curve point, two secrets baked in. Pulling m or r back out of C is exactly the discrete log problem from topic 11.">
++  <PedersenCommitmentFigure />
++</Figure>
++
++## Why the blinding factor matters
++
++That $r$ in the formula might look like an unnecessary extra ingredient. It isn't — it's the entire reason hiding actually works. Watch what happens committing to the exact same message three separate times, with three different random $r$ values.
++
++<Figure caption="Fig. 4 — same m = 42 every time. Three different r values produce three completely unrelated-looking commitments.">
++  <BlindingFactorFigure />
++</Figure>
++
++Without $r$, committing to the same value twice would produce the exact same $C$ both times — and that repetition alone would leak the fact that the hidden values matched.
++
++## KZG — committing to an entire polynomial
++
++A Pedersen commitment locks in a single number. **KZG does something far more powerful: it commits to an entire polynomial** — the exact object this series spent its second phase building — and compresses it down to one point.
++
++<Figure caption="Fig. 5 — a polynomial with thousands of terms compresses to one curve point. Opening it at a random location proves a value without revealing the rest.">
++  <KZGCommitmentFigure />
++</Figure>
++
++The verifier picks a random evaluation point $x = a$; the prover reveals $y = p(a)$ along with a short proof $\pi$; the verifier checks a pairing equation — the exact tool built in topic 13. **This is what a Groth16 or PLONK proof actually sends: not the polynomial, just this.**
++
++## Why this matters for ZK
++
++Here's how commitments and the Fiat-Shamir transform from the last lesson fit together into one system — and why the order of operations is the whole point.
++
++<Figure caption="Fig. 6 — commitments lock in first. Only then does the challenge exist. There's no path back to change what was already sealed.">
++  <CommitOrderFigure />
++</Figure>
++
++The prover commits to their polynomials **first** — those are sealed by binding. Only *then* does the random challenge get generated, as $c = H(\text{commitments})$, straight from the Fiat-Shamir transform built last lesson. **Commit before seeing the question.** This exact ordering — commit, then challenge — is what stops a prover from cheating in Groth16, PLONK, and KZG alike.
+diff --git a/src/content/lessons/hash-functions-random-oracles.mdx b/src/content/lessons/hash-functions-random-oracles.mdx
+index 761bf72..4b2223f 100644
+--- a/src/content/lessons/hash-functions-random-oracles.mdx
++++ b/src/content/lessons/hash-functions-random-oracles.mdx
+@@ -9,6 +9,8 @@ order: 14
+ youtubeHref: "https://www.youtube.com/watch?v=55oVOIype58"
+ prevTitle: "Bilinear Pairings"
+ prevHref: "/learn/math/bilinear-pairings"
++nextTitle: "Commitment Schemes"
++nextHref: "/learn/math/commitment-schemes"
+ ---
+ 
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index d3a633f..eefd2c6 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -101,6 +101,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "14", title: "Hash Functions & Random Oracles", duration: "4:02", slug: "hash-functions-random-oracles" },
+       ],
+     },
++    {
++      module: "Commitments",
++      items: [
++        { num: "15", title: "Commitment Schemes", duration: "5:43", slug: "commitment-schemes" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],

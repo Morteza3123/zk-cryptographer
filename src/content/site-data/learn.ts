@@ -101,6 +101,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
         { num: "14", title: "Hash Functions & Random Oracles", duration: "4:02", slug: "hash-functions-random-oracles" },
       ],
     },
+    {
+      module: "Commitments",
+      items: [
+        { num: "15", title: "Commitment Schemes", duration: "5:43", slug: "commitment-schemes" },
+      ],
+    },
   ],
   cryptography: [],
   fundamentals: [],

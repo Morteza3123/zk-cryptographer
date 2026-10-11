@@ -1,0 +1,97 @@
+---
+track: math
+module: "Commitments"
+lessonNumber: "15"
+title: "Commitment Schemes"
+duration: "5:43"
+description: "The second building block alongside hashing that almost every ZK proof system is built from — how to lock in a value now, keep it completely secret, and still prove later you never changed it."
+order: 15
+youtubeHref: "https://www.youtube.com/watch?v=UBLUmCA0tQI"
+prevTitle: "Hash Functions & Random Oracles"
+prevHref: "/learn/math/hash-functions-random-oracles"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import CommitRevealFigure from "../../components/figures/CommitRevealFigure.astro";
+import HidingBindingFigure from "../../components/figures/HidingBindingFigure.astro";
+import PedersenCommitmentFigure from "../../components/figures/PedersenCommitmentFigure.astro";
+import BlindingFactorFigure from "../../components/figures/BlindingFactorFigure.astro";
+import KZGCommitmentFigure from "../../components/figures/KZGCommitmentFigure.astro";
+import CommitOrderFigure from "../../components/figures/CommitOrderFigure.astro";
+
+The last lesson showed a hash replacing a live verifier with a single computation. **This lesson tackles a different problem entirely: how does someone lock in a value now, prove later they never changed it, while keeping that value completely secret the whole time in between?** That's a commitment scheme — the second building block, alongside hashing, that almost every ZK proof system is built from.
+
+## The core idea: commit, then reveal
+
+Think of a sealed envelope. Write something down, seal it, hand it over — nobody can see what's inside, but it also can't be swapped for a different piece of paper later. A commitment scheme does exactly that with numbers instead of paper.
+
+<Figure caption="Fig. 1 — commit now, locked and sealed. Reveal later, and the receiver can check it against what was sent.">
+  <CommitRevealFigure />
+</Figure>
+
+<MathBox label="A commitment scheme">
+
+Two phases: $C = \text{Commit}(m, r)$ sends only $C$ — the receiver learns nothing about $m$ yet. Later, revealing $m$ and the opening key $r$ lets the receiver check that they really do produce that same $C$.
+
+</MathBox>
+
+## Two promises: hiding and binding
+
+That envelope metaphor only holds together if two separate promises are both kept at once. Break either one, and the scheme is useless.
+
+<Figure caption="Fig. 2 — hiding: C alone could belong to any message. Binding: once C is sent, it can never be reopened to a different one.">
+  <HidingBindingFigure />
+</Figure>
+
+<MathBox label="Hiding and binding">
+
+**Hiding** — $C$ on its own reveals nothing about $m$; every possible message stays equally plausible. **Binding** — the committer can never produce a valid opening of $C$ to a message other than the one they actually started with.
+
+</MathBox>
+
+## A real construction — the Pedersen commitment
+
+So far this has all been conceptual. Here's an actual working construction, built entirely from tools already in this series: elliptic curve points, from topic 12.
+
+<MathBox label="The Pedersen commitment">
+
+$$C = g \cdot m + h \cdot r$$
+
+$g$ and $h$ are two fixed generator points — both public, known to everyone. $m$ is the secret message being committed to. $r$ is a random **blinding factor**, chosen fresh and kept secret too.
+
+</MathBox>
+
+<Figure caption="Fig. 3 — one curve point, two secrets baked in. Pulling m or r back out of C is exactly the discrete log problem from topic 11.">
+  <PedersenCommitmentFigure />
+</Figure>
+
+## Why the blinding factor matters
+
+That $r$ in the formula might look like an unnecessary extra ingredient. It isn't — it's the entire reason hiding actually works. Watch what happens committing to the exact same message three separate times, with three different random $r$ values.
+
+<Figure caption="Fig. 4 — same m = 42 every time. Three different r values produce three completely unrelated-looking commitments.">
+  <BlindingFactorFigure />
+</Figure>
+
+Without $r$, committing to the same value twice would produce the exact same $C$ both times — and that repetition alone would leak the fact that the hidden values matched.
+
+## KZG — committing to an entire polynomial
+
+A Pedersen commitment locks in a single number. **KZG does something far more powerful: it commits to an entire polynomial** — the exact object this series spent its second phase building — and compresses it down to one point.
+
+<Figure caption="Fig. 5 — a polynomial with thousands of terms compresses to one curve point. Opening it at a random location proves a value without revealing the rest.">
+  <KZGCommitmentFigure />
+</Figure>
+
+The verifier picks a random evaluation point $x = a$; the prover reveals $y = p(a)$ along with a short proof $\pi$; the verifier checks a pairing equation — the exact tool built in topic 13. **This is what a Groth16 or PLONK proof actually sends: not the polynomial, just this.**
+
+## Why this matters for ZK
+
+Here's how commitments and the Fiat-Shamir transform from the last lesson fit together into one system — and why the order of operations is the whole point.
+
+<Figure caption="Fig. 6 — commitments lock in first. Only then does the challenge exist. There's no path back to change what was already sealed.">
+  <CommitOrderFigure />
+</Figure>
+
+The prover commits to their polynomials **first** — those are sealed by binding. Only *then* does the random challenge get generated, as $c = H(\text{commitments})$, straight from the Fiat-Shamir transform built last lesson. **Commit before seeing the question.** This exact ordering — commit, then challenge — is what stops a prover from cheating in Groth16, PLONK, and KZG alike.

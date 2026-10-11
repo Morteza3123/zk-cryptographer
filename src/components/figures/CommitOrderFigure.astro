@@ -1,0 +1,50 @@
+---
+// Fig. for "Commitment Schemes": why the ordering matters — the prover
+// locks in their commitments before the random challenge even exists,
+// so there's no way back to change them once the challenge arrives.
+// This is the Fiat-Shamir transform (topic 14) combined with binding.
+---
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">why the order of operations is the whole point</text>
+
+  <rect x="60" y="44" width="640" height="56" rx="10" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="380" y="78" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">prover commits to their polynomials FIRST</text>
+
+  <rect x="248" y="112" width="76" height="38" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" />
+  <text x="286" y="137" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">C&#8321;</text>
+  <rect x="342" y="112" width="76" height="38" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" />
+  <text x="380" y="137" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">C&#8322;</text>
+  <rect x="436" y="112" width="76" height="38" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" />
+  <text x="474" y="137" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">C&#8323;</text>
+
+  <line x1="380" y1="150" x2="380" y2="184" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#co-arrow)" />
+
+  <rect x="60" y="186" width="640" height="80" rx="10" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="380" y="214" text-anchor="middle" fill="#3ab7ff" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">THEN the random challenge is generated</text>
+  <text x="380" y="238" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">c = H(commitments)</text>
+  <text x="380" y="258" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="-apple-system,Arial,sans-serif">Fiat-Shamir, Topic 14.</text>
+
+  <line x1="380" y1="266" x2="380" y2="300" stroke="#e9eef5" stroke-width="1.8" marker-end="url(#co-arrow)" />
+
+  <rect x="60" y="302" width="640" height="60" rx="10" fill="#0d1526" stroke="#e9eef5" stroke-width="1.6" />
+  <text x="380" y="328" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">prover can't go back and change their polynomials &#8212;</text>
+  <text x="380" y="348" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">they're already locked in by binding</text>
+
+  <path d="M 56,226 C 10,226 10,72 56,72" fill="none" stroke="#ff8080" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#co-arrow-r)" />
+  <circle cx="26" cy="149" r="13" fill="none" stroke="#ff8080" stroke-width="2.4" />
+  <line x1="18" y1="141" x2="34" y2="157" stroke="#ff8080" stroke-width="2.4" />
+
+  <line x1="30" y1="384" x2="730" y2="384" stroke="#223049" stroke-width="1" />
+  <text x="380" y="408" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">COMMIT BEFORE YOU SEE THE QUESTION</text>
+  <text x="380" y="432" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">this exact ordering — commit, then challenge — is what stops a prover</text>
+  <text x="380" y="452" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">from cheating in Groth16, PLONK, and KZG</text>
+
+  <defs>
+    <marker id="co-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
+    </marker>
+    <marker id="co-arrow-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff8080" />
+    </marker>
+  </defs>
+</svg>
