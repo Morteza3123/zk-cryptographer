@@ -1,0 +1,98 @@
+---
+track: math
+module: "Algebra for ZK"
+lessonNumber: "07"
+title: "Polynomials"
+duration: "4:25"
+description: "The actual language ZK circuits are written in — what a polynomial is, how its degree and roots work, and why checking it at one random point stands in for checking an entire computation."
+order: 7
+youtubeHref: "https://www.youtube.com/watch?v=n74Br4Cdr8o"
+prevTitle: "Finite Fields"
+prevHref: "/learn/math/finite-fields"
+nextTitle: "Polynomial Arithmetic"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import PolynomialDegreeFigure from "../../components/figures/PolynomialDegreeFigure.astro";
+import PolynomialEvalFigure from "../../components/figures/PolynomialEvalFigure.astro";
+import PolynomialRootsFigure from "../../components/figures/PolynomialRootsFigure.astro";
+import PolynomialFieldEvalFigure from "../../components/figures/PolynomialFieldEvalFigure.astro";
+import PolynomialComputationFigure from "../../components/figures/PolynomialComputationFigure.astro";
+
+Foundations are done. **This track now moves into algebra** — and the shift matters more than it might look, because polynomials turn out to be the actual language ZK circuits get written in. Every program a ZK system proves gets translated into polynomials somewhere underneath. This lesson covers the basics that everything later builds on: what a polynomial is, its degree, how to evaluate one, and what a root is.
+
+## What a polynomial is
+
+A **polynomial** is an expression built from powers of a variable, each one scaled by a number called a **coefficient**, all added together.
+
+<MathBox label="Definition — a polynomial">
+
+$$p(x) = 3x^2 + 2x + 5$$
+
+$3$, $2$, and $5$ are the **coefficients**; $x$ is the variable. The whole expression is just powers of $x$, each scaled by a coefficient, summed up.
+
+</MathBox>
+
+## The degree
+
+The **degree** of a polynomial is the highest power of $x$ that appears in it — a single number that says a lot about how the polynomial behaves.
+
+<Figure caption="Fig. 1 — four polynomials, read by their degree: constant, linear, quadratic, cubic.">
+  <PolynomialDegreeFigure />
+</Figure>
+
+Degree $0$ is just a constant, with no $x$ at all. Degree $1$ is linear — a straight line. Degree $2$ is quadratic, which is where $x^2$ first shows up, and degree $3$ is cubic. The pattern keeps going from there, but these four names cover almost everything this track needs.
+
+## Evaluating a polynomial
+
+To **evaluate** a polynomial, plug in a specific number for $x$ and work the result out, one step at a time.
+
+<Figure caption="Fig. 2 — evaluating p(x) = 3x² + 2x + 5 at x = 2, substitution through to a final number.">
+  <PolynomialEvalFigure />
+</Figure>
+
+<MathBox label="Result">
+
+$$p(2) = 3(2)^2 + 2(2) + 5 = 21$$
+
+Plug in a number, get a number out — that's the entirety of what evaluation means.
+
+</MathBox>
+
+## Roots of a polynomial
+
+A **root** is a value of $x$ that makes the polynomial equal zero. Finding one is the same process as evaluating, just checking which inputs happen to land on $0$:
+
+<Figure caption="Fig. 3 — testing three candidate values against p(x) = x² - 5x + 6. Two of them land on zero.">
+  <PolynomialRootsFigure />
+</Figure>
+
+$2$ and $3$ both zero the polynomial out, and $1$ doesn't — which means $2$ and $3$ **are** the roots of $p(x) = x^2 - 5x + 6$, and the polynomial factors cleanly around them.
+
+<MathBox label="Roots as factors">
+
+$$p(x) = x^2 - 5x + 6 = (x - 2)(x - 3)$$
+
+Every root corresponds to a factor — knowing the roots is the same information as knowing the factored form.
+
+</MathBox>
+
+## Polynomials live inside a finite field
+
+This is exactly where the previous lesson connects to today's. In a ZK system, a polynomial's coefficients — and every value it gets evaluated at — don't live in the ordinary numbers. They live inside $GF(p)$, the same finite field from the last lesson.
+
+<Figure caption="Fig. 4 — the same evaluation from Fig. 2, now reduced mod 7. Every number stays inside GF(7).">
+  <PolynomialFieldEvalFigure />
+</Figure>
+
+Nothing about the process changes — substitute, compute, reduce by the modulus — it's the identical evaluation from earlier in this lesson, just finished off with one extra step.
+
+## Why ZK circuits are built from polynomials
+
+Here's the payoff, and the reason this entire phase of the track exists: an entire computation — every step, every constraint — can be encoded into a **single polynomial**. Checking that polynomial at just one random point then tells you, with overwhelming probability, whether the whole computation was done correctly.
+
+<Figure caption="Fig. 5 — a whole computation trace, folded into one polynomial, checkable at a single point.">
+  <PolynomialComputationFigure />
+</Figure>
+
+That one idea — compress a computation into a polynomial, verify it with a spot-check — **is the foundation underneath R1CS, QAP, and PLONK**, the systems ZK proofs are actually built from. The next lesson goes further into how polynomials behave under their own arithmetic, over a finite field.

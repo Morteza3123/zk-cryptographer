@@ -81,7 +81,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
     {
       module: "Algebra for ZK",
       items: [
-        { num: "07", title: "Polynomials", duration: "4:25" },
+        { num: "07", title: "Polynomials", duration: "4:25", slug: "polynomials" },
         { num: "08", title: "Polynomial Arithmetic", duration: "3:41" },
         { num: "09", title: "Lagrange Interpolation", duration: "3:33" },
         { num: "10", title: "Schwartz-Zippel Lemma", duration: "3:38" },

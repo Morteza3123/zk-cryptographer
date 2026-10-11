@@ -1,0 +1,22 @@
+---
+// Fig. for "Polynomials": the payoff for the entire lesson — a whole
+// computation trace collapses into one polynomial, so checking that
+// polynomial at a single random point stands in for checking everything.
+---
+<svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="280" y="38" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="-apple-system,Arial,sans-serif">an entire computation trace</text>
+  <text x="280" y="62" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="-apple-system,Arial,sans-serif">gets encoded as ONE polynomial</text>
+
+  <line x1="280" y1="80" x2="280" y2="128" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#polycomp-arrow)" />
+
+  <text x="280" y="160" text-anchor="middle" fill="#5ddc8a" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">checking ONE point &#8776; checking the WHOLE computation</text>
+
+  <line x1="20" y1="184" x2="540" y2="184" stroke="#223049" stroke-width="1" />
+  <text x="280" y="208" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">this single idea is the foundation of R1CS, QAP, and PLONK</text>
+
+  <defs>
+    <marker id="polycomp-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,20 @@
+---
+// Fig. for "Polynomials": the same evaluation from earlier in this
+// lesson, now reduced mod 7 — every coefficient and every result stays
+// inside GF(7).
+---
+<svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">polynomials over GF(7)</text>
+  <text x="340" y="48" text-anchor="middle" fill="#e9eef5" font-size="15.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">p(x) = 3x² + 2x + 5, evaluated mod 7</text>
+  <line x1="20" y1="58" x2="660" y2="58" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="92" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 1 — substitute x = 2</text>
+  <text x="640" y="92" text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3(4) + 2(2) + 5 = 21</text>
+  <line x1="20" y1="110" x2="660" y2="110" stroke="#1a2436" stroke-width="1" />
+
+  <text x="40" y="144" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 2 — reduce mod 7</text>
+  <text x="640" y="144" text-anchor="end" fill="#5ddc8a" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">21 mod 7 = 0</text>
+
+  <rect x="20" y="166" width="640" height="40" rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
+  <text x="340" y="192" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">every coefficient and every evaluation stays inside GF(7)</text>
+</svg>

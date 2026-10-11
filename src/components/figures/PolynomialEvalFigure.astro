@@ -1,0 +1,31 @@
+---
+// Fig. for "Polynomials": evaluating p(x) = 3x² + 2x + 5 at x = 2, one
+// step at a time — substitute, compute the power, multiply each term,
+// add it up.
+const steps = [
+  { label: "step 1 — substitute x = 2", eq: "3(2)² + 2(2) + 5" },
+  { label: "step 2 — compute the power", eq: "3(4) + 2(2) + 5" },
+  { label: "step 3 — multiply each term", eq: "12 + 4 + 5" },
+];
+---
+<svg viewBox="0 0 680 290" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">evaluating p(x) = 3x² + 2x + 5 at x = 2</text>
+  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
+
+  {steps.map((s, i) => {
+    const y = 46 + i * 50;
+    return (
+      <>
+        <text x="40" y={y + 22} text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">{s.label}</text>
+        <text x="640" y={y + 22} text-anchor="end" fill="#e9eef5" font-size="17" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{s.eq}</text>
+        <line x1="20" y1={y + 40} x2="660" y2={y + 40} stroke="#1a2436" stroke-width="1" />
+      </>
+    );
+  })}
+
+  <text x="40" y="218" text-anchor="start" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">step 4 — add it all up</text>
+  <text x="640" y="218" text-anchor="end" fill="#5ddc8a" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">21</text>
+
+  <rect x="20" y="238" width="620" height="44" rx="9" fill="#0d1f17" stroke="#5ddc8a" stroke-width="1.5" />
+  <text x="330" y="266" text-anchor="middle" fill="#5ddc8a" font-size="18" font-weight="800" font-family="-apple-system,Arial,sans-serif">p(2) = 21</text>
+</svg>
