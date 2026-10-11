@@ -1,0 +1,34 @@
+---
+// Fig. for "Lagrange Interpolation": the three basis polynomials built
+// for x-values 0, 1, 2 — each one a fraction whose numerator zeroes out
+// at every point except its own.
+interface Row {
+  label: string;
+  eq: string;
+}
+const rows: Row[] = [
+  { label: "L₀(x) =", eq: "(x−1)(x−2) / (0−1)(0−2)" },
+  { label: "L₁(x) =", eq: "(x−0)(x−2) / (1−0)(1−2)" },
+  { label: "L₂(x) =", eq: "(x−0)(x−1) / (2−0)(2−1)" },
+];
+const rowH = 58;
+const topPad = 44;
+const height = topPad + rows.length * rowH + 10;
+---
+<svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">building each basis polynomial — points at x = 0, 1, 2</text>
+  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
+
+  {rows.map((row, i) => {
+    const y = topPad + i * rowH;
+    return (
+      <>
+        <text x="40" y={y + 20} text-anchor="start" fill="#c3cedd" font-size="17" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.label}</text>
+        <text x="640" y={y + 20} text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.eq}</text>
+        {i < rows.length - 1 && (
+          <line x1="20" y1={y + 36} x2="660" y2={y + 36} stroke="#1a2436" stroke-width="1" />
+        )}
+      </>
+    );
+  })}
+</svg>

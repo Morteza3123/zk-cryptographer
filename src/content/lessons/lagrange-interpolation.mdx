@@ -1,0 +1,87 @@
+---
+track: math
+module: "Algebra for ZK"
+lessonNumber: "09"
+title: "Lagrange Interpolation"
+duration: "3:33"
+description: "The mechanism that turns a handful of points into a single polynomial — and the exact process a QAP uses to collapse an entire ZK circuit into one polynomial that represents it."
+order: 9
+youtubeHref: "https://www.youtube.com/watch?v=-lX6sZgjccg"
+prevTitle: "Polynomial Arithmetic"
+prevHref: "/learn/math/polynomial-arithmetic"
+nextTitle: "Schwartz-Zippel Lemma"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import LagrangeCurveFigure from "../../components/figures/LagrangeCurveFigure.astro";
+import LagrangeBasisFigure from "../../components/figures/LagrangeBasisFigure.astro";
+import LagrangeCheckFigure from "../../components/figures/LagrangeCheckFigure.astro";
+import LagrangeQAPFigure from "../../components/figures/LagrangeQAPFigure.astro";
+
+Every lesson so far started with a polynomial and worked outward from it — building, evaluating, combining. **Today flips the problem around**: given a handful of points, how do you find the one polynomial that passes through all of them? That question has a name, Lagrange interpolation, and it's the exact mechanism that turns an entire ZK circuit into a single polynomial.
+
+## The problem
+
+Take three points: $(0, 1)$, $(1, 2)$, and $(2, 5)$. What polynomial passes through all three? With exactly three points, exactly one polynomial of degree $2$ fits.
+
+<Figure caption="Fig. 1 — three points, and the one degree-2 polynomial that passes through all of them.">
+  <LagrangeCurveFigure />
+</Figure>
+
+## The trick: basis polynomials
+
+The trick is to build one small helper polynomial per point — a **Lagrange basis polynomial**. Each one is engineered to equal $1$ at its own point and $0$ at every other point in the set.
+
+<MathBox label="A Lagrange basis polynomial">
+
+$$L_i(x) = 1 \text{ at its own point}, \quad L_i(x) = 0 \text{ at every other point}$$
+
+Each basis polynomial only ever "turns on" for its own point — everywhere else, it contributes nothing.
+
+</MathBox>
+
+Building one is mechanical: for every *other* point, multiply in a factor of $(x - \text{that point})$, then divide by whatever that same product evaluates to at your own point — which forces the result to land on exactly $1$ there.
+
+<Figure caption="Fig. 2 — the three basis polynomials for x = 0, 1, 2. Each numerator zeroes out at every point but its own.">
+  <LagrangeBasisFigure />
+</Figure>
+
+## Combining them
+
+With all three basis polynomials built, combine them by scaling each one by its point's $y$-value and adding the results together.
+
+<MathBox label="The combined polynomial">
+
+$$P(x) = 1 \cdot L_0(x) + 2 \cdot L_1(x) + 5 \cdot L_2(x)$$
+
+</MathBox>
+
+Checking this against the original points confirms it works — at each $x$, exactly one basis polynomial is "on," and it hands back exactly that point's $y$-value.
+
+<Figure caption="Fig. 3 — checking the combined polynomial at each of the three points. Only one basis polynomial ever turns on at a time.">
+  <LagrangeCheckFigure />
+</Figure>
+
+Expanded out, all of that simplifies down to a single clean expression: $P(x) = x^2 + 1$ — exactly the curve from Fig. 1.
+
+## The general formula
+
+Nothing about this is specific to three points. The same construction works for any number of them:
+
+<MathBox label="Lagrange interpolation, in general">
+
+$$P(x) = \sum_i y_i \cdot L_i(x)$$
+
+Sum each point's $y$-value times its own basis polynomial — that's the entire formula, however many points there are.
+
+</MathBox>
+
+## Why this matters for ZK
+
+Here's the payoff. In a **QAP** — the structure behind Groth16 — every gate in a circuit becomes a point: the gate's index paired with its value.
+
+<Figure caption="Fig. 4 — Lagrange interpolation turns every gate-as-a-point into one polynomial representing the whole circuit.">
+  <LagrangeQAPFigure />
+</Figure>
+
+Lagrange interpolation takes that entire set of points and produces a single polynomial representing the whole circuit at once. **This is literally what the Q in QAP stands for** — Quadratic Arithmetic Program — the same idea this lesson just built from scratch, running at the scale of a real circuit.

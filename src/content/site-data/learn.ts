@@ -83,7 +83,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       items: [
         { num: "07", title: "Polynomials", duration: "4:25", slug: "polynomials" },
         { num: "08", title: "Polynomial Arithmetic", duration: "3:41", slug: "polynomial-arithmetic" },
-        { num: "09", title: "Lagrange Interpolation", duration: "3:33" },
+        { num: "09", title: "Lagrange Interpolation", duration: "3:33", slug: "lagrange-interpolation" },
         { num: "10", title: "Schwartz-Zippel Lemma", duration: "3:38" },
       ],
     },

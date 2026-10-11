@@ -1,0 +1,53 @@
+---
+// Fig. for "Lagrange Interpolation": the problem this lesson solves —
+// given the three points (0,1), (1,2), (2,5), exactly one degree-2
+// polynomial passes through all of them. Points and curve are both
+// mapped from data-space into the SVG viewBox at build time.
+const points: [number, number][] = [
+  [0, 1],
+  [1, 2],
+  [2, 5],
+];
+const f = (x: number) => x * x + 1;
+
+const xMin = -0.6;
+const xMax = 2.6;
+const yMin = 0;
+const yMax = 8.2;
+
+const W = 480;
+const H = 280;
+const padL = 46;
+const padR = 20;
+const padT = 24;
+const padB = 36;
+
+const toScreenX = (x: number) => padL + ((x - xMin) / (xMax - xMin)) * (W - padL - padR);
+const toScreenY = (y: number) => H - padB - ((y - yMin) / (yMax - yMin)) * (H - padT - padB);
+
+const N = 40;
+const curve: string[] = [];
+for (let i = 0; i <= N; i++) {
+  const x = xMin + (i / N) * (xMax - xMin);
+  curve.push(`${toScreenX(x).toFixed(1)},${toScreenY(f(x)).toFixed(1)}`);
+}
+---
+<svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <line x1={padL} y1={toScreenY(0)} x2={W - padR} y2={toScreenY(0)} stroke="#223049" stroke-width="1.5" />
+  <line x1={toScreenX(0)} y1={padT} x2={toScreenX(0)} y2={H - padB} stroke="#223049" stroke-width="1.5" />
+
+  <polyline points={curve.join(" ")} fill="none" stroke="#3ab7ff" stroke-width="2.5" stroke-linecap="round" />
+
+  {points.map(([x, y]) => {
+    const sx = toScreenX(x);
+    const sy = toScreenY(y);
+    return (
+      <>
+        <circle cx={sx} cy={sy} r="5" fill="#8fdcff" stroke="#0a0f19" stroke-width="2" />
+        <text x={sx + 10} y={sy - 10} fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">({x}, {y})</text>
+      </>
+    );
+  })}
+
+  <text x={W / 2} y="20" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">exactly one degree-2 polynomial fits all three points</text>
+</svg>

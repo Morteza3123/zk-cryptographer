@@ -1,0 +1,292 @@
+diff --git a/src/components/figures/LagrangeBasisFigure.astro b/src/components/figures/LagrangeBasisFigure.astro
+new file mode 100644
+index 0000000..d6daacc
+--- /dev/null
++++ b/src/components/figures/LagrangeBasisFigure.astro
+@@ -0,0 +1,34 @@
++---
++// Fig. for "Lagrange Interpolation": the three basis polynomials built
++// for x-values 0, 1, 2 — each one a fraction whose numerator zeroes out
++// at every point except its own.
++interface Row {
++  label: string;
++  eq: string;
++}
++const rows: Row[] = [
++  { label: "L₀(x) =", eq: "(x−1)(x−2) / (0−1)(0−2)" },
++  { label: "L₁(x) =", eq: "(x−0)(x−2) / (1−0)(1−2)" },
++  { label: "L₂(x) =", eq: "(x−0)(x−1) / (2−0)(2−1)" },
++];
++const rowH = 58;
++const topPad = 44;
++const height = topPad + rows.length * rowH + 10;
++---
++<svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">building each basis polynomial — points at x = 0, 1, 2</text>
++  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
++
++  {rows.map((row, i) => {
++    const y = topPad + i * rowH;
++    return (
++      <>
++        <text x="40" y={y + 20} text-anchor="start" fill="#c3cedd" font-size="17" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.label}</text>
++        <text x="640" y={y + 20} text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.eq}</text>
++        {i < rows.length - 1 && (
++          <line x1="20" y1={y + 36} x2="660" y2={y + 36} stroke="#1a2436" stroke-width="1" />
++        )}
++      </>
++    );
++  })}
++</svg>
+diff --git a/src/components/figures/LagrangeCheckFigure.astro b/src/components/figures/LagrangeCheckFigure.astro
+new file mode 100644
+index 0000000..de3ff0f
+--- /dev/null
++++ b/src/components/figures/LagrangeCheckFigure.astro
+@@ -0,0 +1,41 @@
++---
++// Fig. for "Lagrange Interpolation": checking the combined polynomial at
++// each of the three x-values — only one basis polynomial ever turns on
++// at a time, and it always hands back exactly that point's y-value.
++interface Row {
++  label: string;
++  note: string;
++  result: string;
++}
++const rows: Row[] = [
++  { label: "check x = 0", note: "only L₀ turns on", result: "= 1 ✓" },
++  { label: "check x = 1", note: "only L₁ turns on", result: "= 2 ✓" },
++  { label: "check x = 2", note: "only L₂ turns on", result: "= 5 ✓" },
++];
++const rowH = 50;
++const topPad = 44;
++const tableH = rows.length * rowH;
++const footerH = 48;
++const height = topPad + tableH + footerH + 10;
++---
++<svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">P(x) = 1·L₀ + 2·L₁ + 5·L₂ — checked at each point</text>
++  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
++
++  {rows.map((row, i) => {
++    const y = topPad + i * rowH;
++    return (
++      <>
++        <text x="40" y={y + 16} text-anchor="start" fill="#c3cedd" font-size="14.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">{row.label}</text>
++        <text x="400" y={y + 16} text-anchor="middle" fill="#8b96a8" font-size="13.5" font-family="-apple-system,Arial,sans-serif">{row.note}</text>
++        <text x="640" y={y + 16} text-anchor="end" fill="#5ddc8a" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">{row.result}</text>
++        {i < rows.length - 1 && (
++          <line x1="20" y1={y + rowH - 12} x2="660" y2={y + rowH - 12} stroke="#1a2436" stroke-width="1" />
++        )}
++      </>
++    );
++  })}
++
++  <rect x="20" y={topPad + tableH + 10} width="640" height={footerH - 14} rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
++  <text x="340" y={topPad + tableH + 10 + (footerH - 14) / 2 + 5} text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">expanded out, this simplifies to P(x) = x² + 1</text>
++</svg>
+diff --git a/src/components/figures/LagrangeCurveFigure.astro b/src/components/figures/LagrangeCurveFigure.astro
+new file mode 100644
+index 0000000..34bac53
+--- /dev/null
++++ b/src/components/figures/LagrangeCurveFigure.astro
+@@ -0,0 +1,53 @@
++---
++// Fig. for "Lagrange Interpolation": the problem this lesson solves —
++// given the three points (0,1), (1,2), (2,5), exactly one degree-2
++// polynomial passes through all of them. Points and curve are both
++// mapped from data-space into the SVG viewBox at build time.
++const points: [number, number][] = [
++  [0, 1],
++  [1, 2],
++  [2, 5],
++];
++const f = (x: number) => x * x + 1;
++
++const xMin = -0.6;
++const xMax = 2.6;
++const yMin = 0;
++const yMax = 8.2;
++
++const W = 480;
++const H = 280;
++const padL = 46;
++const padR = 20;
++const padT = 24;
++const padB = 36;
++
++const toScreenX = (x: number) => padL + ((x - xMin) / (xMax - xMin)) * (W - padL - padR);
++const toScreenY = (y: number) => H - padB - ((y - yMin) / (yMax - yMin)) * (H - padT - padB);
++
++const N = 40;
++const curve: string[] = [];
++for (let i = 0; i <= N; i++) {
++  const x = xMin + (i / N) * (xMax - xMin);
++  curve.push(`${toScreenX(x).toFixed(1)},${toScreenY(f(x)).toFixed(1)}`);
++}
++---
++<svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <line x1={padL} y1={toScreenY(0)} x2={W - padR} y2={toScreenY(0)} stroke="#223049" stroke-width="1.5" />
++  <line x1={toScreenX(0)} y1={padT} x2={toScreenX(0)} y2={H - padB} stroke="#223049" stroke-width="1.5" />
++
++  <polyline points={curve.join(" ")} fill="none" stroke="#3ab7ff" stroke-width="2.5" stroke-linecap="round" />
++
++  {points.map(([x, y]) => {
++    const sx = toScreenX(x);
++    const sy = toScreenY(y);
++    return (
++      <>
++        <circle cx={sx} cy={sy} r="5" fill="#8fdcff" stroke="#0a0f19" stroke-width="2" />
++        <text x={sx + 10} y={sy - 10} fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">({x}, {y})</text>
++      </>
++    );
++  })}
++
++  <text x={W / 2} y="20" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">exactly one degree-2 polynomial fits all three points</text>
++</svg>
+diff --git a/src/components/figures/LagrangeQAPFigure.astro b/src/components/figures/LagrangeQAPFigure.astro
+new file mode 100644
+index 0000000..5cd63e9
+--- /dev/null
++++ b/src/components/figures/LagrangeQAPFigure.astro
+@@ -0,0 +1,22 @@
++---
++// Fig. for "Lagrange Interpolation": the payoff — every circuit gate
++// becomes a point, and Lagrange interpolation turns the whole set of
++// points into one polynomial. This is literally the "Q" in QAP.
++---
++<svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="280" y="38" text-anchor="middle" fill="#e9eef5" font-size="17" font-weight="700" font-family="-apple-system,Arial,sans-serif">every circuit gate becomes a point</text>
++  <text x="280" y="62" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">(gate index, gate value)</text>
++
++  <line x1="280" y1="80" x2="280" y2="128" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#lagqap-arrow)" />
++
++  <text x="280" y="160" text-anchor="middle" fill="#5ddc8a" font-size="17" font-weight="800" font-family="-apple-system,Arial,sans-serif">Lagrange interpolation → one polynomial for the whole circuit</text>
++
++  <line x1="20" y1="184" x2="540" y2="184" stroke="#223049" stroke-width="1" />
++  <text x="280" y="208" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">this is literally the Q in QAP — Quadratic Arithmetic Program</text>
++
++  <defs>
++    <marker id="lagqap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/content/lessons/lagrange-interpolation.mdx b/src/content/lessons/lagrange-interpolation.mdx
+new file mode 100644
+index 0000000..10f2ab7
+--- /dev/null
++++ b/src/content/lessons/lagrange-interpolation.mdx
+@@ -0,0 +1,87 @@
++---
++track: math
++module: "Algebra for ZK"
++lessonNumber: "09"
++title: "Lagrange Interpolation"
++duration: "3:33"
++description: "The mechanism that turns a handful of points into a single polynomial — and the exact process a QAP uses to collapse an entire ZK circuit into one polynomial that represents it."
++order: 9
++youtubeHref: "https://www.youtube.com/watch?v=-lX6sZgjccg"
++prevTitle: "Polynomial Arithmetic"
++prevHref: "/learn/math/polynomial-arithmetic"
++nextTitle: "Schwartz-Zippel Lemma"
++---
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import LagrangeCurveFigure from "../../components/figures/LagrangeCurveFigure.astro";
++import LagrangeBasisFigure from "../../components/figures/LagrangeBasisFigure.astro";
++import LagrangeCheckFigure from "../../components/figures/LagrangeCheckFigure.astro";
++import LagrangeQAPFigure from "../../components/figures/LagrangeQAPFigure.astro";
++
++Every lesson so far started with a polynomial and worked outward from it — building, evaluating, combining. **Today flips the problem around**: given a handful of points, how do you find the one polynomial that passes through all of them? That question has a name, Lagrange interpolation, and it's the exact mechanism that turns an entire ZK circuit into a single polynomial.
++
++## The problem
++
++Take three points: $(0, 1)$, $(1, 2)$, and $(2, 5)$. What polynomial passes through all three? With exactly three points, exactly one polynomial of degree $2$ fits.
++
++<Figure caption="Fig. 1 — three points, and the one degree-2 polynomial that passes through all of them.">
++  <LagrangeCurveFigure />
++</Figure>
++
++## The trick: basis polynomials
++
++The trick is to build one small helper polynomial per point — a **Lagrange basis polynomial**. Each one is engineered to equal $1$ at its own point and $0$ at every other point in the set.
++
++<MathBox label="A Lagrange basis polynomial">
++
++$$L_i(x) = 1 \text{ at its own point}, \quad L_i(x) = 0 \text{ at every other point}$$
++
++Each basis polynomial only ever "turns on" for its own point — everywhere else, it contributes nothing.
++
++</MathBox>
++
++Building one is mechanical: for every *other* point, multiply in a factor of $(x - \text{that point})$, then divide by whatever that same product evaluates to at your own point — which forces the result to land on exactly $1$ there.
++
++<Figure caption="Fig. 2 — the three basis polynomials for x = 0, 1, 2. Each numerator zeroes out at every point but its own.">
++  <LagrangeBasisFigure />
++</Figure>
++
++## Combining them
++
++With all three basis polynomials built, combine them by scaling each one by its point's $y$-value and adding the results together.
++
++<MathBox label="The combined polynomial">
++
++$$P(x) = 1 \cdot L_0(x) + 2 \cdot L_1(x) + 5 \cdot L_2(x)$$
++
++</MathBox>
++
++Checking this against the original points confirms it works — at each $x$, exactly one basis polynomial is "on," and it hands back exactly that point's $y$-value.
++
++<Figure caption="Fig. 3 — checking the combined polynomial at each of the three points. Only one basis polynomial ever turns on at a time.">
++  <LagrangeCheckFigure />
++</Figure>
++
++Expanded out, all of that simplifies down to a single clean expression: $P(x) = x^2 + 1$ — exactly the curve from Fig. 1.
++
++## The general formula
++
++Nothing about this is specific to three points. The same construction works for any number of them:
++
++<MathBox label="Lagrange interpolation, in general">
++
++$$P(x) = \sum_i y_i \cdot L_i(x)$$
++
++Sum each point's $y$-value times its own basis polynomial — that's the entire formula, however many points there are.
++
++</MathBox>
++
++## Why this matters for ZK
++
++Here's the payoff. In a **QAP** — the structure behind Groth16 — every gate in a circuit becomes a point: the gate's index paired with its value.
++
++<Figure caption="Fig. 4 — Lagrange interpolation turns every gate-as-a-point into one polynomial representing the whole circuit.">
++  <LagrangeQAPFigure />
++</Figure>
++
++Lagrange interpolation takes that entire set of points and produces a single polynomial representing the whole circuit at once. **This is literally what the Q in QAP stands for** — Quadratic Arithmetic Program — the same idea this lesson just built from scratch, running at the scale of a real circuit.
+diff --git a/src/content/lessons/polynomial-arithmetic.mdx b/src/content/lessons/polynomial-arithmetic.mdx
+index 573a09d..a8f38ec 100644
+--- a/src/content/lessons/polynomial-arithmetic.mdx
++++ b/src/content/lessons/polynomial-arithmetic.mdx
+@@ -10,6 +10,7 @@ youtubeHref: "https://www.youtube.com/watch?v=FP_v7De9NVc"
+ prevTitle: "Polynomials"
+ prevHref: "/learn/math/polynomials"
+ nextTitle: "Lagrange Interpolation"
++nextHref: "/learn/math/lagrange-interpolation"
+ ---
+ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 68a2ef3..3a514d6 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -83,7 +83,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+       items: [
+         { num: "07", title: "Polynomials", duration: "4:25", slug: "polynomials" },
+         { num: "08", title: "Polynomial Arithmetic", duration: "3:41", slug: "polynomial-arithmetic" },
+-        { num: "09", title: "Lagrange Interpolation", duration: "3:33" },
++        { num: "09", title: "Lagrange Interpolation", duration: "3:33", slug: "lagrange-interpolation" },
+         { num: "10", title: "Schwartz-Zippel Lemma", duration: "3:38" },
+       ],
+     },
