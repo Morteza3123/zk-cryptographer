@@ -1,0 +1,65 @@
+---
+track: math
+module: "Groups & Curves"
+lessonNumber: "13"
+title: "Bilinear Pairings"
+duration: "3:28"
+description: "The operation that makes Groth16 verification and KZG commitments actually work — a strange map that takes two points from two separate elliptic curve groups and connects them to a completely different group underneath."
+order: 13
+youtubeHref: "https://www.youtube.com/watch?v=xqAGcFTgEl0"
+prevTitle: "Elliptic Curves"
+prevHref: "/learn/math/elliptic-curves"
+---
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import PairingBridgeFigure from "../../components/figures/PairingBridgeFigure.astro";
+import NumericPairingFigure from "../../components/figures/NumericPairingFigure.astro";
+import PairingVerificationFigure from "../../components/figures/PairingVerificationFigure.astro";
+
+The last lesson built elliptic curves: point addition, and scalar multiplication. **Today builds the operation that makes Groth16 verification and KZG commitments actually work — the bilinear pairing.** It's a strange operation that takes two points and connects two completely separate worlds.
+
+## The big picture
+
+A pairing is best understood as a bridge between two separate elliptic curve groups, landing somewhere entirely different on the other side.
+
+<Figure caption="Fig. 1 — P lives in G₁, Q lives in G₂, two separate elliptic curve groups. The pairing e(P, Q) bridges them into a third group, Gₜ, underneath.">
+  <PairingBridgeFigure />
+</Figure>
+
+It's worth being precise about which group each piece actually belongs to, since $P$, $Q$, and the result are all different kinds of object: $P$ is a point in $G_1$, $Q$ is a point in $G_2$, and the output $e(P, Q)$ lands in a completely different group, $G_T$.
+
+<MathBox label="What Gₜ actually is">
+
+The output of a pairing is **not** a point on either curve — it's a different kind of object entirely. $G_T$ is the multiplicative group of a finite field: $e(P, Q)$ is a *number*, not a point.
+
+</MathBox>
+
+## What "bilinear" means
+
+The word *bilinear* refers to one very specific, very useful algebraic property this operation has.
+
+<MathBox label="Bilinearity">
+
+$$e(a \cdot P,\ b \cdot Q) = e(P, Q)^{ab}$$
+
+Scalars multiplied **inside** the pairing come back out as an **exponent on the outside**.
+
+</MathBox>
+
+## A numeric feel for it
+
+A made-up number makes that scaling behavior concrete.
+
+<Figure caption="Fig. 2 — if e(P, Q) happens to equal 5, scaling either input scales the exponent, and scaling both multiplies the two scalars together in that exponent.">
+  <NumericPairingFigure />
+</Figure>
+
+## Why this matters for ZK
+
+Here's the payoff: the bilinear property lets a verifier confirm a hidden multiplication happened correctly, without ever learning the actual numbers involved.
+
+<Figure caption="Fig. 3 — checking e(A, B) = e(C, D) confirms a·b = c·d, without the verifier ever seeing a, b, c, or d.">
+  <PairingVerificationFigure />
+</Figure>
+
+That single check — one pairing equality, standing in for a multiplication the verifier never actually sees — **is how Groth16 and KZG verify a proof**.
