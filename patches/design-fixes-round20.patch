@@ -1,0 +1,167 @@
+diff --git a/src/components/figures/DiscreteLogFigure.astro b/src/components/figures/DiscreteLogFigure.astro
+index 10a24b4..d959329 100644
+--- a/src/components/figures/DiscreteLogFigure.astro
++++ b/src/components/figures/DiscreteLogFigure.astro
+@@ -4,19 +4,20 @@
+ // generator) is easy; going backward (recovering the scalar) is hard.
+ // That one-way gap is the discrete log problem.
+ ---
+-<svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+-  <line x1="340" y1="14" x2="340" y2="196" stroke="#223049" stroke-width="1" />
++<svg viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="260" y="34" text-anchor="middle" fill="#e9eef5" font-size="16.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">elliptic curve groups used in ZK are cyclic too</text>
++  <text x="260" y="58" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">generator point G, scalar K &#8594; compute K &#183; G easily</text>
+ 
+-  <text x="170" y="40" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">forward</text>
+-  <text x="170" y="92" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">K &#183; G</text>
+-  <text x="170" y="118" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">scalar times generator point</text>
+-  <text x="170" y="154" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">&#10003; easy to compute</text>
++  <line x1="260" y1="76" x2="260" y2="128" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#dlog-arrow)" />
+ 
+-  <text x="510" y="40" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">backward</text>
+-  <text x="510" y="92" text-anchor="middle" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">K &#183; G &#8594; K ?</text>
+-  <text x="510" y="118" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">recover the scalar from the point</text>
+-  <text x="510" y="154" text-anchor="middle" fill="#ff8080" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">&#10007; the discrete log problem</text>
++  <text x="260" y="160" text-anchor="middle" fill="#5ddc8a" font-size="19" font-weight="800" font-family="-apple-system,Arial,sans-serif">but going backward from K &#183; G to K is HARD</text>
+ 
+-  <line x1="20" y1="178" x2="660" y2="178" stroke="#223049" stroke-width="1" />
+-  <text x="340" y="198" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">this one-way gap is what makes elliptic curve crypto secure</text>
++  <line x1="40" y1="186" x2="480" y2="186" stroke="#223049" stroke-width="1" />
++  <text x="260" y="216" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">this one-way difficulty is the discrete log problem</text>
++
++  <defs>
++    <marker id="dlog-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
+ </svg>
+diff --git a/src/components/figures/GeneratingGroupFigure.astro b/src/components/figures/GeneratingGroupFigure.astro
+new file mode 100644
+index 0000000..1423701
+--- /dev/null
++++ b/src/components/figures/GeneratingGroupFigure.astro
+@@ -0,0 +1,40 @@
++---
++// Fig. for "Groups & Cyclic Groups": watching 1 generate all of C7 by
++// repeated addition — two columns of running totals that both land on
++// every element of the group before wrapping back to the start.
++interface Row {
++  left: string;
++  right: string;
++}
++const rows: Row[] = [
++  { left: "1 + 1 = 2", right: "1 + 1 + 1 = 3" },
++  { left: "… continues …", right: "1 × 6 = 6" },
++  { left: "1 × 7 = 7 mod 7 = 0", right: "back to start" },
++];
++const rowH = 50;
++const topPad = 66;
++const tableH = rows.length * rowH;
++const footerH = 48;
++const height = topPad + tableH + footerH + 10;
++---
++<svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">generating C&#8327; from one element</text>
++  <text x="340" y="46" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="-apple-system,Arial,sans-serif">start at 1, keep adding 1, mod 7</text>
++  <line x1="20" y1="60" x2="660" y2="60" stroke="#223049" stroke-width="1" />
++
++  {rows.map((row, i) => {
++    const y = topPad + i * rowH;
++    return (
++      <>
++        <text x="40" y={y + 18} text-anchor="start" fill="#e9eef5" font-size="15.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.left}</text>
++        <text x="640" y={y + 18} text-anchor="end" fill="#e9eef5" font-size="15.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{row.right}</text>
++        {i < rows.length - 1 && (
++          <line x1="20" y1={y + 34} x2="660" y2={y + 34} stroke="#1a2436" stroke-width="1" />
++        )}
++      </>
++    );
++  })}
++
++  <rect x="20" y={topPad + tableH + 10} width="640" height={footerH - 14} rx="8" fill="#121c2c" stroke="#223049" stroke-width="1.5" />
++  <text x="340" y={topPad + tableH + 10 + (footerH - 14) / 2 + 5} text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">1 visits every element before returning to start — a generator</text>
++</svg>
+diff --git a/src/components/figures/GroupAxiomsFigure.astro b/src/components/figures/GroupAxiomsFigure.astro
+index 83507dc..202f9ba 100644
+--- a/src/components/figures/GroupAxiomsFigure.astro
++++ b/src/components/figures/GroupAxiomsFigure.astro
+@@ -8,7 +8,7 @@ interface Row {
+ const rows: Row[] = [
+   { label: "Closure", eq: "combine two elements, stay in the set" },
+   { label: "Identity", eq: "one element that changes nothing" },
+-  { label: "Inverse", eq: "every element has an undo" },
++  { label: "Inverses", eq: "every element has an undo" },
+   { label: "Associativity", eq: "grouping doesn't change the result" },
+ ];
+ const rowH = 54;
+diff --git a/src/components/figures/GroupExampleCheckFigure.astro b/src/components/figures/GroupExampleCheckFigure.astro
+index c9e2853..c2aac22 100644
+--- a/src/components/figures/GroupExampleCheckFigure.astro
++++ b/src/components/figures/GroupExampleCheckFigure.astro
+@@ -10,17 +10,18 @@ interface Row {
+ const rows: Row[] = [
+   { label: "Closure", eq: "3 + 5 ≡ 1 (mod 7)", note: "stays in the set" },
+   { label: "Identity", eq: "3 + 0 = 3", note: "adding zero changes nothing" },
+-  { label: "Inverse", eq: "3 + 4 ≡ 0 (mod 7)", note: "4 undoes 3" },
++  { label: "Inverses", eq: "3 + 4 ≡ 0 (mod 7)", note: "4 undoes 3" },
+ ];
+ const rowH = 54;
+-const topPad = 44;
++const topPad = 64;
+ const tableH = rows.length * rowH;
+ const footerH = 48;
+ const height = topPad + tableH + footerH + 10;
+ ---
+ <svg viewBox={`0 0 680 ${height}`} xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+-  <text x="340" y="26" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">checking three axioms against addition mod 7</text>
+-  <line x1="20" y1="40" x2="660" y2="40" stroke="#223049" stroke-width="1" />
++  <text x="340" y="24" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">checking three axioms against addition mod 7</text>
++  <text x="340" y="44" text-anchor="middle" fill="#8b96a8" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">{"{0, 1, 2, 3, 4, 5, 6}"} under addition mod 7</text>
++  <line x1="20" y1="58" x2="660" y2="58" stroke="#223049" stroke-width="1" />
+ 
+   {rows.map((row, i) => {
+     const y = topPad + i * rowH;
+diff --git a/src/content/lessons/groups-cyclic-groups.mdx b/src/content/lessons/groups-cyclic-groups.mdx
+index 92d5e64..c71fe7f 100644
+--- a/src/content/lessons/groups-cyclic-groups.mdx
++++ b/src/content/lessons/groups-cyclic-groups.mdx
+@@ -16,6 +16,7 @@ import Figure from "../../components/Figure.astro";
+ import GroupAxiomsFigure from "../../components/figures/GroupAxiomsFigure.astro";
+ import GroupExampleCheckFigure from "../../components/figures/GroupExampleCheckFigure.astro";
+ import CyclicGroupRingFigure from "../../components/figures/CyclicGroupRingFigure.astro";
++import GeneratingGroupFigure from "../../components/figures/GeneratingGroupFigure.astro";
+ import DiscreteLogFigure from "../../components/figures/DiscreteLogFigure.astro";
+ 
+ That closes out phase two, polynomials. **Phase three starts here: groups, curves, and pairings** — the foundation everything from elliptic curves to bilinear pairings gets built on. Today stays simple: what is a group, and what makes one *cyclic*?
+@@ -60,27 +61,17 @@ An element that does this — reaches the whole group on its own — is called a
+ 
+ Watching the running total confirms it directly: adding $1$ to itself, again and again, counts straight through every element of the group.
+ 
+-<MathBox label="1 generates all of C₇">
+-
+-$$
+-\begin{aligned}
+-1 + 1 &= 2 \\
+-1 + 1 + 1 &= 3 \\
+-&\;\;\vdots \\
+-1 \times 6 &= 6 \\
+-1 \times 7 &\equiv 0 \pmod{7}
+-\end{aligned}
+-$$
++<Figure caption="Fig. 4 — the running total of 1 + 1 + 1 + ... mod 7, landing on every element before wrapping back to the start.">
++  <GeneratingGroupFigure />
++</Figure>
+ 
+ Seven additions of $1$ visit every element of $C_7$ exactly once, then land back on the identity — $1$ really does generate the whole group.
+ 
+-</MathBox>
+-
+ ## Why this matters for ZK
+ 
+ The elliptic curve groups used throughout ZK cryptography are built on this exact same cyclic structure — just with **points on a curve** standing in for numbers on a ring.
+ 
+-<Figure caption="Fig. 4 — the same one-way gap as C₇'s generator, scaled up to a curve: easy forward, hard backward.">
++<Figure caption="Fig. 5 — the same one-way gap as C₇'s generator, scaled up to a curve: easy forward, hard backward.">
+   <DiscreteLogFigure />
+ </Figure>
+ 
