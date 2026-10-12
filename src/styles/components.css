@@ -357,7 +357,10 @@
 .hub-link::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 @media (max-width: 640px) {
@@ -1049,7 +1052,10 @@ a.sb-item:hover {
   .sidebar-backdrop[data-open="true"] {
     display: block;
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: rgba(5, 10, 20, 0.55);
     z-index: 55;
   }

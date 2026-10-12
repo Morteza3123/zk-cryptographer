@@ -16,12 +16,14 @@ export const learnHero = {
   ],
 };
 
-// Hero visual (TrackStack) — order matches the track cards below.
+// Hero visual (TrackStack) — order matches the track cards below, and each
+// chip's `id` matches its entry in `trackOrder` so the chip can link straight
+// to that track's page.
 export const trackStack = [
-  { num: "01", sym: "&#931;", title: "Math", level: "BEGINNER – INTERMEDIATE" },
-  { num: "02", sym: "&#9670;", title: "Cryptography", level: "INTERMEDIATE" },
-  { num: "03", sym: "&#9678;", title: "Fundamentals", level: "BEGINNER" },
-  { num: "04", sym: "&#11041;", title: "ZK Development", level: "ADVANCED" },
+  { num: "01", sym: "&#931;", title: "Math", level: "BEGINNER – INTERMEDIATE", id: "math" },
+  { num: "02", sym: "&#9670;", title: "Cryptography", level: "INTERMEDIATE", id: "cryptography" },
+  { num: "03", sym: "&#9678;", title: "Fundamentals", level: "BEGINNER", id: "fundamentals" },
+  { num: "04", sym: "&#11041;", title: "ZK Development", level: "ADVANCED", id: "zk-development" },
 ];
 
 export const fitTogether = {

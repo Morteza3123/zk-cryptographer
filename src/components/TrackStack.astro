@@ -8,6 +8,7 @@ interface Track {
   sym: string;
   title: string;
   level: string;
+  id: string;
 }
 interface Props {
   tracks: Track[];
@@ -16,14 +17,14 @@ const { tracks } = Astro.props;
 ---
 <div class="track-stack">
   {tracks.map((t, i) => (
-    <div class={`stack-chip stack-chip-${i}`}>
+    <a href={`/learn/${t.id}`} class={`stack-chip stack-chip-${i}`}>
       <div class="stack-chip-badge" set:html={t.sym} />
       <div class="stack-chip-text">
         <div class="stack-chip-num">TRACK {t.num}</div>
         <div class="stack-chip-title">{t.title}</div>
         <div class="stack-chip-level">{t.level}</div>
       </div>
-    </div>
+    </a>
   ))}
 </div>
 
@@ -43,6 +44,13 @@ const { tracks } = Astro.props;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
     position: relative;
     padding: 16px 18px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .stack-chip:hover {
+    border-color: var(--accent);
   }
   .stack-chip-badge {
     width: 38px;

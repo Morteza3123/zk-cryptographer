@@ -1,0 +1,95 @@
+diff --git a/src/components/TrackStack.astro b/src/components/TrackStack.astro
+index 275dd8c..f3058ae 100644
+--- a/src/components/TrackStack.astro
++++ b/src/components/TrackStack.astro
+@@ -8,6 +8,7 @@ interface Track {
+   sym: string;
+   title: string;
+   level: string;
++  id: string;
+ }
+ interface Props {
+   tracks: Track[];
+@@ -16,14 +17,14 @@ const { tracks } = Astro.props;
+ ---
+ <div class="track-stack">
+   {tracks.map((t, i) => (
+-    <div class={`stack-chip stack-chip-${i}`}>
++    <a href={`/learn/${t.id}`} class={`stack-chip stack-chip-${i}`}>
+       <div class="stack-chip-badge" set:html={t.sym} />
+       <div class="stack-chip-text">
+         <div class="stack-chip-num">TRACK {t.num}</div>
+         <div class="stack-chip-title">{t.title}</div>
+         <div class="stack-chip-level">{t.level}</div>
+       </div>
+-    </div>
++    </a>
+   ))}
+ </div>
+ 
+@@ -43,6 +44,13 @@ const { tracks } = Astro.props;
+     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+     position: relative;
+     padding: 16px 18px;
++    text-decoration: none;
++    color: inherit;
++    cursor: pointer;
++    transition: border-color 0.15s ease;
++  }
++  .stack-chip:hover {
++    border-color: var(--accent);
+   }
+   .stack-chip-badge {
+     width: 38px;
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index eefd2c6..729e02e 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -16,12 +16,14 @@ export const learnHero = {
+   ],
+ };
+ 
+-// Hero visual (TrackStack) — order matches the track cards below.
++// Hero visual (TrackStack) — order matches the track cards below, and each
++// chip's `id` matches its entry in `trackOrder` so the chip can link straight
++// to that track's page.
+ export const trackStack = [
+-  { num: "01", sym: "&#931;", title: "Math", level: "BEGINNER – INTERMEDIATE" },
+-  { num: "02", sym: "&#9670;", title: "Cryptography", level: "INTERMEDIATE" },
+-  { num: "03", sym: "&#9678;", title: "Fundamentals", level: "BEGINNER" },
+-  { num: "04", sym: "&#11041;", title: "ZK Development", level: "ADVANCED" },
++  { num: "01", sym: "&#931;", title: "Math", level: "BEGINNER – INTERMEDIATE", id: "math" },
++  { num: "02", sym: "&#9670;", title: "Cryptography", level: "INTERMEDIATE", id: "cryptography" },
++  { num: "03", sym: "&#9678;", title: "Fundamentals", level: "BEGINNER", id: "fundamentals" },
++  { num: "04", sym: "&#11041;", title: "ZK Development", level: "ADVANCED", id: "zk-development" },
+ ];
+ 
+ export const fitTogether = {
+diff --git a/src/styles/components.css b/src/styles/components.css
+index 959bb6d..a430f60 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -357,7 +357,10 @@
+ .hub-link::after {
+   content: "";
+   position: absolute;
+-  inset: 0;
++  top: 0;
++  right: 0;
++  bottom: 0;
++  left: 0;
+ }
+ 
+ @media (max-width: 640px) {
+@@ -1049,7 +1052,10 @@ a.sb-item:hover {
+   .sidebar-backdrop[data-open="true"] {
+     display: block;
+     position: fixed;
+-    inset: 0;
++    top: 0;
++    right: 0;
++    bottom: 0;
++    left: 0;
+     background: rgba(5, 10, 20, 0.55);
+     z-index: 55;
+   }
