@@ -62,8 +62,17 @@ const hasCustomPoster = posterHtml.length > 0;
   <div class="crumbrow">
     <a href="/learn">Learn</a> / <a href={trackHref}>{trackTitle}</a> / <b>{lessonCrumb}</b>
   </div>
+  <button class="sidebar-toggle" aria-label="Open lesson topics" data-sidebar-toggle>
+    <span class="sidebar-toggle-icon"><span></span><span></span><span></span></span>
+    Topics
+  </button>
+  <div class="sidebar-backdrop" data-sidebar-backdrop></div>
   <div class="course-layout">
-    <aside class="course-sidebar">
+    <aside class="course-sidebar" data-sidebar>
+      <div class="course-sidebar-mobile-head">
+        <span>Topics</span>
+        <button aria-label="Close lesson topics" data-sidebar-close>&times;</button>
+      </div>
       {modules.map((mod) => (
         <>
           <div class="sb-mod">{mod.module}</div>
@@ -119,3 +128,36 @@ const hasCustomPoster = posterHtml.length > 0;
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  // Mobile lesson-topic drawer: slides the sidebar in from the left instead
+  // of it stacking above the lesson content. Vanilla toggle, same pattern
+  // as the header's hamburger menu — no React island needed for this.
+  const toggle = document.querySelector<HTMLElement>("[data-sidebar-toggle]");
+  const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
+  const backdrop = document.querySelector<HTMLElement>("[data-sidebar-backdrop]");
+  const closeBtn = document.querySelector<HTMLElement>("[data-sidebar-close]");
+
+  const closeSidebar = () => {
+    sidebar?.setAttribute("data-open", "false");
+    backdrop?.setAttribute("data-open", "false");
+  };
+  const openSidebar = () => {
+    sidebar?.setAttribute("data-open", "true");
+    backdrop?.setAttribute("data-open", "true");
+  };
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = sidebar?.getAttribute("data-open") === "true";
+    if (isOpen) closeSidebar();
+    else openSidebar();
+  });
+  closeBtn?.addEventListener("click", closeSidebar);
+  backdrop?.addEventListener("click", closeSidebar);
+
+  // Tapping a topic link navigates away (full page load), but close the
+  // drawer first so a bfcache restore doesn't leave it stuck open.
+  sidebar?.querySelectorAll("a.sb-item").forEach((a) => {
+    a.addEventListener("click", closeSidebar);
+  });
+</script>

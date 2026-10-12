@@ -1,0 +1,226 @@
+diff --git a/src/components/Footer.astro b/src/components/Footer.astro
+index 2095704..7f665ed 100644
+--- a/src/components/Footer.astro
++++ b/src/components/Footer.astro
+@@ -25,7 +25,7 @@ const year = new Date().getFullYear();
+           <a href="/blog">Blog</a>
+           <a href="/services">Services</a>
+           <a href="/about">About</a>
+-          <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
++          <a href="https://www.youtube.com/@zk.cryptographer" target="_blank" rel="noopener">YouTube</a>
+         </div>
+       </div>
+     </div>
+diff --git a/src/components/HomeHeroDiagram.astro b/src/components/HomeHeroDiagram.astro
+index 50dbff4..bfa5fc7 100644
+--- a/src/components/HomeHeroDiagram.astro
++++ b/src/components/HomeHeroDiagram.astro
+@@ -35,7 +35,7 @@ const arcs = [
+       <circle cx={n.x} cy={n.y} r="26" fill="url(#fpGrad)" stroke="#8fdcff" stroke-width="1.5" />
+       <text
+         x={n.x}
+-        y={n.pos === "top" ? n.y - 40 : n.pos === "bottom" ? n.y + 44 : n.y + 5}
++        y={n.pos === "top" ? n.y - 40 : n.y + 44}
+         text-anchor="middle"
+         fill="#c3cedd"
+         font-size="12.5"
+diff --git a/src/layouts/LessonLayout.astro b/src/layouts/LessonLayout.astro
+index 84708bd..9853b35 100644
+--- a/src/layouts/LessonLayout.astro
++++ b/src/layouts/LessonLayout.astro
+@@ -62,8 +62,17 @@ const hasCustomPoster = posterHtml.length > 0;
+   <div class="crumbrow">
+     <a href="/learn">Learn</a> / <a href={trackHref}>{trackTitle}</a> / <b>{lessonCrumb}</b>
+   </div>
++  <button class="sidebar-toggle" aria-label="Open lesson topics" data-sidebar-toggle>
++    <span class="sidebar-toggle-icon"><span></span><span></span><span></span></span>
++    Topics
++  </button>
++  <div class="sidebar-backdrop" data-sidebar-backdrop></div>
+   <div class="course-layout">
+-    <aside class="course-sidebar">
++    <aside class="course-sidebar" data-sidebar>
++      <div class="course-sidebar-mobile-head">
++        <span>Topics</span>
++        <button aria-label="Close lesson topics" data-sidebar-close>&times;</button>
++      </div>
+       {modules.map((mod) => (
+         <>
+           <div class="sb-mod">{mod.module}</div>
+@@ -119,3 +128,36 @@ const hasCustomPoster = posterHtml.length > 0;
+     </div>
+   </div>
+ </BaseLayout>
++
++<script>
++  // Mobile lesson-topic drawer: slides the sidebar in from the left instead
++  // of it stacking above the lesson content. Vanilla toggle, same pattern
++  // as the header's hamburger menu — no React island needed for this.
++  const toggle = document.querySelector<HTMLElement>("[data-sidebar-toggle]");
++  const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
++  const backdrop = document.querySelector<HTMLElement>("[data-sidebar-backdrop]");
++  const closeBtn = document.querySelector<HTMLElement>("[data-sidebar-close]");
++
++  const closeSidebar = () => {
++    sidebar?.setAttribute("data-open", "false");
++    backdrop?.setAttribute("data-open", "false");
++  };
++  const openSidebar = () => {
++    sidebar?.setAttribute("data-open", "true");
++    backdrop?.setAttribute("data-open", "true");
++  };
++
++  toggle?.addEventListener("click", () => {
++    const isOpen = sidebar?.getAttribute("data-open") === "true";
++    if (isOpen) closeSidebar();
++    else openSidebar();
++  });
++  closeBtn?.addEventListener("click", closeSidebar);
++  backdrop?.addEventListener("click", closeSidebar);
++
++  // Tapping a topic link navigates away (full page load), but close the
++  // drawer first so a bfcache restore doesn't leave it stuck open.
++  sidebar?.querySelectorAll("a.sb-item").forEach((a) => {
++    a.addEventListener("click", closeSidebar);
++  });
++</script>
+diff --git a/src/styles/components.css b/src/styles/components.css
+index bc374a9..959bb6d 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -262,6 +262,7 @@
+   border: 1px solid var(--card-border);
+   border-radius: 14px;
+   padding: 28px;
++  cursor: pointer;
+   transition: transform 0.15s ease, border-color 0.15s ease;
+ }
+ 
+@@ -349,6 +350,16 @@
+   text-decoration: underline;
+ }
+ 
++/* Stretches the card's single link over the whole card, so the entire
++   box is clickable/tappable rather than just the small "Start track" text.
++   .hub-card is already `position: relative`, so this absolutely-positioned
++   pseudo-element fills it exactly. */
++.hub-link::after {
++  content: "";
++  position: absolute;
++  inset: 0;
++}
++
+ @media (max-width: 640px) {
+   .hub-grid { grid-template-columns: 1fr; }
+   .hub-card { padding: 20px; }
+@@ -941,6 +952,45 @@ a.sb-item:hover {
+   padding: 32px 48px 48px;
+ }
+ 
++/* Mobile sidebar drawer toggle — hidden on desktop, shown as a small
++   pill button under 768px (mirrors the header's .hamburger pattern). */
++.sidebar-toggle {
++  display: none;
++  align-items: center;
++  gap: 8px;
++  background: var(--bg-alt);
++  border: 1px solid var(--card-border);
++  border-radius: 8px;
++  color: var(--text);
++  font-weight: 600;
++  font-size: 13px;
++  padding: 9px 14px;
++  margin: 14px 18px 0;
++  cursor: pointer;
++}
++
++.sidebar-toggle-icon {
++  display: flex;
++  flex-direction: column;
++  gap: 3px;
++}
++
++.sidebar-toggle-icon span {
++  display: block;
++  width: 16px;
++  height: 2px;
++  border-radius: 1px;
++  background: var(--text);
++}
++
++.course-sidebar-mobile-head {
++  display: none;
++}
++
++.sidebar-backdrop {
++  display: none;
++}
++
+ @media (max-width: 1024px) {
+   .crumbrow { padding: 13px 36px; }
+   .course-sidebar { width: 230px; }
+@@ -948,12 +998,60 @@ a.sb-item:hover {
+ }
+ 
+ @media (max-width: 768px) {
+-  .course-layout { flex-direction: column; }
++  .sidebar-toggle {
++    display: flex;
++  }
++
++  /* The topic list becomes an off-canvas drawer instead of stacking above
++     the lesson content: fixed to the viewport, slid off-screen by default,
++     and slid in when toggled open. */
+   .course-sidebar {
+-    width: 100%;
+-    max-height: none;
+-    border-right: none;
++    position: fixed;
++    top: 0;
++    left: 0;
++    width: 280px;
++    max-width: 82vw;
++    height: 100vh;
++    z-index: 60;
++    transform: translateX(-100%);
++    transition: transform 0.25s ease;
++    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.35);
++    border-right: 1px solid var(--card-border);
++    border-bottom: none;
++    padding: 0 0 18px;
++  }
++
++  .course-sidebar[data-open="true"] {
++    transform: translateX(0);
++  }
++
++  .course-sidebar-mobile-head {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    padding: 16px 20px;
+     border-bottom: 1px solid var(--card-border);
++    font-weight: 700;
++    font-size: 13px;
++    color: var(--text);
++  }
++
++  .course-sidebar-mobile-head button {
++    background: none;
++    border: none;
++    color: var(--muted);
++    font-size: 18px;
++    line-height: 1;
++    cursor: pointer;
++    padding: 4px;
++  }
++
++  .sidebar-backdrop[data-open="true"] {
++    display: block;
++    position: fixed;
++    inset: 0;
++    background: rgba(5, 10, 20, 0.55);
++    z-index: 55;
+   }
+ }
+ 

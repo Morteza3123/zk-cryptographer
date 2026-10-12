@@ -262,6 +262,7 @@
   border: 1px solid var(--card-border);
   border-radius: 14px;
   padding: 28px;
+  cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
@@ -347,6 +348,16 @@
 
 .hub-link:hover {
   text-decoration: underline;
+}
+
+/* Stretches the card's single link over the whole card, so the entire
+   box is clickable/tappable rather than just the small "Start track" text.
+   .hub-card is already `position: relative`, so this absolutely-positioned
+   pseudo-element fills it exactly. */
+.hub-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 @media (max-width: 640px) {
@@ -941,6 +952,45 @@ a.sb-item:hover {
   padding: 32px 48px 48px;
 }
 
+/* Mobile sidebar drawer toggle — hidden on desktop, shown as a small
+   pill button under 768px (mirrors the header's .hamburger pattern). */
+.sidebar-toggle {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-alt);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 14px;
+  margin: 14px 18px 0;
+  cursor: pointer;
+}
+
+.sidebar-toggle-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sidebar-toggle-icon span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--text);
+}
+
+.course-sidebar-mobile-head {
+  display: none;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .crumbrow { padding: 13px 36px; }
   .course-sidebar { width: 230px; }
@@ -948,12 +998,60 @@ a.sb-item:hover {
 }
 
 @media (max-width: 768px) {
-  .course-layout { flex-direction: column; }
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  /* The topic list becomes an off-canvas drawer instead of stacking above
+     the lesson content: fixed to the viewport, slid off-screen by default,
+     and slid in when toggled open. */
   .course-sidebar {
-    width: 100%;
-    max-height: none;
-    border-right: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-width: 82vw;
+    height: 100vh;
+    z-index: 60;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.35);
+    border-right: 1px solid var(--card-border);
+    border-bottom: none;
+    padding: 0 0 18px;
+  }
+
+  .course-sidebar[data-open="true"] {
+    transform: translateX(0);
+  }
+
+  .course-sidebar-mobile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
     border-bottom: 1px solid var(--card-border);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .course-sidebar-mobile-head button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .sidebar-backdrop[data-open="true"] {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 10, 20, 0.55);
+    z-index: 55;
   }
 }
 
