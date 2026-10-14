@@ -1,0 +1,689 @@
+diff --git a/src/components/figures/MembershipCircuitFigure.astro b/src/components/figures/MembershipCircuitFigure.astro
+new file mode 100644
+index 0000000..846985c
+--- /dev/null
++++ b/src/components/figures/MembershipCircuitFigure.astro
+@@ -0,0 +1,57 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": the Section 3 membership
++// check moved inside a ZK circuit — private leaf secrets and Merkle path
++// never leave the prover; only the root, nullifier N, and proof come out.
++---
++<svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="410" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">member of the set, identity unknown</text>
++
++  <text x="135" y="58" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">PRIVATE</text>
++  <text x="410" y="58" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">ZK CIRCUIT</text>
++  <text x="690" y="58" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">PUBLIC</text>
++
++  <rect x="30" y="78" width="210" height="48" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="135" y="107" text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">leaf secrets (nf, s)</text>
++
++  <rect x="30" y="140" width="210" height="48" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="135" y="169" text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Merkle path (siblings)</text>
++
++  <text x="135" y="216" text-anchor="middle" fill="#8b96a8" font-size="11" font-style="italic" font-family="-apple-system,Arial,sans-serif">never leaves the prover</text>
++
++  <line x1="240" y1="102" x2="290" y2="140" stroke="#5ddc8a" stroke-width="1.6" />
++  <line x1="240" y1="164" x2="290" y2="140" stroke="#5ddc8a" stroke-width="1.6" />
++  <line x1="290" y1="140" x2="320" y2="140" stroke="#5ddc8a" stroke-width="1.6" marker-end="url(#mc-arrow-g)" />
++
++  <rect x="320" y="76" width="260" height="140" rx="12" fill="#0a0f19" stroke="#e9eef5" stroke-width="1.8" />
++  <text x="450" y="112" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">1. rebuild the leaf</text>
++  <text x="450" y="140" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">2. hash up the path,</text>
++  <text x="450" y="158" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">must equal root</text>
++  <text x="450" y="188" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">3. compute N = H(nf)</text>
++
++  <line x1="580" y1="146" x2="630" y2="146" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mc-arrow-b)" />
++
++  <rect x="632" y="104" width="76" height="40" rx="8" fill="#0d1526" stroke="#c3cedd" stroke-width="1.6" />
++  <text x="670" y="129" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">root</text>
++  <rect x="632" y="150" width="76" height="40" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="670" y="175" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
++  <rect x="632" y="196" width="76" height="40" rx="8" fill="#0d1526" stroke="#c3cedd" stroke-width="1.6" />
++  <text x="670" y="221" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">proof &#960;</text>
++  <path d="M 632 124 L 612 146 L 632 170" fill="none" stroke="#223049" stroke-width="1.4" />
++  <line x1="612" y1="146" x2="630" y2="146" stroke="#223049" stroke-width="1.4" />
++
++  <rect x="240" y="252" width="340" height="40" rx="8" fill="#0d1a12" stroke="#223049" stroke-width="1" />
++  <text x="410" y="277" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">hashing inside a circuit is costly — ZK systems use circuit-friendly hashes, like Poseidon</text>
++
++  <line x1="20" y1="306" x2="800" y2="306" stroke="#223049" stroke-width="1" />
++  <text x="410" y="330" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE VERIFIER SEES ONLY THE ROOT, N, AND THE PROOF</text>
++  <text x="410" y="348" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The core of anonymous membership: private voting, anonymous credentials, mixers.</text>
++
++  <defs>
++    <marker id="mc-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
++    </marker>
++    <marker id="mc-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/MerkleProofFigure.astro b/src/components/figures/MerkleProofFigure.astro
+new file mode 100644
+index 0000000..a88cb77
+--- /dev/null
++++ b/src/components/figures/MerkleProofFigure.astro
+@@ -0,0 +1,103 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": an 8-leaf tree, dimmed
++// except for the path from L3 to the root and the three sibling hashes
++// (marked P) the verifier needs. The right-hand strip lists exactly what
++// the verifier recomputes with them.
++const leafXs = [40, 130, 220, 310, 400, 490, 580, 670];
++const leafLabels = ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8"];
++const hashLabels = ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
++const pairXs = [85, 265, 445, 625];
++const pairLabels = ["h12", "h34", "h56", "h78"];
++const quadXs = [175, 535];
++const quadLabels = ["h1234", "h5678"];
++---
++<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="355" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">prove one leaf with three hashes</text>
++
++  <!-- dimmed full tree -->
++  <g opacity="0.3">
++    {leafXs.map((x, i) => i !== 2 && (
++      <rect x={x - 38} y="360" width="76" height="40" rx="7" fill="#121c2c" stroke="#c3cedd" stroke-width="1.3" />
++    ))}
++    {leafXs.map((x, i) => i !== 2 && (
++      <text x={x} y="385" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">{leafLabels[i]}</text>
++    ))}
++    {leafXs.map((x, i) => i !== 2 && i !== 3 && (
++      <rect x={x - 32} y="280" width="64" height="34" rx="6" fill="#0d1526" stroke="#8fdcff" stroke-width="1.2" />
++    ))}
++    {leafXs.map((x, i) => i !== 2 && i !== 3 && (
++      <text x={x} y="302" text-anchor="middle" fill="#8fdcff" font-size="11" font-family="SF Mono, Fira Code, Consolas, monospace">{hashLabels[i]}</text>
++    ))}
++    {pairXs.map((x, i) => i !== 1 && (
++      <rect x={x - 42} y="200" width="84" height="38" rx="7" fill="#0d1526" stroke="#8fdcff" stroke-width="1.2" />
++    ))}
++    {pairXs.map((x, i) => i !== 1 && (
++      <text x={x} y="224" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-family="SF Mono, Fira Code, Consolas, monospace">{pairLabels[i]}</text>
++    ))}
++    <rect x={quadXs[1] - 58} y="120" width="116" height="46" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.2" />
++    <text x={quadXs[1]} y="148" text-anchor="middle" fill="#8fdcff" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">{quadLabels[1]}</text>
++  </g>
++
++  <!-- highlighted path: L3 -> h3 -> h34 -> h1234 -> root -->
++  <rect x="182" y="360" width="76" height="40" rx="7" fill="#121c2c" stroke="#3ab7ff" stroke-width="2" />
++  <text x="220" y="385" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">L3</text>
++  <rect x="188" y="280" width="64" height="34" rx="6" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
++  <text x="220" y="302" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h3</text>
++  <rect x="223" y="200" width="84" height="38" rx="7" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
++  <text x="265" y="224" text-anchor="middle" fill="#8fdcff" font-size="12" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h34</text>
++  <rect x="117" y="120" width="116" height="46" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
++  <text x="175" y="148" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h1234</text>
++  <rect x="195" y="42" width="320" height="52" rx="10" fill="#121c2c" stroke="#3ab7ff" stroke-width="2.2" />
++  <text x="355" y="74" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT</text>
++
++  <!-- the three proof siblings -->
++  <rect x={leafXs[3] - 32} y="280" width="64" height="34" rx="6" fill="#0d1526" stroke="#c3cedd" stroke-width="2" />
++  <text x={leafXs[3]} y="302" text-anchor="middle" fill="#e9eef5" font-size="11" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h4</text>
++  <circle cx={leafXs[3] + 26} cy="282" r="9" fill="#c3cedd" />
++  <text x={leafXs[3] + 26} y="286" text-anchor="middle" fill="#121c2c" font-size="10" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
++
++  <rect x={pairXs[0] - 42} y="200" width="84" height="38" rx="7" fill="#0d1526" stroke="#c3cedd" stroke-width="2" />
++  <text x={pairXs[0]} y="224" text-anchor="middle" fill="#e9eef5" font-size="11.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h12</text>
++  <circle cx={pairXs[0] + 34} cy="202" r="9" fill="#c3cedd" />
++  <text x={pairXs[0] + 34} y="206" text-anchor="middle" fill="#121c2c" font-size="10" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
++
++  <rect x={quadXs[1] - 58} y="120" width="116" height="46" rx="8" fill="#0d1526" stroke="#c3cedd" stroke-width="2" />
++  <text x={quadXs[1]} y="148" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h5678</text>
++  <circle cx={quadXs[1] + 46} cy="122" r="9" fill="#c3cedd" />
++  <text x={quadXs[1] + 46} y="126" text-anchor="middle" fill="#121c2c" font-size="10" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
++
++  <!-- highlighted arrows -->
++  <line x1="220" y1="360" x2="220" y2="314" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
++  <line x1="220" y1="280" x2="245" y2="238" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
++  <line x1="400" y1="280" x2="285" y2="238" stroke="#c3cedd" stroke-width="1.8" marker-end="url(#mp-arrow-o)" />
++  <line x1="265" y1="200" x2="200" y2="166" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
++  <line x1="85" y1="200" x2="150" y2="166" stroke="#c3cedd" stroke-width="1.8" marker-end="url(#mp-arrow-o)" />
++  <line x1="175" y1="120" x2="300" y2="94" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
++  <line x1="535" y1="120" x2="410" y2="94" stroke="#c3cedd" stroke-width="1.8" marker-end="url(#mp-arrow-o)" />
++
++  <!-- right-hand verifier strip -->
++  <line x1="650" y1="40" x2="650" y2="400" stroke="#223049" stroke-width="1" stroke-dasharray="3 5" />
++  <text x="670" y="58" fill="#c3cedd" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">VERIFIER RECOMPUTES</text>
++  <text x="670" y="100" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">1.  h3 = H(L3)</text>
++  <text x="670" y="150" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">2.  h34 = H(h3, h4)</text>
++  <text x="670" y="200" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">3.  h1234 = H(h12, h34)</text>
++  <text x="670" y="250" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">4.  root&#8242; = H(h1234, h5678)</text>
++  <text x="670" y="296" fill="#5ddc8a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#10003;  root&#8242; = published root</text>
++
++  <circle cx="648" cy="36" r="0" />
++  <text x="40" y="327" fill="#8b96a8" font-size="11" font-family="-apple-system,Arial,sans-serif">P = sibling hash sent as the proof</text>
++  <circle cx="30" cy="323" r="7" fill="#c3cedd" />
++
++  <line x1="20" y1="420" x2="900" y2="420" stroke="#223049" stroke-width="1" />
++  <text x="355" y="444" text-anchor="middle" fill="#3ab7ff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">PROVE ONE LEAF WITH THREE HASHES</text>
++  <text x="355" y="462" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The verifier never sees the other leaves — only three sibling hashes and the root.</text>
++
++  <defs>
++    <marker id="mp-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++    <marker id="mp-arrow-o" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/MerkleTreeFigure.astro b/src/components/figures/MerkleTreeFigure.astro
+new file mode 100644
+index 0000000..4b4f351
+--- /dev/null
++++ b/src/components/figures/MerkleTreeFigure.astro
+@@ -0,0 +1,87 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": how the tree is built — hash
++// each leaf, hash the pairs, hash the pairs of pairs, until one root remains.
++// Four leaves is enough to show the shape; later figures reuse the same
++// layout convention (leaves white/structural, hashes blue/computed, root
++// the strongest blue since it's the one value everyone ends up trusting).
++const leaves = [
++  { label: "L1", x: 95 },
++  { label: "L2", x: 285 },
++  { label: "L3", x: 475 },
++  { label: "L4", x: 665 },
++];
++const hashes = [
++  { label: "h1 = H(L1)", x: 95 },
++  { label: "h2 = H(L2)", x: 285 },
++  { label: "h3 = H(L3)", x: 475 },
++  { label: "h4 = H(L4)", x: 665 },
++];
++const pairs = [
++  { label: "h12 = H(h1, h2)", x: 190 },
++  { label: "h34 = H(h3, h4)", x: 570 },
++];
++---
++<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">building the tree, level by level</text>
++
++  <!-- root -->
++  <rect x="230" y="80" width="300" height="60" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="2.2" />
++  <text x="380" y="117" text-anchor="middle" fill="#8fdcff" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT = H(h12, h34)</text>
++
++  <!-- pairs -->
++  <rect x="105" y="190" width="170" height="54" rx="10" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="190" y="223" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{pairs[0].label}</text>
++  <rect x="485" y="190" width="170" height="54" rx="10" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="570" y="223" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{pairs[1].label}</text>
++
++  <!-- hashes -->
++  {hashes.map((h) => (
++    <>
++      <rect x={h.x - 72} y="300" width="144" height="46" rx="9" fill="#0d1526" stroke="#8fdcff" stroke-width="1.6" />
++      <text x={h.x} y="328" text-anchor="middle" fill="#8fdcff" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{h.label}</text>
++    </>
++  ))}
++
++  <!-- leaves -->
++  {leaves.map((l) => (
++    <>
++      <rect x={l.x - 72} y="400" width="144" height="50" rx="9" fill="#121c2c" stroke="#c3cedd" stroke-width="1.6" />
++      <text x={l.x} y="430" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">{l.label}</text>
++    </>
++  ))}
++
++  <!-- row labels, each sitting just above its row so they never collide with a box -->
++  <text x="20" y="68" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">ROOT</text>
++  <text x="20" y="178" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">PAIRS</text>
++  <text x="20" y="288" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">HASHES</text>
++  <text x="20" y="388" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">LEAVES</text>
++
++  <!-- arrows: leaf -> hash -->
++  {leaves.map((l) => (
++    <line x1={l.x} y1="400" x2={l.x} y2="346" stroke="#c3cedd" stroke-width="1.6" marker-end="url(#mt-arrow-w)" />
++  ))}
++  <!-- arrows: hash -> pair -->
++  <line x1="95" y1="300" x2="160" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
++  <line x1="285" y1="300" x2="220" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
++  <line x1="475" y1="300" x2="540" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
++  <line x1="665" y1="300" x2="600" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
++  <!-- arrows: pair -> root -->
++  <line x1="190" y1="190" x2="310" y2="140" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#mt-arrow-b2)" />
++  <line x1="570" y1="190" x2="450" y2="140" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#mt-arrow-b2)" />
++
++  <line x1="20" y1="466" x2="740" y2="466" stroke="#223049" stroke-width="1" />
++  <text x="380" y="490" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">MANY LEAVES, ONE ROOT</text>
++  <text x="380" y="508" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Hash the pairs, then the pairs of pairs, until one hash remains.</text>
++
++  <defs>
++    <marker id="mt-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
++    </marker>
++    <marker id="mt-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="mt-arrow-b2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/NullifierFigure.astro b/src/components/figures/NullifierFigure.astro
+new file mode 100644
+index 0000000..d5c1ebf
+--- /dev/null
++++ b/src/components/figures/NullifierFigure.astro
+@@ -0,0 +1,72 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": the same member's nullifier
++// N is accepted the first time and rejected the second — stopping double-use
++// without revealing which member it was. Private inputs green (established
++// convention), the used-list rejection in red (reserved for violations).
++---
++<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="24" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">leaf = H(nf, s)  &#8594;  published N = H(nf) — N doesn't reveal which leaf</text>
++
++  <!-- left: first spend -->
++  <text x="190" y="56" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">FIRST SPEND</text>
++  <rect x="60" y="68" width="260" height="46" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="190" y="96" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">nf, s, Merkle path (private)</text>
++  <line x1="190" y1="114" x2="190" y2="140" stroke="#e9eef5" stroke-width="1.6" marker-end="url(#nf-arrow-w)" />
++  <rect x="100" y="142" width="180" height="40" rx="9" fill="#0a0f19" stroke="#e9eef5" stroke-width="1.6" />
++  <text x="190" y="167" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">ZK proof</text>
++  <line x1="190" y1="182" x2="190" y2="206" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
++  <text x="230" y="200" fill="#8b96a8" font-size="10.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">public</text>
++  <rect x="60" y="208" width="110" height="40" rx="8" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" />
++  <text x="115" y="233" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="-apple-system,Arial,sans-serif">root</text>
++  <rect x="210" y="208" width="110" height="40" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="265" y="233" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
++  <line x1="265" y1="248" x2="265" y2="272" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
++  <rect x="60" y="274" width="260" height="46" rx="9" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="190" y="302" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">N not in used list &#10003; accepted</text>
++
++  <!-- right: second spend -->
++  <text x="570" y="56" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">SECOND SPEND</text>
++  <rect x="440" y="68" width="260" height="46" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="570" y="96" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">nf, s, Merkle path (private)</text>
++  <line x1="570" y1="114" x2="570" y2="140" stroke="#e9eef5" stroke-width="1.6" marker-end="url(#nf-arrow-w)" />
++  <rect x="480" y="142" width="180" height="40" rx="9" fill="#0a0f19" stroke="#e9eef5" stroke-width="1.6" />
++  <text x="570" y="167" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">ZK proof</text>
++  <line x1="570" y1="182" x2="570" y2="206" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
++  <text x="610" y="200" fill="#8b96a8" font-size="10.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">public</text>
++  <rect x="440" y="208" width="110" height="40" rx="8" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" />
++  <text x="495" y="233" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="-apple-system,Arial,sans-serif">root</text>
++  <rect x="590" y="208" width="110" height="40" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="645" y="233" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
++  <line x1="645" y1="248" x2="645" y2="272" stroke="#ff5c7a" stroke-width="1.6" marker-end="url(#nf-arrow-r)" />
++  <rect x="440" y="274" width="260" height="46" rx="9" fill="#1f0d14" stroke="#ff5c7a" stroke-width="1.8" />
++  <text x="570" y="302" text-anchor="middle" fill="#ff5c7a" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">N already used &#10005; rejected</text>
++
++  <!-- used list in the middle -->
++  <rect x="340" y="200" width="80" height="130" rx="8" fill="#0a0f19" stroke="#8fdcff" stroke-width="1.4" />
++  <text x="380" y="216" text-anchor="middle" fill="#8fdcff" font-size="10.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">USED LIST</text>
++  <rect x="352" y="226" width="56" height="10" rx="2" fill="#1f0d14" />
++  <rect x="352" y="242" width="56" height="10" rx="2" fill="#1f0d14" />
++  <rect x="352" y="258" width="56" height="10" rx="2" fill="#1f0d14" />
++  <rect x="352" y="292" width="56" height="18" rx="4" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.4" />
++  <text x="380" y="305" text-anchor="middle" fill="#8fdcff" font-size="10.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
++  <line x1="320" y1="296" x2="350" y2="296" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
++  <line x1="410" y1="296" x2="438" y2="296" stroke="#ff5c7a" stroke-width="1.6" stroke-dasharray="3 3" marker-end="url(#nf-arrow-r)" />
++
++  <text x="380" y="348" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">same note &#8594; same N, always</text>
++
++  <line x1="20" y1="366" x2="740" y2="366" stroke="#223049" stroke-width="1" />
++  <text x="380" y="390" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">PROVE YOU BELONG, BUT ONLY ONCE</text>
++  <text x="380" y="408" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Nullifiers stop double-use without revealing which member you are.</text>
++
++  <defs>
++    <marker id="nf-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
++    </marker>
++    <marker id="nf-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="nf-arrow-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#ff5c7a" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/ProofSizeGrowthFigure.astro b/src/components/figures/ProofSizeGrowthFigure.astro
+new file mode 100644
+index 0000000..4e2ba7d
+--- /dev/null
++++ b/src/components/figures/ProofSizeGrowthFigure.astro
+@@ -0,0 +1,29 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": the proof only grows by one
++// hash per doubling of the tree, so it's log2(n) — four rows chosen to match
++// the script's read-aloud (8, 1024, ~1M, ~4B items).
++const rows = [
++  { items: "8", hashes: 3, bar: 30 },
++  { items: "1,024", hashes: 10, bar: 100 },
++  { items: "1,048,576", hashes: 20, bar: 200 },
++  { items: "4,294,967,296", hashes: 32, bar: 320 },
++];
++---
++<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">proof size grows slowly</text>
++
++  <text x="40" y="58" fill="#c3cedd" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">ITEMS IN THE TREE</text>
++  <text x="420" y="58" fill="#8fdcff" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">HASHES IN THE PROOF = log&#8322;(n)</text>
++
++  {rows.map((r, i) => (
++    <>
++      <text x="40" y={100 + i * 80} fill="#e9eef5" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{r.items}</text>
++      <rect x="420" y={82 + i * 80} width={r.bar} height="20" rx="4" fill="#3ab7ff" opacity="0.85" />
++      <text x={426 + r.bar} y={97 + i * 80} fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">{r.hashes}</text>
++    </>
++  ))}
++
++  <line x1="40" y1="340" x2="720" y2="340" stroke="#223049" stroke-width="1" />
++  <text x="380" y="366" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">DOUBLE THE DATA, ADD ONE HASH</text>
++  <text x="380" y="386" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A tree with 4 billion leaves needs only 32 hashes to prove any single one.</text>
++</svg>
+diff --git a/src/components/figures/RootChangeFigure.astro b/src/components/figures/RootChangeFigure.astro
+new file mode 100644
+index 0000000..6828e3f
+--- /dev/null
++++ b/src/components/figures/RootChangeFigure.astro
+@@ -0,0 +1,72 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": tampering with a single leaf
++// recomputes every hash on the path up to the root, so the root no longer
++// matches. The untouched left half of the tree is dimmed on purpose — it's
++// the same tree as the previous figure, just with one leaf swapped.
++---
++<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">change one leaf, the root changes</text>
++
++  <!-- untouched side, dimmed -->
++  <rect x="105" y="190" width="170" height="54" rx="10" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" opacity="0.35" />
++  <text x="190" y="223" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace" opacity="0.5">h12 = H(h1, h2)</text>
++  <rect x="23" y="300" width="144" height="46" rx="9" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" opacity="0.35" />
++  <text x="95" y="328" text-anchor="middle" fill="#8fdcff" font-size="12" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace" opacity="0.5">h1 = H(L1)</text>
++  <rect x="213" y="300" width="144" height="46" rx="9" fill="#0d1526" stroke="#8fdcff" stroke-width="1.4" opacity="0.35" />
++  <text x="285" y="328" text-anchor="middle" fill="#8fdcff" font-size="12" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace" opacity="0.5">h2 = H(L2)</text>
++  <rect x="23" y="400" width="144" height="50" rx="9" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" opacity="0.35" />
++  <text x="95" y="430" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif" opacity="0.5">L1</text>
++  <rect x="213" y="400" width="144" height="50" rx="9" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" opacity="0.35" />
++  <text x="285" y="430" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif" opacity="0.5">L2</text>
++  <line x1="95" y1="400" x2="95" y2="346" stroke="#c3cedd" stroke-width="1.4" opacity="0.35" />
++  <line x1="285" y1="400" x2="285" y2="346" stroke="#c3cedd" stroke-width="1.4" opacity="0.35" />
++  <line x1="95" y1="300" x2="160" y2="244" stroke="#8fdcff" stroke-width="1.4" opacity="0.35" />
++  <line x1="285" y1="300" x2="220" y2="244" stroke="#8fdcff" stroke-width="1.4" opacity="0.35" />
++  <line x1="190" y1="190" x2="310" y2="140" stroke="#3ab7ff" stroke-width="1.4" opacity="0.35" />
++
++  <!-- root: now mismatched -->
++  <rect x="230" y="80" width="300" height="60" rx="12" fill="#1f0d14" stroke="#ff5c7a" stroke-width="2.2" />
++  <text x="380" y="112" text-anchor="middle" fill="#ff5c7a" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT&#8242; = H(h12, h34&#8242;)</text>
++  <text x="640" y="104" text-anchor="start" fill="#8b96a8" font-size="11" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT 7e3f9a2c&#8230;</text>
++  <text x="640" y="122" text-anchor="start" fill="#ff5c7a" font-size="11" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT&#8242; c81d5f3b&#8230;</text>
++
++  <!-- tampered pair -->
++  <rect x="485" y="190" width="170" height="54" rx="10" fill="#1f0d14" stroke="#ff5c7a" stroke-width="1.8" />
++  <text x="570" y="223" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h34&#8242; = H(h3&#8242;, h4)</text>
++
++  <!-- tampered hash + unaffected sibling -->
++  <rect x="403" y="300" width="144" height="46" rx="9" fill="#1f0d14" stroke="#ff5c7a" stroke-width="1.8" />
++  <text x="475" y="328" text-anchor="middle" fill="#ff5c7a" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h3&#8242; = H(L3&#8242;)</text>
++  <rect x="593" y="300" width="144" height="46" rx="9" fill="#0d1526" stroke="#8fdcff" stroke-width="1.6" />
++  <text x="665" y="328" text-anchor="middle" fill="#8fdcff" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h4 = H(L4)</text>
++
++  <!-- tampered leaf + unaffected sibling -->
++  <rect x="403" y="400" width="144" height="50" rx="9" fill="#1f0d14" stroke="#ff5c7a" stroke-width="1.8" />
++  <text x="475" y="428" text-anchor="middle" fill="#ff5c7a" font-size="14.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">L3&#8242;</text>
++  <text x="475" y="443" text-anchor="middle" fill="#ff5c7a" font-size="10.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">tampered</text>
++  <rect x="593" y="400" width="144" height="50" rx="9" fill="#121c2c" stroke="#c3cedd" stroke-width="1.6" />
++  <text x="665" y="430" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">L4</text>
++
++  <!-- arrows (tampered path, red) -->
++  <line x1="475" y1="400" x2="475" y2="346" stroke="#ff5c7a" stroke-width="1.8" marker-end="url(#rc-arrow-r)" />
++  <line x1="665" y1="400" x2="665" y2="346" stroke="#c3cedd" stroke-width="1.6" marker-end="url(#rc-arrow-w)" />
++  <line x1="475" y1="300" x2="540" y2="244" stroke="#ff5c7a" stroke-width="1.8" marker-end="url(#rc-arrow-r)" />
++  <line x1="665" y1="300" x2="600" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#rc-arrow-b)" />
++  <line x1="570" y1="190" x2="450" y2="140" stroke="#ff5c7a" stroke-width="1.8" marker-end="url(#rc-arrow-r)" />
++
++  <line x1="20" y1="466" x2="740" y2="466" stroke="#223049" stroke-width="1" />
++  <text x="380" y="490" text-anchor="middle" fill="#ff5c7a" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">NO QUIET EDITS</text>
++  <text x="380" y="508" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Every hash on the path to the root is recomputed — one bit differs, and the root no longer matches.</text>
++
++  <defs>
++    <marker id="rc-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
++    </marker>
++    <marker id="rc-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
++    </marker>
++    <marker id="rc-arrow-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#ff5c7a" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/components/figures/VectorCommitmentFigure.astro b/src/components/figures/VectorCommitmentFigure.astro
+new file mode 100644
+index 0000000..df3e9fc
+--- /dev/null
++++ b/src/components/figures/VectorCommitmentFigure.astro
+@@ -0,0 +1,77 @@
++---
++// Fig. for "Merkle Trees & Vector Commitments": the general idea (a vector
++// commitment: one short value for a whole list, position-binding openings)
++// and the two ways this series has now built one — Merkle tree vs. KZG.
++---
++<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">same promise, different trade-offs</text>
++
++  <!-- left: the idea -->
++  <text x="40" y="56" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">THE IDEA</text>
++  {["v1", "v2", "v3", "vn"].map((v, i) => (
++    <rect x={40 + i * 75} y="68" width="60" height="42" rx="8"
++      fill="#121c2c" stroke={v === "v3" ? "#3ab7ff" : "#c3cedd"} stroke-width={v === "v3" ? 2 : 1.4} />
++  ))}
++  <text x="70" y="95" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">v1</text>
++  <text x="145" y="95" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">v2</text>
++  <text x="220" y="95" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">v3</text>
++  <text x="295" y="95" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="-apple-system,Arial,sans-serif">vn</text>
++
++  <line x1="190" y1="110" x2="190" y2="140" stroke="#c3cedd" stroke-width="1.4" />
++  <line x1="70" y1="110" x2="190" y2="140" stroke="#c3cedd" stroke-width="1.4" />
++  <line x1="310" y1="110" x2="190" y2="140" stroke="#c3cedd" stroke-width="1.4" />
++  <line x1="190" y1="140" x2="280" y2="156" stroke="#e9eef5" stroke-width="1.6" marker-end="url(#vc-arrow-w)" />
++  <rect x="285" y="138" width="60" height="42" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
++  <text x="315" y="164" text-anchor="middle" fill="#8fdcff" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C</text>
++
++  <rect x="20" y="200" width="320" height="52" rx="9" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" />
++  <text x="180" y="231" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">open position i (here i = 3)</text>
++  <line x1="180" y1="252" x2="180" y2="276" stroke="#c3cedd" stroke-width="1.4" marker-end="url(#vc-arrow-w)" />
++  <rect x="20" y="278" width="320" height="52" rx="9" fill="#0d1526" stroke="#8fdcff" stroke-width="1.6" />
++  <text x="180" y="309" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">v3 + proof &#960;</text>
++  <line x1="180" y1="330" x2="180" y2="354" stroke="#c3cedd" stroke-width="1.4" marker-end="url(#vc-arrow-w)" />
++  <rect x="20" y="356" width="320" height="52" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="180" y="387" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">&#10003; checks against C</text>
++  <path d="M 345 382 C 400 382 400 159 346 159" fill="none" stroke="#3ab7ff" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#vc-arrow-b)" />
++
++  <!-- right: two ways to build one -->
++  <line x1="400" y1="40" x2="400" y2="430" stroke="#223049" stroke-width="1" stroke-dasharray="3 5" />
++  <text x="430" y="56" fill="#c3cedd" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">TWO WAYS TO BUILD ONE</text>
++
++  <rect x="430" y="76" width="290" height="110" rx="10" fill="#121c2c" stroke="#e9eef5" stroke-width="1.6" />
++  <text x="575" y="108" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">MERKLE TREE</text>
++  <text x="575" y="134" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-family="-apple-system,Arial,sans-serif">proof = log n hashes</text>
++  <text x="575" y="153" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-family="-apple-system,Arial,sans-serif">no trusted setup</text>
++  <text x="575" y="172" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-family="-apple-system,Arial,sans-serif">needs only a hash function</text>
++
++  <rect x="430" y="202" width="290" height="110" rx="10" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.6" />
++  <text x="575" y="234" text-anchor="middle" fill="#8fdcff" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">KZG</text>
++  <text x="575" y="260" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-family="-apple-system,Arial,sans-serif">proof = ONE point</text>
++  <text x="575" y="279" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-family="-apple-system,Arial,sans-serif">needs a trusted setup</text>
++  <text x="575" y="298" text-anchor="middle" fill="#c3cedd" font-size="12.5" font-family="-apple-system,Arial,sans-serif">needs pairings (Topic 13)</text>
++
++  <rect x="430" y="332" width="84" height="56" rx="8" fill="#0d1526" stroke="#c3cedd" stroke-width="1.3" />
++  <text x="472" y="364" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Vector</text>
++  <line x1="514" y1="360" x2="548" y2="360" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#vc-arrow-b)" />
++  <rect x="550" y="332" width="100" height="56" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.3" />
++  <text x="600" y="357" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Polynomial</text>
++  <text x="600" y="372" text-anchor="middle" fill="#8b96a8" font-size="10" font-family="-apple-system,Arial,sans-serif">(Lagrange)</text>
++  <line x1="650" y1="360" x2="676" y2="360" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#vc-arrow-b)" />
++  <rect x="678" y="332" width="68" height="56" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.3" />
++  <text x="712" y="357" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">KZG</text>
++  <text x="712" y="372" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">commit</text>
++  <text x="600" y="405" text-anchor="middle" fill="#8b96a8" font-size="10.5" font-family="-apple-system,Arial,sans-serif">Topic 9</text>
++  <text x="712" y="405" text-anchor="middle" fill="#8b96a8" font-size="10.5" font-family="-apple-system,Arial,sans-serif">Topic 15</text>
++
++  <line x1="20" y1="420" x2="740" y2="420" stroke="#223049" stroke-width="1" />
++  <text x="380" y="444" text-anchor="middle" fill="#3ab7ff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">A VECTOR COMMITMENT LOCKS IN A WHOLE LIST, ONE SHORT VALUE</text>
++
++  <defs>
++    <marker id="vc-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
++    </marker>
++    <marker id="vc-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
++      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
++    </marker>
++  </defs>
++</svg>
+diff --git a/src/content/lessons/commitment-schemes.mdx b/src/content/lessons/commitment-schemes.mdx
+index ea8a329..bd765ac 100644
+--- a/src/content/lessons/commitment-schemes.mdx
++++ b/src/content/lessons/commitment-schemes.mdx
+@@ -9,6 +9,8 @@ order: 15
+ youtubeHref: "https://www.youtube.com/watch?v=UBLUmCA0tQI"
+ prevTitle: "Hash Functions & Random Oracles"
+ prevHref: "/learn/math/hash-functions-random-oracles"
++nextTitle: "Merkle Trees & Vector Commitments"
++nextHref: "/learn/math/merkle-trees-vector-commitments"
+ ---
+ 
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/lessons/merkle-trees-vector-commitments.mdx b/src/content/lessons/merkle-trees-vector-commitments.mdx
+new file mode 100644
+index 0000000..9609aab
+--- /dev/null
++++ b/src/content/lessons/merkle-trees-vector-commitments.mdx
+@@ -0,0 +1,114 @@
++---
++track: math
++module: "Merkle Trees"
++lessonNumber: "16"
++title: "Merkle Trees & Vector Commitments"
++duration: "16:00"
++description: "How to lock in a whole list — millions of items — with one short root, prove a single one belongs with a handful of hashes, and let a hidden member prove membership exactly once."
++order: 16
++youtubeHref: "https://youtu.be/v5YK7LMho9s"
++prevTitle: "Commitment Schemes"
++prevHref: "/learn/math/commitment-schemes"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import MerkleTreeFigure from "../../components/figures/MerkleTreeFigure.astro";
++import RootChangeFigure from "../../components/figures/RootChangeFigure.astro";
++import MerkleProofFigure from "../../components/figures/MerkleProofFigure.astro";
++import ProofSizeGrowthFigure from "../../components/figures/ProofSizeGrowthFigure.astro";
++import VectorCommitmentFigure from "../../components/figures/VectorCommitmentFigure.astro";
++import NullifierFigure from "../../components/figures/NullifierFigure.astro";
++import MembershipCircuitFigure from "../../components/figures/MembershipCircuitFigure.astro";
++
++The last lesson locked in one value, and then one polynomial, with a commitment. Now the problem gets bigger: how do you lock in a *whole list* — millions of names, accounts, or transactions — and later prove that one item is on it, without handing over the list? The tool for that is the **Merkle tree**. By the end of this lesson the goal is to see how it's built, why nobody can quietly edit it, how a handful of hashes can prove one item belongs, and how a ZK proof hides which item you're proving while still stopping you from using it twice.
++
++## Building a Merkle tree
++
++A fingerprint for a whole pile sounds easy: just hash everything together. But then proving one document is in the pile would mean handing over the entire pile. A Merkle tree builds the fingerprint in layers instead, a bit like a tournament bracket where a hash moves up each round.
++
++<Figure caption="Fig. 1 — many leaves, one root. Hash the pairs, then the pairs of pairs, until one hash remains.">
++  <MerkleTreeFigure />
++</Figure>
++
++<MathBox label="A Merkle tree">
++
++Hash each leaf on its own: $h_1 = H(L_1)$, and so on. Pair them up and hash the pair: $h_{12} = H(h_1, h_2)$ — write $h_1$ and $h_2$ next to each other, then hash the result. Repeat one level up: $\text{ROOT} = H(h_{12}, h_{34})$.
++
++</MathBox>
++
++The root commits to everything below it, and everyone only has to remember that one short value, not the whole list.
++
++## Nobody edits it quietly
++
++This is the property that makes the root worth trusting: no leaf can be edited without the root changing, and there's no way to patch the root to match without finding a hash collision — which the last lesson but one already showed is infeasible.
++
++<Figure caption="Fig. 2 — change one leaf, and the root changes. Every hash on the path to the root is recomputed.">
++  <RootChangeFigure />
++</Figure>
++
++Say someone swaps one leaf for something else. That leaf's hash comes out different, which changes the pair it belongs to, which changes the root. The left half of the tree — everything *not* on that leaf's path — never has to be touched, and never changes.
++
++## Proving membership
++
++Here's the harder question: how does a verifier, holding only the published root, get convinced that one specific leaf is really in the tree — without being handed the whole tree? The trick is that the verifier doesn't need most of it. They only need the hashes sitting right next to the leaf's path, because those are exactly what's missing to rebuild the root.
++
++<Figure caption="Fig. 3 — prove one leaf with three hashes. The verifier never sees the other leaves, only three sibling hashes and the root.">
++  <MerkleProofFigure />
++</Figure>
++
++<MathBox label="A membership proof">
++
++To prove $L_3$ belongs, send the three sibling hashes on its path — $h_4$, $h_{12}$, $h_{5678}$ — each marked with which side it sits on, since $H(h_3, h_4) \ne H(h_4, h_3)$. The verifier recomputes $h_3$, then $h_{34}$, then $h_{1234}$, then $\text{root}'$, and checks $\text{root}' = \text{root}$.
++
++</MathBox>
++
++One caveat worth flagging: this proof on its own is **not private**. The verifier sees the leaf itself and exactly where it sits in the tree. That's fine for public data, but it isn't zero-knowledge — the last section of this lesson fixes that.
++
++## Proof size grows slowly
++
++A Merkle proof needs one sibling hash per level of the tree, and each level is one halving of the pile — so the proof length is $\log_2(n)$. That grows remarkably slowly.
++
++<Figure caption="Fig. 4 — double the data, add one hash. A tree with 4 billion leaves needs only 32 hashes to prove any single one.">
++  <ProofSizeGrowthFigure />
++</Figure>
++
++Eight items need three hashes. Grow the tree to over four billion leaves — thirty-two doublings — and the proof grows by exactly thirty-two hashes. At roughly 32 bytes per hash, that's about one kilobyte to prove one name out of four billion.
++
++## Vector commitments
++
++A Merkle tree commits to an ordered list with one short value, and lets you open any single position — but it's one way to do that job, not the only way. The general idea has a name: a **vector commitment**.
++
++<Figure caption="Fig. 5 — same promise, different trade-offs. A vector commitment locks in a whole list and lets you open any single position.">
++  <VectorCommitmentFigure />
++</Figure>
++
++A Merkle tree needs nothing but a hash function, and no trusted setup, at the cost of a $\log n$-sized proof. KZG, from the previous topic, compresses the proof down to a single point, at the cost of a trusted setup and the pairings built two lessons back. To use KZG on a list: turn the vector into a polynomial through Lagrange interpolation, then commit to that polynomial with KZG. Opening position $i$ then means proving the polynomial's value at $i$.
++
++## Nullifiers
++
++Here's the problem a private membership proof creates: it lets any member prove they belong without revealing which member it was — but nothing stops that same member from proving it again, say to vote twice. The fix is a second value, derived from the member's secret, that comes out the same every time for the same member and means nothing to anyone else: a **nullifier**.
++
++<Figure caption="Fig. 6 — prove you belong, but only once. Nullifiers stop double-use without revealing which member you are.">
++  <NullifierFigure />
++</Figure>
++
++<MathBox label="Nullifiers">
++
++Each member's leaf is $H(nf, s)$ for two secrets $nf$ and $s$. Spending publishes $N = H(nf)$. Because a hash is one-way, $N$ doesn't reveal which leaf it came from — but the same $nf$ always produces the same $N$, so a second spend publishes the same $N$ again, and gets rejected against the used list.
++
++</MathBox>
++
++This is a simplified version of the idea — real protocols like Tornado Cash and Semaphore use different exact formulas, but they all follow this same pattern.
++
++## Why this matters for ZK
++
++The membership proof from earlier in this lesson wasn't private: the verifier saw the leaf and its whole path. Move that exact check inside a ZK circuit, and the secrets never leave the prover at all.
++
++<Figure caption="Fig. 7 — member of the set, identity unknown. The verifier sees only the root, N, and the proof.">
++  <MembershipCircuitFigure />
++</Figure>
++
++The leaf secrets and the Merkle path stay private, inside the circuit. The circuit rebuilds the leaf, hashes up the path and checks it equals the root, and computes $N = H(nf)$ — all without ever showing its work. Out come only the root the verifier already knew, the nullifier $N$, and the proof itself. One practical note: hashing inside a circuit is expensive, so real systems use hash functions designed for circuits, like Poseidon, playing the same role as $H$ throughout this lesson.
++
++That's the core of anonymous membership — private voting, anonymous credentials, mixers — and it's built from nothing more than the Merkle tree this lesson opened with.
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 729e02e..d2e7294 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -109,6 +109,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "15", title: "Commitment Schemes", duration: "5:43", slug: "commitment-schemes" },
+       ],
+     },
++    {
++      module: "Merkle Trees",
++      items: [
++        { num: "16", title: "Merkle Trees & Vector Commitments", duration: "16:00", slug: "merkle-trees-vector-commitments" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],
