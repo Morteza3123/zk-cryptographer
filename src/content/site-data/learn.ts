@@ -109,6 +109,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
         { num: "15", title: "Commitment Schemes", duration: "5:43", slug: "commitment-schemes" },
       ],
     },
+    {
+      module: "Merkle Trees",
+      items: [
+        { num: "16", title: "Merkle Trees & Vector Commitments", duration: "16:00", slug: "merkle-trees-vector-commitments" },
+      ],
+    },
   ],
   cryptography: [],
   fundamentals: [],

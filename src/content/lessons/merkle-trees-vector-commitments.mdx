@@ -1,0 +1,114 @@
+---
+track: math
+module: "Merkle Trees"
+lessonNumber: "16"
+title: "Merkle Trees & Vector Commitments"
+duration: "16:00"
+description: "How to lock in a whole list — millions of items — with one short root, prove a single one belongs with a handful of hashes, and let a hidden member prove membership exactly once."
+order: 16
+youtubeHref: "https://youtu.be/v5YK7LMho9s"
+prevTitle: "Commitment Schemes"
+prevHref: "/learn/math/commitment-schemes"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import MerkleTreeFigure from "../../components/figures/MerkleTreeFigure.astro";
+import RootChangeFigure from "../../components/figures/RootChangeFigure.astro";
+import MerkleProofFigure from "../../components/figures/MerkleProofFigure.astro";
+import ProofSizeGrowthFigure from "../../components/figures/ProofSizeGrowthFigure.astro";
+import VectorCommitmentFigure from "../../components/figures/VectorCommitmentFigure.astro";
+import NullifierFigure from "../../components/figures/NullifierFigure.astro";
+import MembershipCircuitFigure from "../../components/figures/MembershipCircuitFigure.astro";
+
+The last lesson locked in one value, and then one polynomial, with a commitment. Now the problem gets bigger: how do you lock in a *whole list* — millions of names, accounts, or transactions — and later prove that one item is on it, without handing over the list? The tool for that is the **Merkle tree**. By the end of this lesson the goal is to see how it's built, why nobody can quietly edit it, how a handful of hashes can prove one item belongs, and how a ZK proof hides which item you're proving while still stopping you from using it twice.
+
+## Building a Merkle tree
+
+A fingerprint for a whole pile sounds easy: just hash everything together. But then proving one document is in the pile would mean handing over the entire pile. A Merkle tree builds the fingerprint in layers instead, a bit like a tournament bracket where a hash moves up each round.
+
+<Figure caption="Fig. 1 — many leaves, one root. Hash the pairs, then the pairs of pairs, until one hash remains.">
+  <MerkleTreeFigure />
+</Figure>
+
+<MathBox label="A Merkle tree">
+
+Hash each leaf on its own: $h_1 = H(L_1)$, and so on. Pair them up and hash the pair: $h_{12} = H(h_1, h_2)$ — write $h_1$ and $h_2$ next to each other, then hash the result. Repeat one level up: $\text{ROOT} = H(h_{12}, h_{34})$.
+
+</MathBox>
+
+The root commits to everything below it, and everyone only has to remember that one short value, not the whole list.
+
+## Nobody edits it quietly
+
+This is the property that makes the root worth trusting: no leaf can be edited without the root changing, and there's no way to patch the root to match without finding a hash collision — which the last lesson but one already showed is infeasible.
+
+<Figure caption="Fig. 2 — change one leaf, and the root changes. Every hash on the path to the root is recomputed.">
+  <RootChangeFigure />
+</Figure>
+
+Say someone swaps one leaf for something else. That leaf's hash comes out different, which changes the pair it belongs to, which changes the root. The left half of the tree — everything *not* on that leaf's path — never has to be touched, and never changes.
+
+## Proving membership
+
+Here's the harder question: how does a verifier, holding only the published root, get convinced that one specific leaf is really in the tree — without being handed the whole tree? The trick is that the verifier doesn't need most of it. They only need the hashes sitting right next to the leaf's path, because those are exactly what's missing to rebuild the root.
+
+<Figure caption="Fig. 3 — prove one leaf with three hashes. The verifier never sees the other leaves, only three sibling hashes and the root.">
+  <MerkleProofFigure />
+</Figure>
+
+<MathBox label="A membership proof">
+
+To prove $L_3$ belongs, send the three sibling hashes on its path — $h_4$, $h_{12}$, $h_{5678}$ — each marked with which side it sits on, since $H(h_3, h_4) \ne H(h_4, h_3)$. The verifier recomputes $h_3$, then $h_{34}$, then $h_{1234}$, then $\text{root}'$, and checks $\text{root}' = \text{root}$.
+
+</MathBox>
+
+One caveat worth flagging: this proof on its own is **not private**. The verifier sees the leaf itself and exactly where it sits in the tree. That's fine for public data, but it isn't zero-knowledge — the last section of this lesson fixes that.
+
+## Proof size grows slowly
+
+A Merkle proof needs one sibling hash per level of the tree, and each level is one halving of the pile — so the proof length is $\log_2(n)$. That grows remarkably slowly.
+
+<Figure caption="Fig. 4 — double the data, add one hash. A tree with 4 billion leaves needs only 32 hashes to prove any single one.">
+  <ProofSizeGrowthFigure />
+</Figure>
+
+Eight items need three hashes. Grow the tree to over four billion leaves — thirty-two doublings — and the proof grows by exactly thirty-two hashes. At roughly 32 bytes per hash, that's about one kilobyte to prove one name out of four billion.
+
+## Vector commitments
+
+A Merkle tree commits to an ordered list with one short value, and lets you open any single position — but it's one way to do that job, not the only way. The general idea has a name: a **vector commitment**.
+
+<Figure caption="Fig. 5 — same promise, different trade-offs. A vector commitment locks in a whole list and lets you open any single position.">
+  <VectorCommitmentFigure />
+</Figure>
+
+A Merkle tree needs nothing but a hash function, and no trusted setup, at the cost of a $\log n$-sized proof. KZG, from the previous topic, compresses the proof down to a single point, at the cost of a trusted setup and the pairings built two lessons back. To use KZG on a list: turn the vector into a polynomial through Lagrange interpolation, then commit to that polynomial with KZG. Opening position $i$ then means proving the polynomial's value at $i$.
+
+## Nullifiers
+
+Here's the problem a private membership proof creates: it lets any member prove they belong without revealing which member it was — but nothing stops that same member from proving it again, say to vote twice. The fix is a second value, derived from the member's secret, that comes out the same every time for the same member and means nothing to anyone else: a **nullifier**.
+
+<Figure caption="Fig. 6 — prove you belong, but only once. Nullifiers stop double-use without revealing which member you are.">
+  <NullifierFigure />
+</Figure>
+
+<MathBox label="Nullifiers">
+
+Each member's leaf is $H(nf, s)$ for two secrets $nf$ and $s$. Spending publishes $N = H(nf)$. Because a hash is one-way, $N$ doesn't reveal which leaf it came from — but the same $nf$ always produces the same $N$, so a second spend publishes the same $N$ again, and gets rejected against the used list.
+
+</MathBox>
+
+This is a simplified version of the idea — real protocols like Tornado Cash and Semaphore use different exact formulas, but they all follow this same pattern.
+
+## Why this matters for ZK
+
+The membership proof from earlier in this lesson wasn't private: the verifier saw the leaf and its whole path. Move that exact check inside a ZK circuit, and the secrets never leave the prover at all.
+
+<Figure caption="Fig. 7 — member of the set, identity unknown. The verifier sees only the root, N, and the proof.">
+  <MembershipCircuitFigure />
+</Figure>
+
+The leaf secrets and the Merkle path stay private, inside the circuit. The circuit rebuilds the leaf, hashes up the path and checks it equals the root, and computes $N = H(nf)$ — all without ever showing its work. Out come only the root the verifier already knew, the nullifier $N$, and the proof itself. One practical note: hashing inside a circuit is expensive, so real systems use hash functions designed for circuits, like Poseidon, playing the same role as $H$ throughout this lesson.
+
+That's the core of anonymous membership — private voting, anonymous credentials, mixers — and it's built from nothing more than the Merkle tree this lesson opened with.

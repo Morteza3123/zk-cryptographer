@@ -1,0 +1,29 @@
+---
+// Fig. for "Merkle Trees & Vector Commitments": the proof only grows by one
+// hash per doubling of the tree, so it's log2(n) — four rows chosen to match
+// the script's read-aloud (8, 1024, ~1M, ~4B items).
+const rows = [
+  { items: "8", hashes: 3, bar: 30 },
+  { items: "1,024", hashes: 10, bar: 100 },
+  { items: "1,048,576", hashes: 20, bar: 200 },
+  { items: "4,294,967,296", hashes: 32, bar: 320 },
+];
+---
+<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">proof size grows slowly</text>
+
+  <text x="40" y="58" fill="#c3cedd" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">ITEMS IN THE TREE</text>
+  <text x="420" y="58" fill="#8fdcff" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">HASHES IN THE PROOF = log&#8322;(n)</text>
+
+  {rows.map((r, i) => (
+    <>
+      <text x="40" y={100 + i * 80} fill="#e9eef5" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{r.items}</text>
+      <rect x="420" y={82 + i * 80} width={r.bar} height="20" rx="4" fill="#3ab7ff" opacity="0.85" />
+      <text x={426 + r.bar} y={97 + i * 80} fill="#e9eef5" font-size="14" font-weight="700" font-family="-apple-system,Arial,sans-serif">{r.hashes}</text>
+    </>
+  ))}
+
+  <line x1="40" y1="340" x2="720" y2="340" stroke="#223049" stroke-width="1" />
+  <text x="380" y="366" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">DOUBLE THE DATA, ADD ONE HASH</text>
+  <text x="380" y="386" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A tree with 4 billion leaves needs only 32 hashes to prove any single one.</text>
+</svg>

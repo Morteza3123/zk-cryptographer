@@ -1,0 +1,72 @@
+---
+// Fig. for "Merkle Trees & Vector Commitments": the same member's nullifier
+// N is accepted the first time and rejected the second — stopping double-use
+// without revealing which member it was. Private inputs green (established
+// convention), the used-list rejection in red (reserved for violations).
+---
+<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="24" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">leaf = H(nf, s)  &#8594;  published N = H(nf) — N doesn't reveal which leaf</text>
+
+  <!-- left: first spend -->
+  <text x="190" y="56" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">FIRST SPEND</text>
+  <rect x="60" y="68" width="260" height="46" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="190" y="96" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">nf, s, Merkle path (private)</text>
+  <line x1="190" y1="114" x2="190" y2="140" stroke="#e9eef5" stroke-width="1.6" marker-end="url(#nf-arrow-w)" />
+  <rect x="100" y="142" width="180" height="40" rx="9" fill="#0a0f19" stroke="#e9eef5" stroke-width="1.6" />
+  <text x="190" y="167" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">ZK proof</text>
+  <line x1="190" y1="182" x2="190" y2="206" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
+  <text x="230" y="200" fill="#8b96a8" font-size="10.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">public</text>
+  <rect x="60" y="208" width="110" height="40" rx="8" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" />
+  <text x="115" y="233" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="-apple-system,Arial,sans-serif">root</text>
+  <rect x="210" y="208" width="110" height="40" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="265" y="233" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
+  <line x1="265" y1="248" x2="265" y2="272" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
+  <rect x="60" y="274" width="260" height="46" rx="9" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="190" y="302" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">N not in used list &#10003; accepted</text>
+
+  <!-- right: second spend -->
+  <text x="570" y="56" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">SECOND SPEND</text>
+  <rect x="440" y="68" width="260" height="46" rx="9" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="570" y="96" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">nf, s, Merkle path (private)</text>
+  <line x1="570" y1="114" x2="570" y2="140" stroke="#e9eef5" stroke-width="1.6" marker-end="url(#nf-arrow-w)" />
+  <rect x="480" y="142" width="180" height="40" rx="9" fill="#0a0f19" stroke="#e9eef5" stroke-width="1.6" />
+  <text x="570" y="167" text-anchor="middle" fill="#e9eef5" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">ZK proof</text>
+  <line x1="570" y1="182" x2="570" y2="206" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
+  <text x="610" y="200" fill="#8b96a8" font-size="10.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">public</text>
+  <rect x="440" y="208" width="110" height="40" rx="8" fill="#121c2c" stroke="#c3cedd" stroke-width="1.4" />
+  <text x="495" y="233" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="-apple-system,Arial,sans-serif">root</text>
+  <rect x="590" y="208" width="110" height="40" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="645" y="233" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
+  <line x1="645" y1="248" x2="645" y2="272" stroke="#ff5c7a" stroke-width="1.6" marker-end="url(#nf-arrow-r)" />
+  <rect x="440" y="274" width="260" height="46" rx="9" fill="#1f0d14" stroke="#ff5c7a" stroke-width="1.8" />
+  <text x="570" y="302" text-anchor="middle" fill="#ff5c7a" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">N already used &#10005; rejected</text>
+
+  <!-- used list in the middle -->
+  <rect x="340" y="200" width="80" height="130" rx="8" fill="#0a0f19" stroke="#8fdcff" stroke-width="1.4" />
+  <text x="380" y="216" text-anchor="middle" fill="#8fdcff" font-size="10.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">USED LIST</text>
+  <rect x="352" y="226" width="56" height="10" rx="2" fill="#1f0d14" />
+  <rect x="352" y="242" width="56" height="10" rx="2" fill="#1f0d14" />
+  <rect x="352" y="258" width="56" height="10" rx="2" fill="#1f0d14" />
+  <rect x="352" y="292" width="56" height="18" rx="4" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.4" />
+  <text x="380" y="305" text-anchor="middle" fill="#8fdcff" font-size="10.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">N</text>
+  <line x1="320" y1="296" x2="350" y2="296" stroke="#3ab7ff" stroke-width="1.6" marker-end="url(#nf-arrow-b)" />
+  <line x1="410" y1="296" x2="438" y2="296" stroke="#ff5c7a" stroke-width="1.6" stroke-dasharray="3 3" marker-end="url(#nf-arrow-r)" />
+
+  <text x="380" y="348" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">same note &#8594; same N, always</text>
+
+  <line x1="20" y1="366" x2="740" y2="366" stroke="#223049" stroke-width="1" />
+  <text x="380" y="390" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">PROVE YOU BELONG, BUT ONLY ONCE</text>
+  <text x="380" y="408" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Nullifiers stop double-use without revealing which member you are.</text>
+
+  <defs>
+    <marker id="nf-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e9eef5" />
+    </marker>
+    <marker id="nf-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
+    </marker>
+    <marker id="nf-arrow-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5c7a" />
+    </marker>
+  </defs>
+</svg>

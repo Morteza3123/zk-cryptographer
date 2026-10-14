@@ -1,0 +1,87 @@
+---
+// Fig. for "Merkle Trees & Vector Commitments": how the tree is built — hash
+// each leaf, hash the pairs, hash the pairs of pairs, until one root remains.
+// Four leaves is enough to show the shape; later figures reuse the same
+// layout convention (leaves white/structural, hashes blue/computed, root
+// the strongest blue since it's the one value everyone ends up trusting).
+const leaves = [
+  { label: "L1", x: 95 },
+  { label: "L2", x: 285 },
+  { label: "L3", x: 475 },
+  { label: "L4", x: 665 },
+];
+const hashes = [
+  { label: "h1 = H(L1)", x: 95 },
+  { label: "h2 = H(L2)", x: 285 },
+  { label: "h3 = H(L3)", x: 475 },
+  { label: "h4 = H(L4)", x: 665 },
+];
+const pairs = [
+  { label: "h12 = H(h1, h2)", x: 190 },
+  { label: "h34 = H(h3, h4)", x: 570 },
+];
+---
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">building the tree, level by level</text>
+
+  <!-- root -->
+  <rect x="230" y="80" width="300" height="60" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="2.2" />
+  <text x="380" y="117" text-anchor="middle" fill="#8fdcff" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT = H(h12, h34)</text>
+
+  <!-- pairs -->
+  <rect x="105" y="190" width="170" height="54" rx="10" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="190" y="223" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{pairs[0].label}</text>
+  <rect x="485" y="190" width="170" height="54" rx="10" fill="#0d1526" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="570" y="223" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{pairs[1].label}</text>
+
+  <!-- hashes -->
+  {hashes.map((h) => (
+    <>
+      <rect x={h.x - 72} y="300" width="144" height="46" rx="9" fill="#0d1526" stroke="#8fdcff" stroke-width="1.6" />
+      <text x={h.x} y="328" text-anchor="middle" fill="#8fdcff" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{h.label}</text>
+    </>
+  ))}
+
+  <!-- leaves -->
+  {leaves.map((l) => (
+    <>
+      <rect x={l.x - 72} y="400" width="144" height="50" rx="9" fill="#121c2c" stroke="#c3cedd" stroke-width="1.6" />
+      <text x={l.x} y="430" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="-apple-system,Arial,sans-serif">{l.label}</text>
+    </>
+  ))}
+
+  <!-- row labels, each sitting just above its row so they never collide with a box -->
+  <text x="20" y="68" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">ROOT</text>
+  <text x="20" y="178" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">PAIRS</text>
+  <text x="20" y="288" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">HASHES</text>
+  <text x="20" y="388" fill="#8b96a8" font-size="11.5" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">LEAVES</text>
+
+  <!-- arrows: leaf -> hash -->
+  {leaves.map((l) => (
+    <line x1={l.x} y1="400" x2={l.x} y2="346" stroke="#c3cedd" stroke-width="1.6" marker-end="url(#mt-arrow-w)" />
+  ))}
+  <!-- arrows: hash -> pair -->
+  <line x1="95" y1="300" x2="160" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
+  <line x1="285" y1="300" x2="220" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
+  <line x1="475" y1="300" x2="540" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
+  <line x1="665" y1="300" x2="600" y2="244" stroke="#8fdcff" stroke-width="1.6" marker-end="url(#mt-arrow-b)" />
+  <!-- arrows: pair -> root -->
+  <line x1="190" y1="190" x2="310" y2="140" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#mt-arrow-b2)" />
+  <line x1="570" y1="190" x2="450" y2="140" stroke="#3ab7ff" stroke-width="1.8" marker-end="url(#mt-arrow-b2)" />
+
+  <line x1="20" y1="466" x2="740" y2="466" stroke="#223049" stroke-width="1" />
+  <text x="380" y="490" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">MANY LEAVES, ONE ROOT</text>
+  <text x="380" y="508" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Hash the pairs, then the pairs of pairs, until one hash remains.</text>
+
+  <defs>
+    <marker id="mt-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
+    </marker>
+    <marker id="mt-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
+    </marker>
+    <marker id="mt-arrow-b2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+  </defs>
+</svg>

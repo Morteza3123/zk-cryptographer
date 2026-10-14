@@ -1,0 +1,103 @@
+---
+// Fig. for "Merkle Trees & Vector Commitments": an 8-leaf tree, dimmed
+// except for the path from L3 to the root and the three sibling hashes
+// (marked P) the verifier needs. The right-hand strip lists exactly what
+// the verifier recomputes with them.
+const leafXs = [40, 130, 220, 310, 400, 490, 580, 670];
+const leafLabels = ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8"];
+const hashLabels = ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
+const pairXs = [85, 265, 445, 625];
+const pairLabels = ["h12", "h34", "h56", "h78"];
+const quadXs = [175, 535];
+const quadLabels = ["h1234", "h5678"];
+---
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="355" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">prove one leaf with three hashes</text>
+
+  <!-- dimmed full tree -->
+  <g opacity="0.3">
+    {leafXs.map((x, i) => i !== 2 && (
+      <rect x={x - 38} y="360" width="76" height="40" rx="7" fill="#121c2c" stroke="#c3cedd" stroke-width="1.3" />
+    ))}
+    {leafXs.map((x, i) => i !== 2 && (
+      <text x={x} y="385" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">{leafLabels[i]}</text>
+    ))}
+    {leafXs.map((x, i) => i !== 2 && i !== 3 && (
+      <rect x={x - 32} y="280" width="64" height="34" rx="6" fill="#0d1526" stroke="#8fdcff" stroke-width="1.2" />
+    ))}
+    {leafXs.map((x, i) => i !== 2 && i !== 3 && (
+      <text x={x} y="302" text-anchor="middle" fill="#8fdcff" font-size="11" font-family="SF Mono, Fira Code, Consolas, monospace">{hashLabels[i]}</text>
+    ))}
+    {pairXs.map((x, i) => i !== 1 && (
+      <rect x={x - 42} y="200" width="84" height="38" rx="7" fill="#0d1526" stroke="#8fdcff" stroke-width="1.2" />
+    ))}
+    {pairXs.map((x, i) => i !== 1 && (
+      <text x={x} y="224" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-family="SF Mono, Fira Code, Consolas, monospace">{pairLabels[i]}</text>
+    ))}
+    <rect x={quadXs[1] - 58} y="120" width="116" height="46" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.2" />
+    <text x={quadXs[1]} y="148" text-anchor="middle" fill="#8fdcff" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">{quadLabels[1]}</text>
+  </g>
+
+  <!-- highlighted path: L3 -> h3 -> h34 -> h1234 -> root -->
+  <rect x="182" y="360" width="76" height="40" rx="7" fill="#121c2c" stroke="#3ab7ff" stroke-width="2" />
+  <text x="220" y="385" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">L3</text>
+  <rect x="188" y="280" width="64" height="34" rx="6" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
+  <text x="220" y="302" text-anchor="middle" fill="#8fdcff" font-size="11.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h3</text>
+  <rect x="223" y="200" width="84" height="38" rx="7" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
+  <text x="265" y="224" text-anchor="middle" fill="#8fdcff" font-size="12" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h34</text>
+  <rect x="117" y="120" width="116" height="46" rx="8" fill="#0d1526" stroke="#3ab7ff" stroke-width="2" />
+  <text x="175" y="148" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h1234</text>
+  <rect x="195" y="42" width="320" height="52" rx="10" fill="#121c2c" stroke="#3ab7ff" stroke-width="2.2" />
+  <text x="355" y="74" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">ROOT</text>
+
+  <!-- the three proof siblings -->
+  <rect x={leafXs[3] - 32} y="280" width="64" height="34" rx="6" fill="#0d1526" stroke="#c3cedd" stroke-width="2" />
+  <text x={leafXs[3]} y="302" text-anchor="middle" fill="#e9eef5" font-size="11" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h4</text>
+  <circle cx={leafXs[3] + 26} cy="282" r="9" fill="#c3cedd" />
+  <text x={leafXs[3] + 26} y="286" text-anchor="middle" fill="#121c2c" font-size="10" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
+
+  <rect x={pairXs[0] - 42} y="200" width="84" height="38" rx="7" fill="#0d1526" stroke="#c3cedd" stroke-width="2" />
+  <text x={pairXs[0]} y="224" text-anchor="middle" fill="#e9eef5" font-size="11.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h12</text>
+  <circle cx={pairXs[0] + 34} cy="202" r="9" fill="#c3cedd" />
+  <text x={pairXs[0] + 34} y="206" text-anchor="middle" fill="#121c2c" font-size="10" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
+
+  <rect x={quadXs[1] - 58} y="120" width="116" height="46" rx="8" fill="#0d1526" stroke="#c3cedd" stroke-width="2" />
+  <text x={quadXs[1]} y="148" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">h5678</text>
+  <circle cx={quadXs[1] + 46} cy="122" r="9" fill="#c3cedd" />
+  <text x={quadXs[1] + 46} y="126" text-anchor="middle" fill="#121c2c" font-size="10" font-weight="800" font-family="-apple-system,Arial,sans-serif">P</text>
+
+  <!-- highlighted arrows -->
+  <line x1="220" y1="360" x2="220" y2="314" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
+  <line x1="220" y1="280" x2="245" y2="238" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
+  <line x1="400" y1="280" x2="285" y2="238" stroke="#c3cedd" stroke-width="1.8" marker-end="url(#mp-arrow-o)" />
+  <line x1="265" y1="200" x2="200" y2="166" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
+  <line x1="85" y1="200" x2="150" y2="166" stroke="#c3cedd" stroke-width="1.8" marker-end="url(#mp-arrow-o)" />
+  <line x1="175" y1="120" x2="300" y2="94" stroke="#3ab7ff" stroke-width="2" marker-end="url(#mp-arrow-b)" />
+  <line x1="535" y1="120" x2="410" y2="94" stroke="#c3cedd" stroke-width="1.8" marker-end="url(#mp-arrow-o)" />
+
+  <!-- right-hand verifier strip -->
+  <line x1="650" y1="40" x2="650" y2="400" stroke="#223049" stroke-width="1" stroke-dasharray="3 5" />
+  <text x="670" y="58" fill="#c3cedd" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">VERIFIER RECOMPUTES</text>
+  <text x="670" y="100" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">1.  h3 = H(L3)</text>
+  <text x="670" y="150" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">2.  h34 = H(h3, h4)</text>
+  <text x="670" y="200" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">3.  h1234 = H(h12, h34)</text>
+  <text x="670" y="250" fill="#8fdcff" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">4.  root&#8242; = H(h1234, h5678)</text>
+  <text x="670" y="296" fill="#5ddc8a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#10003;  root&#8242; = published root</text>
+
+  <circle cx="648" cy="36" r="0" />
+  <text x="40" y="327" fill="#8b96a8" font-size="11" font-family="-apple-system,Arial,sans-serif">P = sibling hash sent as the proof</text>
+  <circle cx="30" cy="323" r="7" fill="#c3cedd" />
+
+  <line x1="20" y1="420" x2="900" y2="420" stroke="#223049" stroke-width="1" />
+  <text x="355" y="444" text-anchor="middle" fill="#3ab7ff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">PROVE ONE LEAF WITH THREE HASHES</text>
+  <text x="355" y="462" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The verifier never sees the other leaves — only three sibling hashes and the root.</text>
+
+  <defs>
+    <marker id="mp-arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3ab7ff" />
+    </marker>
+    <marker id="mp-arrow-o" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c3cedd" />
+    </marker>
+  </defs>
+</svg>
