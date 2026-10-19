@@ -1,0 +1,31 @@
+---
+// Fig. for "Information Theory & Entropy": the same four outcomes carry
+// different entropy depending on how likely each one is — certain (0 bits),
+// uneven (1.75 bits), and equal (the maximum, 2 bits).
+const groups = [
+  { label: "CERTAIN", bits: "0 bits", bars: [100, 0, 0, 0] },
+  { label: "UNEVEN", bits: "1.75 bits", bars: [50, 25, 12.5, 12.5] },
+  { label: "EQUAL", bits: "2 bits (maximum)", bars: [25, 25, 25, 25] },
+];
+---
+<svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">same four outcomes, different entropy</text>
+
+  {groups.map((g, gi) => (
+    <>
+      <text x="40" y={66 + gi * 140} fill="#c3cedd" font-size="13" font-weight="700" letter-spacing="0.04em" font-family="-apple-system,Arial,sans-serif">{g.label}</text>
+      {g.bars.map((p, bi) => (
+        <>
+          <rect x="40" y={78 + gi * 140 + bi * 26} width={Math.max(p * 3, 3)} height="18" rx="4" fill="#3ab7ff" opacity={p === 0 ? 0.25 : 0.85} />
+          <text x={48 + p * 3} y={92 + gi * 140 + bi * 26} fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">{p}%</text>
+        </>
+      ))}
+      <rect x="590" y={78 + gi * 140 + 26} width="130" height="36" rx="8" fill="#0d1526" stroke="#8fdcff" stroke-width="1.6" />
+      <text x="655" y={101 + gi * 140 + 26} text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{g.bits}</text>
+    </>
+  ))}
+
+  <line x1="40" y1="470" x2="720" y2="470" stroke="#223049" stroke-width="1" />
+  <text x="380" y="494" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ENTROPY IS HIGHEST WHEN OUTCOMES ARE EQUALLY LIKELY</text>
+  <text x="380" y="514" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A predictable secret is a weak secret even with many possible values.</text>
+</svg>

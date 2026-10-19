@@ -115,6 +115,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
         { num: "16", title: "Merkle Trees & Vector Commitments", duration: "16:00", slug: "merkle-trees-vector-commitments" },
       ],
     },
+    {
+      module: "Entropy",
+      items: [
+        { num: "17", title: "Information Theory & Entropy", duration: "12:45", slug: "information-theory-entropy" },
+      ],
+    },
   ],
   cryptography: [],
   fundamentals: [],

@@ -1,0 +1,114 @@
+---
+track: math
+module: "Entropy"
+lessonNumber: "17"
+title: "Information Theory & Entropy"
+duration: "12:45"
+description: "How to measure a secret with entropy, why the Pedersen commitment hides perfectly but binds only computationally, and the simulation argument that turns 'zero-knowledge' from a slogan into something you can check — the final piece of math behind every proof system in this series."
+order: 17
+youtubeHref: "https://youtu.be/DSiYjBHIj4w"
+prevTitle: "Merkle Trees & Vector Commitments"
+prevHref: "/learn/math/merkle-trees-vector-commitments"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import EntropyBitsFigure from "../../components/figures/EntropyBitsFigure.astro";
+import EntropyFairnessFigure from "../../components/figures/EntropyFairnessFigure.astro";
+import NullifierEntropyFigure from "../../components/figures/NullifierEntropyFigure.astro";
+import PerfectHidingFigure from "../../components/figures/PerfectHidingFigure.astro";
+import SecurityTypesFigure from "../../components/figures/SecurityTypesFigure.astro";
+import SimulationArgumentFigure from "../../components/figures/SimulationArgumentFigure.astro";
+import ThreePromisesFigure from "../../components/figures/ThreePromisesFigure.astro";
+
+Sixteen lessons have built numbers, polynomials, fields, groups, curves, pairings, hashes, commitments, and Merkle trees. **This lesson adds the last idea: how do you measure a secret, and what does it actually mean for a proof to reveal nothing?** The tool is entropy. Once it's measurable, "zero-knowledge" stops being a slogan and becomes something you can check.
+
+## Entropy is counting yes/no questions
+
+Information is surprise. Learn something you already knew, and you learn nothing. Learn something you couldn't have guessed, and you learn a lot. Entropy measures how many yes/no questions it takes to pin down an unknown, counted in bits.
+
+<Figure caption="Fig. 1 — each extra bit doubles the outcomes a question can rule out. Eight outcomes cost exactly three questions.">
+  <EntropyBitsFigure />
+</Figure>
+
+<MathBox label="Entropy">
+
+For a random variable with outcomes of probability $p_i$, entropy is $H(X) = \sum_i p_i \log_2\frac{1}{p_i}$. When there are $n$ equally likely outcomes, this collapses to $\log_2(n)$ bits — the exact same halving that gives a Merkle proof its $\log_2(n)$ length.
+
+</MathBox>
+
+Each extra bit doubles the number of outcomes. That's exactly why 256 bits — the size of the secrets this series has used throughout — sits beyond brute force.
+
+## Entropy depends on the odds, not just the count
+
+Entropy isn't only about how many outcomes exist — it's about how likely each one is. A predictable secret is a weak secret even when it has plenty of possible values.
+
+<Figure caption="Fig. 2 — same four outcomes, three different entropies. A certain outcome teaches nothing; equally likely outcomes teach the most.">
+  <EntropyFairnessFigure />
+</Figure>
+
+A certain outcome carries zero bits — there's nothing left to ask. Skew the odds and the entropy climbs partway. Only when every outcome is equally likely does entropy hit its maximum for that many outcomes. A good secret isn't just big, in other words — it has to be uniformly random too.
+
+## Low-entropy vs. high-entropy secrets
+
+This is where entropy turns practical. Take the nullifier secret from the last lesson: its hash $N$ is published, and anyone can see it. Whether that's safe depends entirely on the entropy behind it — not on the fact that it went through a hash function at all.
+
+<Figure caption="Fig. 3 — a four-digit PIN is broken in moments once its hash is public. A 256-bit random secret never is.">
+  <NullifierEntropyFigure />
+</Figure>
+
+Ten thousand possible values is nothing to a computer — trying every guess and checking it against the published hash takes moments. Two to the 256 possible values is a different story: brute-forcing it would outlast the universe. A hash hides a secret only as well as the secret's own entropy allows, which is exactly why nullifier secrets, and the blinding factors from two lessons back, have to come from a genuine random source, at full length.
+
+## Why the Pedersen commitment hides perfectly
+
+The commitments lesson introduced the Pedersen commitment, $C = g\cdot m + h\cdot r$, without fully explaining why it hides so completely. Entropy is the reason.
+
+<Figure caption="Fig. 4 — every possible message has exactly one matching r, and every r is equally likely — so C can't favor any message over another.">
+  <PerfectHidingFigure />
+</Figure>
+
+<MathBox label="Perfect hiding">
+
+For any message $m$ an attacker might guess, there is exactly one blinding factor $r$ that produces the same $C = g\cdot m + h\cdot r$. Because $r$ is drawn uniformly from the whole field, every such $m$ is equally plausible given only $C$.
+
+</MathBox>
+
+Perfect means perfect here: even an attacker with unlimited computing power learns nothing about $m$ from $C$ alone. That's the maximum-entropy idea from the last section, doing exactly the work it promised.
+
+## Two kinds of security
+
+That word "perfect" is doing real work, and it comes with a trade-off worth naming directly.
+
+<Figure caption="Fig. 5 — information-theoretic security holds against unlimited computing power; computational security holds only as long as a hard problem stays hard.">
+  <SecurityTypesFigure />
+</Figure>
+
+Pedersen hiding is information-theoretic: safe against any attacker, no matter how much computing power they have, because the information simply isn't there. Pedersen binding is only computational: safe because breaking it means solving the discrete log problem, which stays hard but isn't impossible in principle. No commitment scheme gets both guarantees at full strength at once — Pedersen picks perfect hiding and computational binding; hash-based commitments tend to choose the other way around.
+
+## The simulation argument
+
+So how does anyone actually prove a proof leaks nothing? By showing that someone who doesn't know the secret can produce a transcript indistinguishable from a real one. If a fake looks exactly like the truth, the truth wasn't carrying any extra information. Here's the Schnorr proof from two lessons back, run both ways.
+
+<Figure caption="Fig. 6 — the real proof uses x to answer the challenge. The simulated proof never touches x: it picks the challenge first, then works backwards. Both pass the same check.">
+  <SimulationArgumentFigure />
+</Figure>
+
+<MathBox label="A Schnorr proof">
+
+Public: $G$ and $y = x\cdot G$. Real: pick a random $r$, send $a = r\cdot G$, receive a challenge $c$, reply $z = r + c\cdot x$. Simulated: pick a random $c$ and $z$ first, then compute $a = z\cdot G - c\cdot y$ — no $x$ needed anywhere. Both transcripts pass the identical check $z\cdot G = a + c\cdot y$, and both are distributed exactly the same way.
+
+</MathBox>
+
+Since the verifier could have produced this transcript entirely on their own, the transcript teaches the verifier nothing beyond the fact that the statement holds. That's the formal meaning of zero-knowledge.
+
+## The three promises
+
+Put all of this together, and every proof system built across this series — Groth16, PLONK, the rest — is ultimately judged by the same three promises.
+
+<Figure caption="Fig. 7 — completeness, soundness, and zero-knowledge, and the exact tool from this series that builds each one.">
+  <ThreePromisesFigure />
+</Figure>
+
+Completeness: if the statement is true and the prover is honest, the verifier always accepts — built from polynomial division with zero remainder and the pairing equation. Soundness: if the statement is false, a cheating prover gets caught except with negligible probability — built from Schwartz-Zippel and binding commitments. Zero-knowledge: the verifier learns nothing except that the statement is true — built from random blinding factors and the simulator this lesson just walked through.
+
+That's the full arc of this series, from modular arithmetic to these three guarantees. Complete, sound, and zero-knowledge — no longer a slogan, but something you can now measure and check.

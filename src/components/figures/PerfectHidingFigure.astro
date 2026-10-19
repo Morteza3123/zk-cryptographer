@@ -1,0 +1,41 @@
+---
+// Fig. for "Information Theory & Entropy": why the Pedersen commitment from
+// the commitments lesson achieves perfect hiding. Every possible message has
+// exactly one matching random r, so C alone can't favor any message over
+// another. Messages (secrets) stay green; C, the public commitment, stays blue.
+const messages = [
+  { label: "m = 42, with some r", x: 100 },
+  { label: "m = 7, with some r", x: 380 },
+  { label: "m = 999, with some r", x: 660 },
+];
+---
+<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">perfect hiding</text>
+
+  <rect x="255" y="44" width="250" height="56" rx="12" fill="#0d1526" stroke="#e9eef5" stroke-width="2" />
+  <text x="380" y="80" text-anchor="middle" fill="#8fdcff" font-size="22" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C = g&#183;m + h&#183;r</text>
+  <text x="380" y="118" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">r is random over the whole field</text>
+
+  {messages.map((m) => (
+    <>
+      <rect x={m.x - 100} y="160" width="200" height="46" rx="9" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1.6" stroke-dasharray="5 4" />
+      <text x={m.x} y="188" text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">{m.label}</text>
+      <path d={`M ${m.x} 206 C ${m.x} 250 380 250 380 268`} fill="none" stroke="#5ddc8a" stroke-width="1.6" marker-end="url(#ph-arrow-g)" />
+    </>
+  ))}
+
+  <rect x="310" y="270" width="140" height="56" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="2.2" />
+  <text x="380" y="305" text-anchor="middle" fill="#8fdcff" font-size="24" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">C</text>
+  <text x="380" y="346" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">all the attacker sees</text>
+
+  <line x1="40" y1="368" x2="720" y2="368" stroke="#223049" stroke-width="1" />
+  <text x="380" y="392" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Every message has exactly one matching r, and all are equally likely.</text>
+  <text x="380" y="420" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">RANDOMNESS MAKES EVERY MESSAGE EQUALLY LIKELY</text>
+  <text x="380" y="440" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Even an attacker with unlimited computing power learns nothing about m from C.</text>
+
+  <defs>
+    <marker id="ph-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5ddc8a" />
+    </marker>
+  </defs>
+</svg>
