@@ -1,0 +1,39 @@
+---
+// Fig. for "Euclid, CRT & Euler": gcd(252, 105) by repeated division — each
+// step's divisor and remainder (blue) become the next step's pair, until a
+// remainder of zero stops the chain and the last nonzero remainder (green)
+// is the gcd.
+---
+<svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">finding the gcd by repeated division</text>
+  <text x="380" y="50" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">a = b &#215; q + r &#8212; b and r become the next pair</text>
+
+  <text x="40" y="94" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1</text>
+  <text x="40" y="118" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">252 = 2 &#215; <tspan fill="#8fdcff">105</tspan> + <tspan fill="#8fdcff">42</tspan></text>
+  <text x="720" y="118" text-anchor="end" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">105 fits in 252 twice (210). Left over: 42.</text>
+  <path d="M 100 130 C 100 155 60 155 60 178" fill="none" stroke="#8fdcff" stroke-width="1.4" marker-end="url(#ge-arrow)" />
+
+  <text x="40" y="188" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2</text>
+  <text x="40" y="212" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">105 = 2 &#215; <tspan fill="#8fdcff">42</tspan> + <tspan fill="#8fdcff">21</tspan></text>
+  <text x="720" y="212" text-anchor="end" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">42 fits in 105 twice (84). Left over: 21.</text>
+  <path d="M 90 224 C 90 249 60 249 60 272" fill="none" stroke="#8fdcff" stroke-width="1.4" marker-end="url(#ge-arrow)" />
+
+  <text x="40" y="282" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3</text>
+  <text x="40" y="306" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">42 = 2 &#215; <tspan fill="#8fdcff">21</tspan> + <tspan fill="#5ddc8a">0</tspan></text>
+  <text x="720" y="306" text-anchor="end" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">21 fits in 42 exactly. Left over: 0. Stop.</text>
+
+  <rect x="260" y="330" width="240" height="50" rx="10" fill="#0d1a12" stroke="#5ddc8a" stroke-width="2" />
+  <text x="380" y="362" text-anchor="middle" fill="#5ddc8a" font-size="17" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">gcd(252, 105) = 21</text>
+
+  <text x="380" y="404" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Check: 252 &#247; 21 = 12 and 105 &#247; 21 = 5 &#8212; both divide evenly.</text>
+
+  <line x1="40" y1="422" x2="720" y2="422" stroke="#223049" stroke-width="1" />
+  <text x="380" y="446" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE LAST NONZERO REMAINDER IS THE GCD</text>
+  <text x="380" y="466" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Each step shrinks the numbers, so it finishes fast.</text>
+
+  <defs>
+    <marker id="ge-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8fdcff" />
+    </marker>
+  </defs>
+</svg>

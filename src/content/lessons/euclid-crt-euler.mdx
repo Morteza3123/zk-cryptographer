@@ -1,0 +1,152 @@
+---
+track: math
+module: "The Bridge"
+lessonNumber: "18"
+title: "Euclid, CRT & Euler"
+duration: "18:15"
+description: "A faster way to find the gcd and the inverse for any modulus, not just a prime; how two small congruences combine into one big one through the Chinese Remainder Theorem; and Euler's theorem, the one formula that makes Fermat's little theorem from Topic 5 just its prime special case."
+order: 18
+youtubeHref: "https://youtu.be/5dkVbJZWJ0U"
+prevTitle: "Information Theory & Entropy"
+prevHref: "/learn/math/information-theory-entropy"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import GcdEuclidFigure from "../../components/figures/GcdEuclidFigure.astro";
+import ExtendedEuclidForwardFigure from "../../components/figures/ExtendedEuclidForwardFigure.astro";
+import ExtendedEuclidBackwardFigure from "../../components/figures/ExtendedEuclidBackwardFigure.astro";
+import NoInverseFigure from "../../components/figures/NoInverseFigure.astro";
+import CRTSearchFigure from "../../components/figures/CRTSearchFigure.astro";
+import CRTFormulaFigure from "../../components/figures/CRTFormulaFigure.astro";
+import EulerTotientFigure from "../../components/figures/EulerTotientFigure.astro";
+import EulerTheoremFigure from "../../components/figures/EulerTheoremFigure.astro";
+import BridgeToolsSummaryFigure from "../../components/figures/BridgeToolsSummaryFigure.astro";
+
+Topic 5 found modular inverses by brute force, and promised a shortcut for huge primes in Fermat's little theorem. **This lesson delivers the other half of that promise** — a fast way to find the gcd and the inverse for *any* modulus, not only a prime one — and then builds two more tools, the Chinese Remainder Theorem and Euler's theorem, that lean on exactly that machinery.
+
+## Euclid's algorithm finds the gcd
+
+Checking every number up to $n$ for a shared factor works, but it's slow. Euclid's algorithm finds the greatest common divisor in a handful of steps, no matter how big the numbers are, by repeatedly replacing a pair with a smaller one that has the same gcd.
+
+<Figure caption="Fig. 1 — gcd(252, 105) by repeated division. Each step's divisor and remainder become the next step's pair, until a remainder of zero stops the chain.">
+  <GcdEuclidFigure />
+</Figure>
+
+<MathBox label="Euclid's algorithm">
+
+$$\gcd(a, b) = \gcd(b, a \bmod b)$$
+
+Divide $a$ by $b$, keep the remainder, and repeat with the smaller pair. The **last nonzero remainder** is the gcd. Each step at least halves the numbers, so the whole chain finishes in roughly $\log(n)$ steps — fast enough for the 254-bit numbers this series actually uses.
+
+</MathBox>
+
+## Does 7 have an inverse mod 26?
+
+The same division chain answers the question Topic 5 could only answer by brute force: does an inverse exist at all? Run it on $(26, 7)$ and keep every line — they're needed again in a moment.
+
+<Figure caption="Fig. 2 — the forward Euclid pass on (26, 7). Three steps land on a nonzero remainder and get kept; the last step just confirms the chain is done.">
+  <ExtendedEuclidForwardFigure />
+</Figure>
+
+The last nonzero remainder is $1$, so $\gcd(26, 7) = 1$ and $7$ has an inverse mod $26$ — exactly the condition from Topic 5, reached in three steps instead of twenty-five candidates.
+
+## Working backwards to find the inverse
+
+Running Euclid forward finds *that* an inverse exists. Running the same three lines **backwards** — substituting each remainder back into the equation before it — finds the inverse itself, with no searching at all.
+
+<Figure caption="Fig. 3 — back-substituting the three kept lines isolates 1 as a combination of 26 and 7. Reading off the 7-coefficient, made positive, is the inverse.">
+  <ExtendedEuclidBackwardFigure />
+</Figure>
+
+<MathBox label="The extended Euclidean algorithm">
+
+$$a x + n y = \gcd(a, n)$$
+
+Back-substitution finds integers $x$ and $y$ satisfying this equation — called **Bézout's identity**. When $\gcd(a, n) = 1$, that equation reads $ax + ny = 1$, which is exactly $ax \equiv 1 \pmod n$: $x$ **is** the inverse, read straight off the last line.
+
+</MathBox>
+
+## When an inverse does not exist
+
+Not every pair cooperates. Check $6 \bmod 9$ against every $x$ from $1$ to $9$, and the pattern Euclid's algorithm already predicts shows up directly.
+
+<Figure caption="Fig. 4 — every product 6x mod 9 is checked and none ever lands on 1. Euclid's algorithm explains why: gcd(9, 6) = 3, not 1.">
+  <NoInverseFigure />
+</Figure>
+
+<MathBox label="When an inverse exists">
+
+$$\gcd(a, n) = 1$$
+
+Same condition as Topic 5, now checkable in three division steps instead of a brute-force search of size $n$. With a **prime** modulus this is automatic — every number from $1$ to $p - 1$ shares no factor with $p$ — which is exactly why ZK systems build their field out of a prime.
+
+</MathBox>
+
+## Two clues about one number
+
+The Chinese Remainder Theorem answers a different question: given two separate clues about a number — its remainder mod $3$ and its remainder mod $5$ — is there a number that satisfies both, and how many are there?
+
+<Figure caption="Fig. 5 — listing numbers that satisfy one clue, then checking each against the other. The matches repeat every 15 — the product of the two moduli.">
+  <CRTSearchFigure />
+</Figure>
+
+There's exactly one answer in every run of $15 = 3 \times 5$ consecutive numbers, because $3$ and $5$ share no factor. That's the condition the Chinese Remainder Theorem needs: the moduli have to be **pairwise coprime**.
+
+## Building x without searching
+
+Searching works for small moduli, but the CRT formula builds the same answer directly, using the inverses this lesson just made fast.
+
+<Figure caption="Fig. 6 — the CRT formula, built from the same two clues as the search. Each term is scaled so it keeps its own remainder and vanishes under the other modulus.">
+  <CRTFormulaFigure />
+</Figure>
+
+<MathBox label="The CRT formula">
+
+$$x \equiv a_1 M_1 M_1^{-1} + a_2 M_2 M_2^{-1} \pmod{M}$$
+
+$M = m_1 m_2$, and $M_i = M / m_i$. Because $M_i$ is a multiple of every modulus except $m_i$, the term $a_i M_i M_i^{-1}$ keeps remainder $a_i$ under $m_i$ and vanishes to $0$ under every other modulus — so the sum satisfies every congruence at once.
+
+</MathBox>
+
+## φ(n) counts the numbers coprime to n
+
+Euler's theorem — the next and last tool in this lesson — needs one more idea first: **how many** numbers from $1$ to $n$ share no factor with $n$ at all.
+
+<Figure caption="Fig. 7 — φ(n), the count of numbers from 1 to n coprime to n, across three moduli, plus the two shortcut formulas for computing it.">
+  <EulerTotientFigure />
+</Figure>
+
+<MathBox label="Euler's totient function">
+
+$$\varphi(p) = p - 1, \qquad \varphi(p \times q) = (p-1)(q-1)$$
+
+The first formula holds for any prime $p$ — every nonzero number below it qualifies. The second holds whenever $p$ and $q$ are distinct primes, which is exactly the structure behind an RSA modulus $n = p \times q$.
+
+</MathBox>
+
+## Euler's theorem
+
+With $\varphi(n)$ in hand, Euler's theorem generalizes Fermat's little theorem from a prime modulus to *any* modulus — as long as the base and the modulus share no factor.
+
+<Figure caption="Fig. 8 — Euler's theorem worked through n=9, a=2. Splitting the exponent by one gives the inverse directly, the same trick Fermat's little theorem used for a prime.">
+  <EulerTheoremFigure />
+</Figure>
+
+<MathBox label="Euler's theorem">
+
+$$a^{\varphi(n)} \equiv 1 \pmod{n}, \qquad \text{whenever } \gcd(a, n) = 1$$
+
+Set $n$ to a prime $p$: $\varphi(p) = p - 1$, and the statement collapses to $a^{p-1} \equiv 1 \pmod p$ — Fermat's little theorem from Topic 5, now visibly just the prime special case of this more general rule.
+
+</MathBox>
+
+## Faster inverses, bigger numbers, one big idea
+
+Three tools, each building on the last: Euclid's algorithm for a fast gcd and inverse at any modulus, the Chinese Remainder Theorem for combining several small moduli into one big answer, and Euler's theorem for the exponent rule that holds everywhere Fermat's little theorem used to need a prime.
+
+<Figure caption="Fig. 9 — the three tools this lesson adds, and what each one is for.">
+  <BridgeToolsSummaryFigure />
+</Figure>
+
+Every one of these is really a statement about the structure hiding underneath modular arithmetic — the sets of numbers that behave consistently under multiplication. Making that structure explicit, with groups, subgroups, cosets, and roots of unity, is exactly where the next lessons go.

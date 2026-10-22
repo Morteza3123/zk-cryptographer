@@ -121,6 +121,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
         { num: "17", title: "Information Theory & Entropy", duration: "12:45", slug: "information-theory-entropy" },
       ],
     },
+    {
+      module: "The Bridge",
+      items: [
+        { num: "18", title: "Euclid, CRT & Euler", duration: "18:15", slug: "euclid-crt-euler" },
+      ],
+    },
   ],
   cryptography: [],
   fundamentals: [],

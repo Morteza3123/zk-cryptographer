@@ -1,0 +1,37 @@
+---
+// Fig. for "Euclid, CRT & Euler": the forward Euclid pass on (26, 7). Three
+// of the four steps (green) land on a nonzero remainder and get kept for
+// back-substitution; the last step (muted) only confirms the gcd is 1.
+---
+<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">does 7 have an inverse mod 26?</text>
+  <text x="380" y="50" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">run the same division chain on (26, 7)</text>
+
+  <text x="40" y="84" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1</text>
+  <rect x="640" y="68" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
+  <text x="680" y="83" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+  <text x="40" y="106" fill="#e9eef5" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">26 = 3 &#215; 7 + <tspan fill="#5ddc8a">5</tspan></text>
+
+  <text x="40" y="148" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2</text>
+  <rect x="640" y="132" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
+  <text x="680" y="147" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+  <text x="40" y="170" fill="#e9eef5" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">7 = 1 &#215; 5 + <tspan fill="#5ddc8a">2</tspan></text>
+
+  <text x="40" y="212" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3</text>
+  <rect x="640" y="196" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
+  <text x="680" y="211" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+  <text x="40" y="234" fill="#e9eef5" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">5 = 2 &#215; 2 + <tspan fill="#5ddc8a">1</tspan></text>
+
+  <text x="40" y="276" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 4</text>
+  <text x="40" y="298" fill="#8b96a8" font-size="18" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2 = 2 &#215; 1 + 0</text>
+  <text x="720" y="298" text-anchor="end" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">remainder 0 — just confirms the chain is done</text>
+
+  <rect x="200" y="320" width="360" height="50" rx="10" fill="#0d1a12" stroke="#5ddc8a" stroke-width="2" />
+  <text x="380" y="352" text-anchor="middle" fill="#5ddc8a" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">gcd(26, 7) = 1 &#8594; an inverse exists</text>
+
+  <text x="380" y="394" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">26 and 7 share no factor except 1.</text>
+
+  <line x1="40" y1="412" x2="720" y2="412" stroke="#223049" stroke-width="1" />
+  <text x="380" y="436" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">KEEP EVERY LINE — WE NEED THEM NEXT</text>
+  <text x="380" y="456" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Part 2 uses these three lines to find the inverse.</text>
+</svg>

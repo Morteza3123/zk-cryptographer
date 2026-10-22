@@ -1,0 +1,51 @@
+---
+// Fig. for "Euclid, CRT & Euler": Euler's totient function φ(n), shown by
+// marking which numbers from 1 to n share no factor with n (green) versus
+// which do (red, crossed out) — across three example moduli, then the two
+// shortcut formulas for a prime and for a product of two distinct primes.
+interface Row {
+  n: number;
+  coprime: number[]; // numbers from 1..n with gcd(x, n) = 1
+}
+const rows: Row[] = [
+  { n: 9, coprime: [1, 2, 4, 5, 7, 8] },
+  { n: 12, coprime: [1, 5, 7, 11] },
+  { n: 15, coprime: [1, 2, 4, 7, 8, 11, 13, 14] },
+];
+function strip(n: number, coprime: number[]) {
+  const nums = Array.from({ length: n }, (_, i) => i + 1);
+  const spacing = 640 / (n - 1);
+  return nums.map((x, i) => ({ x, cx: 40 + i * spacing, isCoprime: coprime.includes(x) }));
+}
+const strips = rows.map((r) => strip(r.n, r.coprime));
+---
+<svg viewBox="0 0 760 446" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">&#981;(n) counts the numbers coprime to n</text>
+  <text x="380" y="50" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">numbers from 1 to n that share no factor with n</text>
+
+  {rows.map((r, ri) => {
+    const y = 84 + ri * 66;
+    return (
+      <>
+        <text x="40" y={y} fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">n = {r.n}</text>
+        <text x="720" y={y} text-anchor="end" fill="#5ddc8a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#981;({r.n}) = {r.coprime.length}</text>
+        {strips[ri].map((item) => (
+          <text x={item.cx} y={y + 24} text-anchor="middle" fill={item.isCoprime ? "#5ddc8a" : "#ff5c7a"} font-size="13.5" font-weight="700" text-decoration={item.isCoprime ? "none" : "line-through"} font-family="SF Mono, Fira Code, Consolas, monospace">{item.x}</text>
+        ))}
+      </>
+    );
+  })}
+
+  <line x1="40" y1="280" x2="720" y2="280" stroke="#223049" stroke-width="1" />
+
+  <rect x="40" y="298" width="325" height="46" rx="9" fill="#111c2e" stroke="#223049" stroke-width="1" />
+  <text x="202" y="326" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#981;(p) = p &#8722; 1</text>
+  <rect x="395" y="298" width="325" height="46" rx="9" fill="#111c2e" stroke="#223049" stroke-width="1" />
+  <text x="558" y="326" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#981;(p&#215;q) = (p&#8722;1)(q&#8722;1)</text>
+
+  <text x="380" y="368" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Both when p and q are prime &#8212; p×q needs p and q distinct.</text>
+
+  <line x1="40" y1="386" x2="720" y2="386" stroke="#223049" stroke-width="1" />
+  <text x="380" y="410" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">&#981;(n) COUNTS THE NUMBERS COPRIME TO n</text>
+  <text x="380" y="430" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Coprime means the gcd with n is 1.</text>
+</svg>

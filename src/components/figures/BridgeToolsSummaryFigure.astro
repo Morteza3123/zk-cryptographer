@@ -1,0 +1,48 @@
+---
+// Fig. for "Euclid, CRT & Euler": the three tools this lesson adds, and
+// what each one is for — mirrors the three-column summary pattern from the
+// entropy lesson's "three promises" figure.
+---
+<svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">three tools, one bridge to the next topics</text>
+
+  <!-- euclid -->
+  <rect x="30" y="56" width="220" height="260" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="140" y="84" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">EUCLID</text>
+  <text x="140" y="108" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">finds gcd(a, n) fast, and the</text>
+  <text x="140" y="126" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">inverse of a mod any n</text>
+  <line x1="50" y1="146" x2="230" y2="146" stroke="#223049" stroke-width="1" />
+  <text x="140" y="166" text-anchor="middle" fill="#8b96a8" font-size="11" font-style="italic" font-family="-apple-system,Arial,sans-serif">replaces</text>
+  <text x="140" y="196" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">the brute-force search from</text>
+  <text x="140" y="214" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">Modular Inverses (Topic 5)</text>
+  <text x="140" y="244" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">works for any modulus, not</text>
+  <text x="140" y="262" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">only a prime one</text>
+
+  <!-- crt -->
+  <rect x="270" y="56" width="220" height="260" rx="12" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="380" y="84" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">CRT</text>
+  <text x="380" y="108" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">splits one big modulus into</text>
+  <text x="380" y="126" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">several small coprime ones</text>
+  <line x1="290" y1="146" x2="470" y2="146" stroke="#223049" stroke-width="1" />
+  <text x="380" y="166" text-anchor="middle" fill="#8b96a8" font-size="11" font-style="italic" font-family="-apple-system,Arial,sans-serif">used for</text>
+  <text x="380" y="196" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">fast modular exponentiation</text>
+  <text x="380" y="214" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">(the RSA speedup)</text>
+  <text x="380" y="244" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">batching many small checks</text>
+  <text x="380" y="262" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">into one combined answer</text>
+
+  <!-- euler -->
+  <rect x="510" y="56" width="220" height="260" rx="12" fill="#121c2c" stroke="#8fdcff" stroke-width="1.8" />
+  <text x="620" y="84" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">EULER</text>
+  <text x="620" y="108" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">a<tspan dy="-6" font-size="70%">&#981;(n)</tspan><tspan dy="6"> &#8801; 1 (mod n)</tspan></text>
+  <text x="620" y="126" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">whenever gcd(a, n) = 1</text>
+  <line x1="530" y1="146" x2="710" y2="146" stroke="#223049" stroke-width="1" />
+  <text x="620" y="166" text-anchor="middle" fill="#8b96a8" font-size="11" font-style="italic" font-family="-apple-system,Arial,sans-serif">generalizes</text>
+  <text x="620" y="196" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">Fermat's little theorem, its</text>
+  <text x="620" y="214" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">prime special case (Topic 5)</text>
+  <text x="620" y="244" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">to any modulus, prime or</text>
+  <text x="620" y="262" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="-apple-system,Arial,sans-serif">composite</text>
+
+  <line x1="30" y1="346" x2="730" y2="346" stroke="#223049" stroke-width="1" />
+  <text x="380" y="370" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">FASTER INVERSES, BIGGER NUMBERS, ONE BIG IDEA</text>
+  <text x="380" y="392" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Next up: subgroups, cosets, and roots of unity.</text>
+</svg>
