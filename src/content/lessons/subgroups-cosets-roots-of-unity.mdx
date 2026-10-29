@@ -1,0 +1,141 @@
+---
+track: math
+module: "Roots of Unity"
+lessonNumber: "19"
+title: "Subgroups, Cosets & Roots of Unity"
+duration: "15:15"
+description: "How a cyclic group hides smaller groups inside it, why every subgroup's size has to divide the group's size, and how one special subgroup — the roots of unity — becomes the evaluation domain every proof system runs its polynomials over, checked all at once by a single vanishing polynomial."
+order: 19
+youtubeHref: "https://youtu.be/tUQG_7wRDFo"
+prevTitle: "Euclid, CRT & Euler"
+prevHref: "/learn/math/euclid-crt-euler"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import GeneratorCycleFigure from "../../components/figures/GeneratorCycleFigure.astro";
+import SubgroupSizesFigure from "../../components/figures/SubgroupSizesFigure.astro";
+import CosetTilingFigure from "../../components/figures/CosetTilingFigure.astro";
+import SubgroupOrderRuleFigure from "../../components/figures/SubgroupOrderRuleFigure.astro";
+import RootsOfUnityFigure from "../../components/figures/RootsOfUnityFigure.astro";
+import VanishingPolynomialFigure from "../../components/figures/VanishingPolynomialFigure.astro";
+import QuotientTrickFigure from "../../components/figures/QuotientTrickFigure.astro";
+import DomainToolsSummaryFigure from "../../components/figures/DomainToolsSummaryFigure.astro";
+
+Last time added three number-theory tools: Euclid, the Chinese Remainder Theorem, and Euler. **This lesson looks at the structure inside a finite field itself** — how a group can contain smaller groups, how those smaller groups slice the big one into equal pieces, and how one special set of numbers, the roots of unity, becomes the "domain" that modern proof systems actually work on. One small example carries the whole lesson: the prime $13$.
+
+## One number that makes everything
+
+Mod $13$, the nonzero numbers $1$ through $12$ form a group under multiplication. A group is **cyclic** if one number — a generator — produces every other number just by taking powers of it.
+
+<Figure caption="Fig. 1 — the powers of 2 mod 13 visit every nonzero number exactly once before returning to 1, so 2 is a generator of the whole group.">
+  <GeneratorCycleFigure />
+</Figure>
+
+<MathBox label="Cyclic group generator">
+
+$$g^1, g^2, \ldots, g^{n-1} \text{ are all distinct, and } g^n \equiv 1 \pmod p$$
+
+A generator $g$ reaches every nonzero number mod $p$ before cycling back to $1$. The number of steps it takes is the **order** of the group — here, $12$.
+
+</MathBox>
+
+## Groups inside the group
+
+A natural question follows: inside this group of twelve, are there smaller groups — sets closed under multiplication on their own? There are, and they're easy to find.
+
+<Figure caption="Fig. 2 — one subgroup for every divisor of 12, each built by raising the generator to the power 12 divided by that divisor.">
+  <SubgroupSizesFigure />
+</Figure>
+
+Each subgroup is built the same way: raise the generator $2$ to the power $12$ divided by the target size. Checked inside the smallest nontrivial one, $\{1, 3, 9\}$: multiplying any two members lands back inside the set — exactly what "closed" means.
+
+## Slicing the group into copies
+
+Take one of these subgroups and multiply the whole set by a number outside it. The result is a shifted copy, called a **coset**. These copies tile the group perfectly — no overlaps, no gaps.
+
+<Figure caption="Fig. 3 — shifting H = {1, 5, 12, 8} by 2 and by 4 produces two more cosets that, together with H, cover every nonzero number mod 13 exactly once.">
+  <CosetTilingFigure />
+</Figure>
+
+<MathBox label="Cosets">
+
+$$gH = \{gh : h \in H\}$$
+
+A coset is a subgroup $H$ shifted by multiplying every element by some $g$. Every element of the full group lands in exactly one coset, so the cosets **partition** the group into equal-size slices.
+
+</MathBox>
+
+## Why sizes must divide
+
+This slicing explains a famous rule — Lagrange's theorem. If every slice is the same size, the subgroup's size times the number of slices has to equal the group's size, which forces the subgroup's size to **divide** the group's size.
+
+<Figure caption="Fig. 4 — a subgroup of size 5 can't exist inside a group of size 12, because 12 isn't a multiple of 5. The same rule, applied to single elements, is Fermat's little theorem.">
+  <SubgroupOrderRuleFigure />
+</Figure>
+
+<MathBox label="Lagrange's theorem">
+
+$$|H| \times [\text{number of cosets}] = |G|$$
+
+Every subgroup's size divides the group's size — and so does every single element's order, since the powers of one element form a subgroup. Set the group to the nonzero numbers mod a prime $p$, size $p - 1$: every order divides $p - 1$, which is exactly Fermat's little theorem from Topic 5.
+
+</MathBox>
+
+## The numbers that return to 1
+
+Now put the size-$4$ subgroup from Fig. 2 to work. It's special: its elements are precisely the numbers whose fourth power is $1$ — the **fourth roots of unity**.
+
+<Figure caption="Fig. 5 — the size-4 subgroup found earlier is exactly the set of 4th roots of unity mod 13, and one number, 5, generates all of them.">
+  <RootsOfUnityFigure />
+</Figure>
+
+<MathBox label="Roots of unity">
+
+$$x^n \equiv 1 \pmod p \iff x \in \langle \omega \rangle, \quad \omega^n \equiv 1$$
+
+An $n$-th root of unity exists mod $p$ exactly when $n$ divides $p - 1$ — the same divisibility rule from Lagrange's theorem, now describing which "clock sizes" a prime field can offer.
+
+</MathBox>
+
+## A polynomial that is zero on the domain
+
+Here's where this becomes useful for proofs. Given a domain — a set of points — there's a single polynomial that's zero on every point of it and nowhere else: the **vanishing polynomial**.
+
+<Figure caption="Fig. 6 — Z(x) = x^4 - 1 is zero at every point of {1, 5, 12, 8} and nowhere else, and factors cleanly into (x - 1)(x - 5)(x - 12)(x - 8).">
+  <VanishingPolynomialFigure />
+</Figure>
+
+<MathBox label="The vanishing polynomial">
+
+$$Z(x) = x^n - 1 = \prod_{r \in \text{domain}} (x - r)$$
+
+For a domain of $n$-th roots of unity, the vanishing polynomial has this remarkably simple closed form — no need to multiply out $n$ separate factors by hand.
+
+</MathBox>
+
+## The quotient trick
+
+Now the payoff. If another polynomial is zero at every point of the domain, it has to be a multiple of $Z(x)$. Instead of checking many points one at a time, a proof system checks a single division.
+
+<Figure caption="Fig. 7 — a polynomial that's zero on the whole domain divides evenly by Z(x); one that's zero at only some of it doesn't.">
+  <QuotientTrickFigure />
+</Figure>
+
+<MathBox label="The quotient trick">
+
+$$P(r) = 0 \text{ for every domain point } r \iff P(x) = Z(x) \times q(x)$$
+
+This single divisibility check — does $Z(x)$ divide $P(x)$ with zero remainder — replaces checking every one of the $n$ domain points individually. It's the same completeness check this series introduced back in the entropy lesson's "three promises," now with its machinery fully exposed.
+
+</MathBox>
+
+## Where these tools show up
+
+So where does all of this appear in practice?
+
+<Figure caption="Fig. 8 — subgroups, roots of unity, and cosets with the vanishing polynomial, and where each one actually shows up in a proof system.">
+  <DomainToolsSummaryFigure />
+</Figure>
+
+Subgroup sizes must divide $p - 1$, so proof systems pick primes where $p - 1$ has a large power of $2$ — that's why the field gets chosen the way it does. Roots of unity become the evaluation domain: the exact points circuits and FFTs use. And cosets, together with the vanishing polynomial, are how a system checks that a polynomial is zero across a whole shifted copy of the domain — many checks folded into one. A small domain, in other words, is a very big shortcut. Next up: quadratic residues and square roots.

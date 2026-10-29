@@ -1,0 +1,33 @@
+---
+// Fig. for "Subgroups, Cosets, Roots of Unity & Vanishing Polynomials": a
+// polynomial that's zero on the whole domain must be a multiple of Z(x) —
+// one passing example (x^5 - x, divides cleanly) and one failing example
+// (x^2 - 1, zero at two points but not the third) make the rule concrete.
+---
+<svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">the quotient trick</text>
+
+  <rect x="40" y="38" width="680" height="44" rx="9" fill="#111c2e" stroke="#223049" stroke-width="1" />
+  <text x="380" y="65" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-family="-apple-system,Arial,sans-serif">If P(x) is zero at every point of &#123;1, 5, 12, 8&#125;, what does that tell us about P?</text>
+
+  <rect x="40" y="96" width="680" height="46" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="124" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">P is zero on the domain &#8658; P(x) = Z(x) &#215; q(x) for some polynomial q</text>
+
+  <text x="40" y="168" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; an example that passes, P(x) = x<tspan dy="-4" font-size="70%" font-family="SF Mono, Fira Code, Consolas, monospace">5</tspan><tspan dy="4"> &#8722; x</tspan></text>
+  <text x="380" y="192" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">P(r) = r &#215; (r<tspan dy="-5" font-size="70%">4</tspan><tspan dy="5"> &#8722; 1) = r &#215; 0 = 0 for every domain point r &#10003;</tspan></text>
+
+  <line x1="40" y1="210" x2="720" y2="210" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="236" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; divide</text>
+  <text x="380" y="260" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x<tspan dy="-5" font-size="70%">5</tspan><tspan dy="5"> &#8722; x = (x</tspan><tspan dy="-5" font-size="70%">4</tspan><tspan dy="5"> &#8722; 1) &#215; x, so q(x) = x, remainder 0</tspan></text>
+
+  <line x1="40" y1="278" x2="720" y2="278" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="304" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; an example that fails, P(x) = x<tspan dy="-4" font-size="70%" font-family="SF Mono, Fira Code, Consolas, monospace">2</tspan><tspan dy="4"> &#8722; 1</tspan></text>
+  <text x="380" y="330" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">P(1) = 0 and P(12) = 0, but P(5) = 24 = 11 &#10007;</text>
+  <text x="380" y="350" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">not zero everywhere, so not divisible by Z(x)</text>
+
+  <line x1="40" y1="368" x2="720" y2="368" stroke="#223049" stroke-width="1" />
+  <text x="380" y="392" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">ZERO ON THE DOMAIN MEANS DIVISIBLE BY Z(x)</text>
+  <text x="380" y="412" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">One division checks every point of the domain at once.</text>
+</svg>

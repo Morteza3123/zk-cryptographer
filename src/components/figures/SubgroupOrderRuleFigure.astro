@@ -1,0 +1,37 @@
+---
+// Fig. for "Subgroups, Cosets, Roots of Unity & Vanishing Polynomials":
+// Lagrange's theorem — a subgroup's size times its number of cosets equals
+// the group's size, so a subgroup of size 5 can't exist inside a group of
+// size 12. The same rule applied to single elements is exactly Fermat's
+// little theorem.
+---
+<svg viewBox="0 0 760 496" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">why sizes must divide</text>
+
+  <rect x="40" y="38" width="680" height="44" rx="9" fill="#111c2e" stroke="#223049" stroke-width="1" />
+  <text x="380" y="65" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-family="-apple-system,Arial,sans-serif">Could a subgroup of size 5 live inside a group of size 12?</text>
+
+  <rect x="40" y="96" width="680" height="46" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="124" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">size of subgroup &#215; number of cosets = size of group</text>
+
+  <text x="40" y="168" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; test sizes</text>
+  <text x="380" y="190" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">size 4: 4 &#215; 3 = 12 &#10003;</text>
+  <text x="380" y="212" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">size 6: 6 &#215; 2 = 12 &#10003;</text>
+  <text x="380" y="236" text-anchor="middle" fill="#ff5c7a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">size 5: 12 &#247; 5 is not a whole number &#8212; impossible</text>
+
+  <line x1="40" y1="254" x2="720" y2="254" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="280" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; the same for single numbers</text>
+  <text x="380" y="304" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">orders mod 13: 2 has order 12, 5 has order 4, 3 has order 3, 12 has order 2</text>
+  <text x="380" y="326" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">and each divides 12</text>
+
+  <line x1="40" y1="344" x2="720" y2="344" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="370" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; Fermat appears</text>
+  <text x="380" y="394" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">every order divides 12, so a<tspan dy="-6" font-size="65%">12</tspan><tspan dy="6"> = 1 for every nonzero a</tspan></text>
+  <text x="380" y="418" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">example: 3<tspan dy="-6" font-size="65%">12</tspan><tspan dy="6"> = (3</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">4</tspan><tspan dy="6"> = 1</tspan><tspan dy="-6" font-size="65%">4</tspan><tspan dy="6"> = 1 &#10003;</tspan></text>
+
+  <line x1="40" y1="436" x2="720" y2="436" stroke="#223049" stroke-width="1" />
+  <text x="380" y="460" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ORDERS ALWAYS DIVIDE THE GROUP SIZE</text>
+  <text x="380" y="480" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Fermat's little theorem falls out of this.</text>
+</svg>

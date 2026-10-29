@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "64", label: "Lessons" },
+    { num: "65", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -125,6 +125,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "The Bridge",
       items: [
         { num: "18", title: "Euclid, CRT & Euler", duration: "18:15", slug: "euclid-crt-euler" },
+      ],
+    },
+    {
+      module: "Roots of Unity",
+      items: [
+        { num: "19", title: "Subgroups, Cosets & Roots of Unity", duration: "15:15", slug: "subgroups-cosets-roots-of-unity" },
       ],
     },
   ],

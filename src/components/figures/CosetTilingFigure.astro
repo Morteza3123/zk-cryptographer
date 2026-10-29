@@ -1,0 +1,47 @@
+---
+// Fig. for "Subgroups, Cosets, Roots of Unity & Vanishing Polynomials":
+// shifting the subgroup H = {1, 5, 12, 8} by 2 and by 4 produces two more
+// cosets that, together with H, tile every nonzero number mod 13 exactly
+// once — no overlaps, no gaps.
+const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+// H (blue), 2H (green), 4H (light blue)
+const colorOf: Record<number, string> = {
+  1: "#3ab7ff", 5: "#3ab7ff", 8: "#3ab7ff", 12: "#3ab7ff",
+  2: "#5ddc8a", 3: "#5ddc8a", 10: "#5ddc8a", 11: "#5ddc8a",
+  4: "#8fdcff", 6: "#8fdcff", 7: "#8fdcff", 9: "#8fdcff",
+};
+const cols = nums.map((_, i) => 60 + i * 56);
+---
+<svg viewBox="0 0 760 532" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">slicing the group into copies</text>
+
+  <rect x="40" y="38" width="680" height="44" rx="9" fill="#111c2e" stroke="#223049" stroke-width="1" />
+  <text x="380" y="65" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-family="-apple-system,Arial,sans-serif">Take H = &#123;1, 5, 12, 8&#125;. Can shifted copies of H tile the whole group?</text>
+
+  <text x="40" y="108" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; shift by 2</text>
+  <text x="380" y="132" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">2 &#215; &#123;1, 5, 12, 8&#125; = &#123;2, 10, 24, 16&#125; = &#123;2, 10, 11, 3&#125; (mod 13)</text>
+
+  <text x="40" y="164" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; shift by 4</text>
+  <text x="380" y="188" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">4 &#215; &#123;1, 5, 12, 8&#125; = &#123;4, 20, 48, 32&#125; = &#123;4, 7, 9, 6&#125;</text>
+
+  <line x1="40" y1="206" x2="720" y2="206" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="232" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; put them together</text>
+  <text x="380" y="256" text-anchor="middle" fill="#3ab7ff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">H = &#123;1, 5, 12, 8&#125;</text>
+  <text x="380" y="280" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2H = &#123;2, 10, 11, 3&#125;</text>
+  <text x="380" y="304" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">4H = &#123;4, 7, 9, 6&#125;</text>
+
+  <text x="380" y="330" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">together, these three sets cover every nonzero number:</text>
+  {cols.map((cx, i) => (
+    <text x={cx} y="358" text-anchor="middle" fill={colorOf[nums[i]]} font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">{nums[i]}</text>
+  ))}
+
+  <rect x="240" y="380" width="280" height="48" rx="10" fill="#0d1a12" stroke="#5ddc8a" stroke-width="2" />
+  <text x="380" y="410" text-anchor="middle" fill="#5ddc8a" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">3 slices of size 4 = 12</text>
+
+  <text x="380" y="450" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">No number appears twice, and none is missing.</text>
+
+  <line x1="40" y1="468" x2="720" y2="468" stroke="#223049" stroke-width="1" />
+  <text x="380" y="492" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">COSETS CUT THE GROUP INTO EQUAL SLICES</text>
+  <text x="380" y="512" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Each coset is a shifted copy of the subgroup.</text>
+</svg>

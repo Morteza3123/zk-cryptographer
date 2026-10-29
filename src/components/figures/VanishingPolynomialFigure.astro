@@ -1,0 +1,35 @@
+---
+// Fig. for "Subgroups, Cosets, Roots of Unity & Vanishing Polynomials": the
+// polynomial Z(x) = x^4 - 1 is zero at every domain point and nowhere
+// else, and factors cleanly into (x - 1)(x - 5)(x - 12)(x - 8) — the
+// vanishing polynomial for this domain.
+---
+<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">a polynomial that is zero on the domain</text>
+
+  <rect x="40" y="38" width="680" height="44" rx="9" fill="#111c2e" stroke="#223049" stroke-width="1" />
+  <text x="380" y="65" text-anchor="middle" fill="#c3cedd" font-size="13.5" font-family="-apple-system,Arial,sans-serif">Which polynomial is zero on exactly &#123;1, 5, 12, 8&#125;?</text>
+
+  <text x="40" y="108" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; use the root property</text>
+  <text x="380" y="130" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">every domain point satisfies x<tspan dy="-5" font-size="70%">4</tspan><tspan dy="5"> = 1, so Z(x) = x</tspan><tspan dy="-5" font-size="70%">4</tspan><tspan dy="5"> &#8722; 1</tspan></text>
+
+  <line x1="40" y1="148" x2="720" y2="148" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="174" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; test it</text>
+  <text x="380" y="196" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">Z(1) = 0 &#10003;</text>
+  <text x="380" y="218" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">Z(5) = 624 = 48&#215;13, so 0 &#10003;</text>
+  <text x="380" y="240" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">Z(12) = (&#8722;1)<tspan dy="-5" font-size="70%">4</tspan><tspan dy="5"> &#8722; 1 = 0 &#10003;</tspan></text>
+  <text x="380" y="262" text-anchor="middle" fill="#e9eef5" font-size="14" font-family="SF Mono, Fira Code, Consolas, monospace">Z(8) = 4095 = 315&#215;13, so 0 &#10003;</text>
+  <text x="380" y="286" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">outside the domain: Z(2) = 16 &#8722; 1 = 15 = 2, not zero</text>
+
+  <line x1="40" y1="304" x2="720" y2="304" stroke="#223049" stroke-width="1" />
+
+  <text x="40" y="330" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; write it as factors</text>
+  <text x="380" y="354" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">Z(x) = (x &#8722; 1)(x &#8722; 5)(x &#8722; 12)(x &#8722; 8)</text>
+
+  <text x="380" y="382" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">constant term: (&#8722;1)(&#8722;5)(&#8722;12)(&#8722;8) = 480 = 12 = &#8722;1 (mod 13) &#10003;</text>
+
+  <line x1="40" y1="400" x2="720" y2="400" stroke="#223049" stroke-width="1" />
+  <text x="380" y="424" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">Z(x) IS ZERO ON THE DOMAIN AND NOWHERE ELSE</text>
+  <text x="380" y="444" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">It is called the vanishing polynomial.</text>
+</svg>
