@@ -13,6 +13,7 @@ nextHref: "/learn/math/variables-expressions-equations"
 import MathBox from "../../components/MathBox.astro";
 import TopicCard from "../../components/TopicCard.astro";
 import Figure from "../../components/Figure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 import ZKRevealFigure from "../../components/figures/ZKRevealFigure.astro";
 import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
 import EllipticCurveFigure from "../../components/figures/EllipticCurveFigure.astro";
@@ -216,3 +217,13 @@ The exact curve used to generate Bitcoin and Ethereum key pairs. Pick a point on
 </MathBox>
 
 None of this has to click on the first pass. Finite fields and polynomial commitments take more than one look for almost everyone. This track works through the nine ideas above one lesson at a time, starting with modular arithmetic next, and keeps tying each one back to the cryptography and zero-knowledge systems that actually use it. Once the math stops being abstract and turns into something you can point to inside a real protocol, **the rest of ZK gets a lot easier to follow**.
+
+<KeyTakeaways>
+
+- The math, not the code, is what actually slows people down learning ZK — this track builds it from the ground up across nine ideas.
+- Zero-knowledge proofs let one side convince another a statement is true (e.g. "I'm over 18") without revealing why it's true.
+- A single equation like $x \cdot x = 25$ already touches algebra, finite fields, and polynomials — the same shape a real circuit uses at a much larger scale.
+- The nine ideas: arithmetic & algebra, number theory, modular arithmetic, finite fields, polynomial mathematics, linear algebra, probability, group theory, elliptic curves.
+- Finite fields remove the ambiguity plain integers have — $x \cdot x = 25$ has two solutions over the integers, but exactly one once evaluated inside a fixed modulus.
+
+</KeyTakeaways>

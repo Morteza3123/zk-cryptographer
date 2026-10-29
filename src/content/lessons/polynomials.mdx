@@ -19,6 +19,7 @@ import PolynomialEvalFigure from "../../components/figures/PolynomialEvalFigure.
 import PolynomialRootsFigure from "../../components/figures/PolynomialRootsFigure.astro";
 import PolynomialFieldEvalFigure from "../../components/figures/PolynomialFieldEvalFigure.astro";
 import PolynomialComputationFigure from "../../components/figures/PolynomialComputationFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Foundations are done. **This track now moves into algebra** — and the shift matters more than it might look, because polynomials turn out to be the actual language ZK circuits get written in. Every program a ZK system proves gets translated into polynomials somewhere underneath. This lesson covers the basics that everything later builds on: what a polynomial is, its degree, how to evaluate one, and what a root is.
 
@@ -97,3 +98,13 @@ Here's the payoff, and the reason this entire phase of the track exists: an enti
 </Figure>
 
 That one idea — compress a computation into a polynomial, verify it with a spot-check — **is the foundation underneath R1CS, QAP, and PLONK**, the systems ZK proofs are actually built from. The next lesson goes further into how polynomials behave under their own arithmetic, over a finite field.
+
+<KeyTakeaways>
+
+- A polynomial is powers of a variable, each scaled by a coefficient, all added together.
+- Degree is the highest power present — $0$ is constant, $1$ is linear, $2$ is quadratic, $3$ is cubic.
+- Evaluating a polynomial means substituting a specific number for $x$ and computing the result.
+- A root is an input that makes the polynomial equal zero, and every root corresponds to a factor of that polynomial.
+- An entire ZK computation can be encoded into a single polynomial, checkable at one random point — the foundation underneath R1CS, QAP, and PLONK.
+
+</KeyTakeaways>

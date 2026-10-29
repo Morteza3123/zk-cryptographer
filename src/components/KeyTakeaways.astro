@@ -1,0 +1,11 @@
+---
+// A bulleted recap dropped at the end of a lesson's MDX body, as the
+// article's closing element — the scannable version of what the lesson
+// just covered. Content is written as a plain markdown list in the
+// default slot (same pattern MathBox already uses for its prose), so it
+// flows through the normal remark pipeline rather than needing raw HTML.
+---
+<div class="key-takeaways">
+  <div class="key-takeaways-label">Key takeaways</div>
+  <div class="key-takeaways-body"><slot /></div>
+</div>

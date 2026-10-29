@@ -18,6 +18,7 @@ import DivisibilityCheckFigure from "../../components/figures/DivisibilityCheckF
 import PrimeCheckFigure from "../../components/figures/PrimeCheckFigure.astro";
 import PrimeFactorTreeFigure from "../../components/figures/PrimeFactorTreeFigure.astro";
 import OneWayFunctionFigure from "../../components/figures/OneWayFunctionFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Variables, equations, and powers all describe how to combine numbers. This lesson goes one level deeper, into the numbers themselves — divisibility, factors, and prime numbers. It reads like grade-school material, and that's exactly the trap: **prime numbers are the actual reason factoring a large number back apart is nearly impossible, and that single fact is what modern cryptography is built on.**
 
@@ -82,3 +83,13 @@ $$p = 21888242871839275222246405745257275088548364400416034343698204186575808495
 Every signal in a Circom circuit — every constraint, every intermediate value — is a number somewhere in $\{0, 1, 2, \ldots, p-1\}$, and every arithmetic operation happens inside that range. Using a prime for $p$ isn't incidental: it's exactly the property this lesson covered, carried into a circuit at full scale, and it's what keeps that arithmetic well-behaved instead of leaking structure an attacker could exploit.
 
 That range — arithmetic that lives inside $\{0, \ldots, p-1\}$ and wraps instead of growing forever — is **modular arithmetic**, and it's the very next topic in this track.
+
+<KeyTakeaways>
+
+- $b$ divides $a$ cleanly ($b \mid a$) when the division leaves no remainder; such a $b$ is called a factor of $a$.
+- A prime number has exactly two factors, $1$ and itself; $1$ is neither prime nor composite.
+- The fundamental theorem of arithmetic: every whole number greater than $1$ has exactly one prime factorization.
+- Multiplying two large primes together is fast; factoring the result back apart is practically infeasible — a one-way function, and the entire foundation cryptographic security rests on.
+- Circom's BN254 field prime is a 254-bit prime, and every signal in a circuit is a number inside $\{0, \ldots, p-1\}$.
+
+</KeyTakeaways>

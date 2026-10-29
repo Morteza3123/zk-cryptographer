@@ -18,6 +18,7 @@ import SchwartzZippelCurveFigure from "../../components/figures/SchwartzZippelCu
 import SchwartzZippelLemmaFigure from "../../components/figures/SchwartzZippelLemmaFigure.astro";
 import FalseMatchProbabilityFigure from "../../components/figures/FalseMatchProbabilityFigure.astro";
 import SoundnessCheckFigure from "../../components/figures/SoundnessCheckFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson showed how Lagrange interpolation folds an entire circuit into a single polynomial. That raises an obvious follow-up question: **if a prover hands a verifier that polynomial and claims it represents a valid computation, how does the verifier check it without reading every single term?** The answer is one of the most useful tricks in all of cryptography — the Schwartz-Zippel lemma.
 
@@ -95,3 +96,13 @@ That probability is exactly what lets a ZK verifier take a shortcut instead of d
 </Figure>
 
 Instead of reading a polynomial that could run to millions of terms, the verifier evaluates both sides at a single random point and compares. Thanks to the numbers from Fig. 3, that isn't really a gamble at all — **this is the soundness argument underneath Groth16, PLONK, and STARKs**, the same shortcut this lesson just built from a line and a curve.
+
+<KeyTakeaways>
+
+- A degree-$d$ polynomial can have at most $d$ roots — never more, no matter which polynomial it is.
+- Two different polynomials can only agree at a limited number of points, bounded by their degree.
+- The Schwartz-Zippel lemma: checking two different degree-$d$ polynomials at one random point gives a false-match probability of at most $d / |F|$.
+- Over a field the size real ZK systems use (roughly $2^{254}$), that false-match probability is far smaller than picking one atom out of the observable universe.
+- This is why a verifier can check one random point instead of reading an entire polynomial — the soundness argument underneath Groth16, PLONK, and STARKs.
+
+</KeyTakeaways>

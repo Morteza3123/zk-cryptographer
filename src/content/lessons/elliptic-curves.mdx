@@ -16,6 +16,7 @@ import MathBox from "../../components/MathBox.astro";
 import Figure from "../../components/Figure.astro";
 import EllipticCurveAdditionFigure from "../../components/figures/EllipticCurveAdditionFigure.astro";
 import ScalarMultiplicationFigure from "../../components/figures/ScalarMultiplicationFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson covered groups and cyclic groups: a set, one operation, four simple rules. **Today meets the most important group in all of ZK cryptography — the elliptic curve.** Every Groth16 proof, every KZG commitment, every `BN254` reference seen in Circom runs on exactly this structure.
 
@@ -94,3 +95,13 @@ Here's the payoff. Take one point, a **generator**, and add it to itself over an
 </Figure>
 
 Computing $K \cdot G$ this way is easy; as the last lesson showed, going backward — recovering $K$ from $K \cdot G$ — is hard. **BN254 and BLS12-381 are the curves real ZK systems actually use**, and Groth16, PLONK, and KZG all run on this exact structure.
+
+<KeyTakeaways>
+
+- An elliptic curve is the set of points satisfying $y^2 = x^3 + ax + b$, plus a point at infinity, $O$, which serves as the group's identity.
+- Point addition is geometric: draw a line through two points, find the third intersection with the curve, then reflect it over the $x$-axis.
+- Doubling a point ($P + P$) uses the tangent line at $P$ instead of a line through two separate points.
+- Over $GF(p)$, the smooth curve becomes a scattered cloud of points, but the same addition rules still apply using mod $p$ arithmetic.
+- Scalar multiplication ($K \cdot G$) is easy forward and hard to reverse — BN254 and BLS12-381 are the curves Groth16, PLONK, and KZG actually run on.
+
+</KeyTakeaways>

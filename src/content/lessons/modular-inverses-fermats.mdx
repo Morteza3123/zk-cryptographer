@@ -18,6 +18,7 @@ import ModularDivisionFigure from "../../components/figures/ModularDivisionFigur
 import ModularInverseSearchFigure from "../../components/figures/ModularInverseSearchFigure.astro";
 import FermatDerivationFigure from "../../components/figures/FermatDerivationFigure.astro";
 import CircuitDivisionFigure from "../../components/figures/CircuitDivisionFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson covered addition, subtraction, and multiplication inside a modulus, and quietly skipped the fourth operation. **That gap gets fixed here** — division turns out to be the one operation that doesn't survive the trip into modular arithmetic unchanged, and patching it back in is what this lesson is about.
 
@@ -125,3 +126,13 @@ There's no division gate inside a finite field. A Circom circuit can't compute $
 </Figure>
 
 Every constraint in a circuit that looks like division is, underneath, running exactly the formula from this lesson. The next lesson gives this whole structure — a modulus, closed under addition, subtraction, multiplication, and now division too — its proper name: a **finite field**.
+
+<KeyTakeaways>
+
+- Division doesn't survive the trip into modular arithmetic unchanged — there's no slot in $\{0, \ldots, n-1\}$ for a fraction to occupy.
+- A modular inverse $x$ of $a$ satisfies $a \times x \equiv 1 \pmod n$ — it does the job a reciprocal does everywhere else.
+- An inverse exists only when $\gcd(a, n) = 1$, which is guaranteed for every nonzero value whenever $n$ is prime.
+- Fermat's little theorem ($a^{p-1} \equiv 1 \pmod p$) collapses a brute-force search into one formula: $a^{-1} \equiv a^{p-2} \pmod p$.
+- There's no division gate in a finite field — every "division" in a Circom circuit compiles to a multiplication by a modular inverse, computed with Fermat's shortcut.
+
+</KeyTakeaways>

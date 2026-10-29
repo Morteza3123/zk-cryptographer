@@ -18,6 +18,7 @@ import LagrangeCurveFigure from "../../components/figures/LagrangeCurveFigure.as
 import LagrangeBasisFigure from "../../components/figures/LagrangeBasisFigure.astro";
 import LagrangeCheckFigure from "../../components/figures/LagrangeCheckFigure.astro";
 import LagrangeQAPFigure from "../../components/figures/LagrangeQAPFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Every lesson so far started with a polynomial and worked outward from it — building, evaluating, combining. **Today flips the problem around**: given a handful of points, how do you find the one polynomial that passes through all of them? That question has a name, Lagrange interpolation, and it's the exact mechanism that turns an entire ZK circuit into a single polynomial.
 
@@ -86,3 +87,13 @@ Here's the payoff. In a **QAP** — the structure behind Groth16 — every gate 
 </Figure>
 
 Lagrange interpolation takes that entire set of points and produces a single polynomial representing the whole circuit at once. **This is literally what the Q in QAP stands for** — Quadratic Arithmetic Program — the same idea this lesson just built from scratch, running at the scale of a real circuit.
+
+<KeyTakeaways>
+
+- Lagrange interpolation finds the one polynomial that passes through a given set of points.
+- A Lagrange basis polynomial $L_i(x)$ equals $1$ at its own point and $0$ at every other point in the set.
+- The combined polynomial is built by scaling each basis polynomial by its point's $y$-value and summing them: $P(x) = \sum_i y_i \cdot L_i(x)$.
+- The construction works for any number of points, not just the three in this lesson's worked example.
+- In a QAP, every gate in a circuit becomes a point, and Lagrange interpolation turns that whole set into one polynomial representing the circuit — literally the "Q" in QAP.
+
+</KeyTakeaways>

@@ -1427,6 +1427,53 @@ a.sb-item:hover {
   border-top: 1px solid var(--card-border);
 }
 
+/* ---------- Key takeaways (lesson closer) ---------- */
+.key-takeaways {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 36px 0 4px;
+  max-width: 680px;
+}
+
+.key-takeaways-label {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+
+.key-takeaways-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.lesson-article .key-takeaways-body li {
+  position: relative;
+  padding-left: 20px;
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.key-takeaways-body li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
 /* ---------- Prev / next lesson nav ---------- */
 .prevnext {
   display: flex;

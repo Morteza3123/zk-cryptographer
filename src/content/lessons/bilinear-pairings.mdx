@@ -17,6 +17,7 @@ import Figure from "../../components/Figure.astro";
 import PairingBridgeFigure from "../../components/figures/PairingBridgeFigure.astro";
 import NumericPairingFigure from "../../components/figures/NumericPairingFigure.astro";
 import PairingVerificationFigure from "../../components/figures/PairingVerificationFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson built elliptic curves: point addition, and scalar multiplication. **Today builds the operation that makes Groth16 verification and KZG commitments actually work — the bilinear pairing.** It's a strange operation that takes two points and connects two completely separate worlds.
 
@@ -65,3 +66,13 @@ Here's the payoff: the bilinear property lets a verifier confirm a hidden multip
 </Figure>
 
 That single check — one pairing equality, standing in for a multiplication the verifier never actually sees — **is how Groth16 and KZG verify a proof**.
+
+<KeyTakeaways>
+
+- A pairing $e(P, Q)$ bridges two separate elliptic curve groups, $G_1$ and $G_2$, into a third group, $G_T$.
+- The output of a pairing isn't a point on either curve — it's a number, an element of $G_T$, the multiplicative group of a finite field.
+- Bilinearity means $e(a \cdot P, b \cdot Q) = e(P, Q)^{ab}$: scalars multiplied inside the pairing come back out as an exponent outside it.
+- That property lets a verifier confirm a hidden multiplication happened ($a \cdot b = c \cdot d$) without ever learning $a$, $b$, $c$, or $d$.
+- One pairing equality check, standing in for a multiplication the verifier never sees, is how Groth16 and KZG verify a proof.
+
+</KeyTakeaways>

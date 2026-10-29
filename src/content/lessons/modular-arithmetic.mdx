@@ -18,6 +18,7 @@ import ModularClockFigure from "../../components/figures/ModularClockFigure.astr
 import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
 import ClockWrapFigure from "../../components/figures/ClockWrapFigure.astro";
 import NormalVsModFigure from "../../components/figures/NormalVsModFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Of everything in this track, **this is the one idea everything else sits on top of.** Every ZK proof system, every elliptic curve, every Circom circuit runs its arithmetic inside a modulus — and the surprising part is that you already use the same idea daily, just under a more familiar name.
 
@@ -123,3 +124,13 @@ Add, subtract, or multiply — the output is always back inside range, every tim
 ## Why Circom lives inside this
 
 Every Circom circuit does its arithmetic modulo $p$, the same enormous prime from the previous lesson. Every signal a circuit touches is a number somewhere in $\{0, 1, \ldots, p-1\}$, and every addition, subtraction, or multiplication wraps back into that same range, exactly like the examples above just at a far larger scale. This structure — modular arithmetic over a prime — has its own name: a **finite field**, written $GF(p)$. That's the entire reason a circuit's arithmetic stays predictable instead of spiraling into arbitrarily large numbers, and it's the subject the next-but-one lesson in this track covers in full. First, though, there's one more piece modular arithmetic needs: what it means to *divide* inside a modulus, which is where modular inverses and Fermat's little theorem come in.
+
+<KeyTakeaways>
+
+- Modular arithmetic wraps around instead of growing forever, like a clock face — the single idea almost everything else in this track sits on top of.
+- $a \bmod n$ is the remainder left over once $a$ is divided by $n$.
+- Congruence ($\equiv$) means "leaves the same remainder," not "is the same value" — $17 \equiv 2 \equiv 22 \pmod 5$ even though the numbers themselves differ.
+- Addition, subtraction, and multiplication inside a modulus always land back inside $\{0, 1, \ldots, n-1\}$ — a closed system that can never produce a result outside the range.
+- Every Circom circuit does its arithmetic modulo the same enormous prime $p$ — this structure is called a finite field, $GF(p)$.
+
+</KeyTakeaways>

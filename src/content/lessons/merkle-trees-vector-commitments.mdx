@@ -22,6 +22,7 @@ import ProofSizeGrowthFigure from "../../components/figures/ProofSizeGrowthFigur
 import VectorCommitmentFigure from "../../components/figures/VectorCommitmentFigure.astro";
 import NullifierFigure from "../../components/figures/NullifierFigure.astro";
 import MembershipCircuitFigure from "../../components/figures/MembershipCircuitFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson locked in one value, and then one polynomial, with a commitment. Now the problem gets bigger: how do you lock in a *whole list* — millions of names, accounts, or transactions — and later prove that one item is on it, without handing over the list? The tool for that is the **Merkle tree**. By the end of this lesson the goal is to see how it's built, why nobody can quietly edit it, how a handful of hashes can prove one item belongs, and how a ZK proof hides which item you're proving while still stopping you from using it twice.
 
@@ -114,3 +115,13 @@ The membership proof from earlier in this lesson wasn't private: the verifier sa
 The leaf secrets and the Merkle path stay private, inside the circuit. The circuit rebuilds the leaf, hashes up the path and checks it equals the root, and computes $N = H(nf)$ — all without ever showing its work. Out come only the root the verifier already knew, the nullifier $N$, and the proof itself. One practical note: hashing inside a circuit is expensive, so real systems use hash functions designed for circuits, like Poseidon, playing the same role as $H$ throughout this lesson.
 
 That's the core of anonymous membership — private voting, anonymous credentials, mixers — and it's built from nothing more than the Merkle tree this lesson opened with.
+
+<KeyTakeaways>
+
+- A Merkle tree commits to a whole list with one short root, built by hashing leaves in pairs up to a single value.
+- Changing any leaf changes the root, and producing a different leaf that keeps the same root means finding a hash collision — infeasible.
+- A membership proof needs only the sibling hashes on a leaf's path, so proof size grows as $\log_2(n)$ — about 32 hashes proves one item among 4 billion.
+- A vector commitment generalizes this same promise; KZG is an alternative that compresses the proof to one point, at the cost of a trusted setup and pairings.
+- Nullifiers ($N = H(nf)$) let a member prove membership exactly once without revealing which member they are — the basis of anonymous voting, credentials, and mixers.
+
+</KeyTakeaways>

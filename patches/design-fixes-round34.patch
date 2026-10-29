@@ -1,0 +1,596 @@
+diff --git a/src/components/KeyTakeaways.astro b/src/components/KeyTakeaways.astro
+new file mode 100644
+index 0000000..afe5fd5
+--- /dev/null
++++ b/src/components/KeyTakeaways.astro
+@@ -0,0 +1,11 @@
++---
++// A bulleted recap dropped at the end of a lesson's MDX body, as the
++// article's closing element — the scannable version of what the lesson
++// just covered. Content is written as a plain markdown list in the
++// default slot (same pattern MathBox already uses for its prose), so it
++// flows through the normal remark pipeline rather than needing raw HTML.
++---
++<div class="key-takeaways">
++  <div class="key-takeaways-label">Key takeaways</div>
++  <div class="key-takeaways-body"><slot /></div>
++</div>
+diff --git a/src/content/lessons/bilinear-pairings.mdx b/src/content/lessons/bilinear-pairings.mdx
+index 495f631..f768c25 100644
+--- a/src/content/lessons/bilinear-pairings.mdx
++++ b/src/content/lessons/bilinear-pairings.mdx
+@@ -17,6 +17,7 @@ import Figure from "../../components/Figure.astro";
+ import PairingBridgeFigure from "../../components/figures/PairingBridgeFigure.astro";
+ import NumericPairingFigure from "../../components/figures/NumericPairingFigure.astro";
+ import PairingVerificationFigure from "../../components/figures/PairingVerificationFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson built elliptic curves: point addition, and scalar multiplication. **Today builds the operation that makes Groth16 verification and KZG commitments actually work — the bilinear pairing.** It's a strange operation that takes two points and connects two completely separate worlds.
+ 
+@@ -65,3 +66,13 @@ Here's the payoff: the bilinear property lets a verifier confirm a hidden multip
+ </Figure>
+ 
+ That single check — one pairing equality, standing in for a multiplication the verifier never actually sees — **is how Groth16 and KZG verify a proof**.
++
++<KeyTakeaways>
++
++- A pairing $e(P, Q)$ bridges two separate elliptic curve groups, $G_1$ and $G_2$, into a third group, $G_T$.
++- The output of a pairing isn't a point on either curve — it's a number, an element of $G_T$, the multiplicative group of a finite field.
++- Bilinearity means $e(a \cdot P, b \cdot Q) = e(P, Q)^{ab}$: scalars multiplied inside the pairing come back out as an exponent outside it.
++- That property lets a verifier confirm a hidden multiplication happened ($a \cdot b = c \cdot d$) without ever learning $a$, $b$, $c$, or $d$.
++- One pairing equality check, standing in for a multiplication the verifier never sees, is how Groth16 and KZG verify a proof.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/commitment-schemes.mdx b/src/content/lessons/commitment-schemes.mdx
+index 58f6dce..8ea58dd 100644
+--- a/src/content/lessons/commitment-schemes.mdx
++++ b/src/content/lessons/commitment-schemes.mdx
+@@ -21,6 +21,7 @@ import PedersenCommitmentFigure from "../../components/figures/PedersenCommitmen
+ import BlindingFactorFigure from "../../components/figures/BlindingFactorFigure.astro";
+ import KZGCommitmentFigure from "../../components/figures/KZGCommitmentFigure.astro";
+ import CommitOrderFigure from "../../components/figures/CommitOrderFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson showed a hash replacing a live verifier with a single computation. **This lesson tackles a different problem entirely: how does someone lock in a value now, prove later they never changed it, while keeping that value completely secret the whole time in between?** That's a commitment scheme — the second building block, alongside hashing, that almost every ZK proof system is built from.
+ 
+@@ -97,3 +98,13 @@ Here's how commitments and the Fiat-Shamir transform from the last lesson fit to
+ </Figure>
+ 
+ The prover commits to their polynomials **first** — those are sealed by binding. Only *then* does the random challenge get generated, as $c = H(\text{commitments})$, straight from the Fiat-Shamir transform built last lesson. **Commit before seeing the question.** This exact ordering — commit, then challenge — is what stops a prover from cheating in Groth16, PLONK, and KZG alike.
++
++<KeyTakeaways>
++
++- A commitment scheme locks in a value now, like a sealed envelope, and lets you prove later you never changed it, while staying secret in between.
++- Two promises have to hold together: hiding ($C$ alone reveals nothing about $m$) and binding (it can never later be opened to a different $m$).
++- The Pedersen commitment, $C = g \cdot m + h \cdot r$, uses a random blinding factor $r$ so the same message commits to a different-looking $C$ every time.
++- KZG commits to an entire polynomial, compressing it down to a single curve point, and opens it at a random location using the pairings built two lessons back.
++- Commit before the challenge exists — this exact ordering, commit then challenge via Fiat-Shamir, is what stops a prover from cheating in Groth16, PLONK, and KZG.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/divisibility-factors-primes.mdx b/src/content/lessons/divisibility-factors-primes.mdx
+index 3550b22..33dee3b 100644
+--- a/src/content/lessons/divisibility-factors-primes.mdx
++++ b/src/content/lessons/divisibility-factors-primes.mdx
+@@ -18,6 +18,7 @@ import DivisibilityCheckFigure from "../../components/figures/DivisibilityCheckF
+ import PrimeCheckFigure from "../../components/figures/PrimeCheckFigure.astro";
+ import PrimeFactorTreeFigure from "../../components/figures/PrimeFactorTreeFigure.astro";
+ import OneWayFunctionFigure from "../../components/figures/OneWayFunctionFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Variables, equations, and powers all describe how to combine numbers. This lesson goes one level deeper, into the numbers themselves — divisibility, factors, and prime numbers. It reads like grade-school material, and that's exactly the trap: **prime numbers are the actual reason factoring a large number back apart is nearly impossible, and that single fact is what modern cryptography is built on.**
+ 
+@@ -82,3 +83,13 @@ $$p = 21888242871839275222246405745257275088548364400416034343698204186575808495
+ Every signal in a Circom circuit — every constraint, every intermediate value — is a number somewhere in $\{0, 1, 2, \ldots, p-1\}$, and every arithmetic operation happens inside that range. Using a prime for $p$ isn't incidental: it's exactly the property this lesson covered, carried into a circuit at full scale, and it's what keeps that arithmetic well-behaved instead of leaking structure an attacker could exploit.
+ 
+ That range — arithmetic that lives inside $\{0, \ldots, p-1\}$ and wraps instead of growing forever — is **modular arithmetic**, and it's the very next topic in this track.
++
++<KeyTakeaways>
++
++- $b$ divides $a$ cleanly ($b \mid a$) when the division leaves no remainder; such a $b$ is called a factor of $a$.
++- A prime number has exactly two factors, $1$ and itself; $1$ is neither prime nor composite.
++- The fundamental theorem of arithmetic: every whole number greater than $1$ has exactly one prime factorization.
++- Multiplying two large primes together is fast; factoring the result back apart is practically infeasible — a one-way function, and the entire foundation cryptographic security rests on.
++- Circom's BN254 field prime is a 254-bit prime, and every signal in a circuit is a number inside $\{0, \ldots, p-1\}$.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/elliptic-curves.mdx b/src/content/lessons/elliptic-curves.mdx
+index 982cb61..274ff9a 100644
+--- a/src/content/lessons/elliptic-curves.mdx
++++ b/src/content/lessons/elliptic-curves.mdx
+@@ -16,6 +16,7 @@ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+ import EllipticCurveAdditionFigure from "../../components/figures/EllipticCurveAdditionFigure.astro";
+ import ScalarMultiplicationFigure from "../../components/figures/ScalarMultiplicationFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson covered groups and cyclic groups: a set, one operation, four simple rules. **Today meets the most important group in all of ZK cryptography — the elliptic curve.** Every Groth16 proof, every KZG commitment, every `BN254` reference seen in Circom runs on exactly this structure.
+ 
+@@ -94,3 +95,13 @@ Here's the payoff. Take one point, a **generator**, and add it to itself over an
+ </Figure>
+ 
+ Computing $K \cdot G$ this way is easy; as the last lesson showed, going backward — recovering $K$ from $K \cdot G$ — is hard. **BN254 and BLS12-381 are the curves real ZK systems actually use**, and Groth16, PLONK, and KZG all run on this exact structure.
++
++<KeyTakeaways>
++
++- An elliptic curve is the set of points satisfying $y^2 = x^3 + ax + b$, plus a point at infinity, $O$, which serves as the group's identity.
++- Point addition is geometric: draw a line through two points, find the third intersection with the curve, then reflect it over the $x$-axis.
++- Doubling a point ($P + P$) uses the tangent line at $P$ instead of a line through two separate points.
++- Over $GF(p)$, the smooth curve becomes a scattered cloud of points, but the same addition rules still apply using mod $p$ arithmetic.
++- Scalar multiplication ($K \cdot G$) is easy forward and hard to reverse — BN254 and BLS12-381 are the curves Groth16, PLONK, and KZG actually run on.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/euclid-crt-euler.mdx b/src/content/lessons/euclid-crt-euler.mdx
+index 063ddc7..ac930c1 100644
+--- a/src/content/lessons/euclid-crt-euler.mdx
++++ b/src/content/lessons/euclid-crt-euler.mdx
+@@ -24,6 +24,7 @@ import CRTFormulaFigure from "../../components/figures/CRTFormulaFigure.astro";
+ import EulerTotientFigure from "../../components/figures/EulerTotientFigure.astro";
+ import EulerTheoremFigure from "../../components/figures/EulerTheoremFigure.astro";
+ import BridgeToolsSummaryFigure from "../../components/figures/BridgeToolsSummaryFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Topic 5 found modular inverses by brute force, and promised a shortcut for huge primes in Fermat's little theorem. **This lesson delivers the other half of that promise** — a fast way to find the gcd and the inverse for *any* modulus, not only a prime one — and then builds two more tools, the Chinese Remainder Theorem and Euler's theorem, that lean on exactly that machinery.
+ 
+@@ -176,3 +177,13 @@ Three tools, each building on the last: Euclid's algorithm for a fast gcd and in
+ </Figure>
+ 
+ Every one of these is really a statement about the structure hiding underneath modular arithmetic — the sets of numbers that behave consistently under multiplication. Making that structure explicit, with groups, subgroups, cosets, and roots of unity, is exactly where the next lessons go.
++
++<KeyTakeaways>
++
++- Euclid's algorithm finds the gcd in roughly $\log(n)$ steps by repeatedly replacing a pair of numbers with a smaller pair sharing the same gcd.
++- Running Euclid's steps backwards — the extended Euclidean algorithm — finds the modular inverse directly, with no brute-force search.
++- An inverse exists exactly when $\gcd(a, n) = 1$, which is automatic for every nonzero value whenever $n$ is prime.
++- The Chinese Remainder Theorem combines two congruences with pairwise-coprime moduli into one answer, using a direct formula built from these same fast inverses.
++- Euler's theorem ($a^{\varphi(n)} \equiv 1 \pmod n$) generalizes Fermat's little theorem to any modulus — Fermat's is just its prime special case.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/exponents-and-powers.mdx b/src/content/lessons/exponents-and-powers.mdx
+index 571ee04..9594e1f 100644
+--- a/src/content/lessons/exponents-and-powers.mdx
++++ b/src/content/lessons/exponents-and-powers.mdx
+@@ -16,6 +16,7 @@ import MathBox from "../../components/MathBox.astro";
+ import Figure from "../../components/Figure.astro";
+ import PowerAnatomyFigure from "../../components/figures/PowerAnatomyFigure.astro";
+ import PowerGrowthFigure from "../../components/figures/PowerGrowthFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ "256-bit security." "SHA-256." "$2^{128}$ possible keys." "$x^2 = 25$." Every one of those phrases is a power in disguise, and **cryptography is saturated with them** — not as decoration, but because repeated multiplication is one of the few operations that gets hard to undo fast enough to be useful for security. Before going further into this track, powers need to stop being a vague memory from school and start being something you can read fluently.
+ 
+@@ -112,3 +113,13 @@ Raising a power to another power multiplies the exponents.
+ </MathBox>
+ 
+ None of these need to be memorized as abstract rules — they fall straight out of what a power already means: a count of repeated multiplications, which is easy to add, subtract, or scale. **Number theory, polynomials, and elliptic curves all lean on this same exponent arithmetic**, so it's worth being quick with it before those topics arrive.
++
++<KeyTakeaways>
++
++- A power is repeated multiplication written compactly: a base, multiplied by itself as many times as the exponent says.
++- Powers of two grow far faster than intuition suggests — $2^{128} \approx 3.4 \times 10^{38}$, which is what "128-bit security" actually means.
++- That growth is the entire reason brute force fails: even a trillion guesses a second can't search a 128-bit space before the sun burns out.
++- Three rules fall straight out of what a power means: multiplying same-base powers adds exponents, dividing subtracts them, raising a power to a power multiplies them.
++- Number theory, polynomials, and elliptic curves all lean on this same exponent arithmetic later in the track.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/finite-fields.mdx b/src/content/lessons/finite-fields.mdx
+index 035e54f..8df0457 100644
+--- a/src/content/lessons/finite-fields.mdx
++++ b/src/content/lessons/finite-fields.mdx
+@@ -19,6 +19,7 @@ import FieldInverseTableFigure from "../../components/figures/FieldInverseTableF
+ import FieldPrimalityFigure from "../../components/figures/FieldPrimalityFigure.astro";
+ import CircuitFieldElementFigure from "../../components/figures/CircuitFieldElementFigure.astro";
+ import FieldSizeComparisonFigure from "../../components/figures/FieldSizeComparisonFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last two lessons built modular addition, subtraction, multiplication, and — through modular inverses — division. **Today all four get packaged into one idea with a name**: a finite field.
+ 
+@@ -99,3 +100,13 @@ $GF(7)$ has $7$ elements — trivial to search by hand. The BN254 field has roug
+ </MathBox>
+ 
+ Addition, subtraction, multiplication, division, all closed, all built on a single prime — that's the entire structure a Circom circuit runs on. The next lessons build on top of it: **polynomials**, which turn a field's numbers into something that can encode an entire computation at once.
++
++<KeyTakeaways>
++
++- A field is a set where $+, -, \times, \div$ all stay inside the set, with division by zero the one universal exception.
++- $GF(p)$ is $\{0, 1, \ldots, p-1\}$ with every operation done mod $p$ — the finite version of a field.
++- Closure is the defining property: no operation on elements of the field can ever produce a result outside it.
++- $p$ has to be prime, because division requires every nonzero element to have a modular inverse — one missing inverse disqualifies the whole set.
++- Every signal in a Circom circuit is literally an element of $GF(p)$ for the BN254 prime — a field with roughly $2^{254}$ elements, built from the exact same structure as a field as small as $GF(7)$.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/groups-cyclic-groups.mdx b/src/content/lessons/groups-cyclic-groups.mdx
+index bbecc6e..bfc5504 100644
+--- a/src/content/lessons/groups-cyclic-groups.mdx
++++ b/src/content/lessons/groups-cyclic-groups.mdx
+@@ -19,6 +19,7 @@ import GroupExampleCheckFigure from "../../components/figures/GroupExampleCheckF
+ import CyclicGroupRingFigure from "../../components/figures/CyclicGroupRingFigure.astro";
+ import GeneratingGroupFigure from "../../components/figures/GeneratingGroupFigure.astro";
+ import DiscreteLogFigure from "../../components/figures/DiscreteLogFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ That closes out phase two, polynomials. **Phase three starts here: groups, curves, and pairings** — the foundation everything from elliptic curves to bilinear pairings gets built on. Today stays simple: what is a group, and what makes one *cyclic*?
+ 
+@@ -77,3 +78,13 @@ The elliptic curve groups used throughout ZK cryptography are built on this exac
+ </Figure>
+ 
+ There's a generator point $G$, and for a scalar $K$, computing $K \cdot G$ is easy. Going the other direction — recovering $K$ from $K \cdot G$ — is hard. **That one-way difficulty is the discrete log problem**, and it's what every elliptic curve scheme in this series will lean on from here forward.
++
++<KeyTakeaways>
++
++- A group needs only a set and one operation, plus a short list of rules (closure, an identity element, inverses) — much lighter than a field.
++- Addition mod $n$ already satisfies the group axioms — this series had been working with a group all along, just without the name.
++- A cyclic group has a generator: one element whose repeated application reaches every element of the group before returning to the start.
++- $C_7$, generated by $1$ under addition mod $7$, visits every element exactly once before wrapping back to the identity.
++- Elliptic curve groups used throughout ZK are built on this same cyclic structure, with points on a curve standing in for numbers — computing $K \cdot G$ is easy, recovering $K$ is hard (the discrete log problem).
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/hash-functions-random-oracles.mdx b/src/content/lessons/hash-functions-random-oracles.mdx
+index 607fbda..26b4eb6 100644
+--- a/src/content/lessons/hash-functions-random-oracles.mdx
++++ b/src/content/lessons/hash-functions-random-oracles.mdx
+@@ -20,6 +20,7 @@ import OneWayHashFigure from "../../components/figures/OneWayHashFigure.astro";
+ import CollisionResistanceFigure from "../../components/figures/CollisionResistanceFigure.astro";
+ import RandomOracleFigure from "../../components/figures/RandomOracleFigure.astro";
+ import FiatShamirFigure from "../../components/figures/FiatShamirFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ This series has spent thirteen lessons building up numbers, polynomials, fields, groups, and curves. **This lesson steps outside algebra entirely** — into a tool that doesn't come from any of that machinery, yet shows up everywhere in ZK anyway: the hash function. By the end, the goal is to see exactly how it turns a live, back-and-forth conversation between a prover and a verifier into something a prover can do completely alone.
+ 
+@@ -88,3 +89,13 @@ The hash **plays the verifier's role**. Because it behaves like a random oracle,
+ </MathBox>
+ 
+ That one substitution — a hash standing in for a verifier's random coin flip — **is what turns an interactive proof into something a prover can run alone**, and it's the trick underneath every non-interactive proof system that follows.
++
++<KeyTakeaways>
++
++- A hash function maps any-length input to a fixed-length output, and is deterministic, fixed-size, and one-way.
++- Collision resistance means finding any two different inputs that hash to the same output must be infeasible to find, even though collisions mathematically exist.
++- The random oracle model treats a hash function as a box handing out fresh randomness for a new input, and that same stored answer again for a repeated one.
++- The Fiat-Shamir transform replaces a verifier's random challenge with $c = H(\text{transcript})$, letting the prover derive it alone.
++- That substitution turns a live, interactive proof into something a prover can run entirely alone — the trick underneath every non-interactive proof system.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/information-theory-entropy.mdx b/src/content/lessons/information-theory-entropy.mdx
+index f0614d4..52f7ee2 100644
+--- a/src/content/lessons/information-theory-entropy.mdx
++++ b/src/content/lessons/information-theory-entropy.mdx
+@@ -22,6 +22,7 @@ import PerfectHidingFigure from "../../components/figures/PerfectHidingFigure.as
+ import SecurityTypesFigure from "../../components/figures/SecurityTypesFigure.astro";
+ import SimulationArgumentFigure from "../../components/figures/SimulationArgumentFigure.astro";
+ import ThreePromisesFigure from "../../components/figures/ThreePromisesFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Sixteen lessons have built numbers, polynomials, fields, groups, curves, pairings, hashes, commitments, and Merkle trees. **This lesson adds the last idea: how do you measure a secret, and what does it actually mean for a proof to reveal nothing?** The tool is entropy. Once it's measurable, "zero-knowledge" stops being a slogan and becomes something you can check.
+ 
+@@ -114,3 +115,13 @@ Put all of this together, and every proof system built across this series — Gr
+ Completeness: if the statement is true and the prover is honest, the verifier always accepts — built from polynomial division with zero remainder and the pairing equation. Soundness: if the statement is false, a cheating prover gets caught except with negligible probability — built from Schwartz-Zippel and binding commitments. Zero-knowledge: the verifier learns nothing except that the statement is true — built from random blinding factors and the simulator this lesson just walked through.
+ 
+ That's the full arc of this series, from modular arithmetic to these three guarantees. Complete, sound, and zero-knowledge — no longer a slogan, but something you can now measure and check.
++
++<KeyTakeaways>
++
++- Entropy measures how many yes/no questions it takes to pin down an unknown secret, counted in bits.
++- Entropy depends on the odds, not just the count — a predictable secret is weak even with many possible values, and uniform randomness maximizes it.
++- A hash only hides a secret as well as the secret's own entropy allows — a 4-digit PIN is broken in moments once its hash is public, a 256-bit random value never is.
++- The Pedersen commitment hides perfectly (information-theoretic security, safe against unlimited computing power) but binds only computationally (depends on the discrete log problem staying hard).
++- The simulation argument — a fake transcript indistinguishable from a real one, built without the secret — is the formal meaning of zero-knowledge, completing this series' three promises: completeness, soundness, and zero-knowledge.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/lagrange-interpolation.mdx b/src/content/lessons/lagrange-interpolation.mdx
+index 55df324..e0aa569 100644
+--- a/src/content/lessons/lagrange-interpolation.mdx
++++ b/src/content/lessons/lagrange-interpolation.mdx
+@@ -18,6 +18,7 @@ import LagrangeCurveFigure from "../../components/figures/LagrangeCurveFigure.as
+ import LagrangeBasisFigure from "../../components/figures/LagrangeBasisFigure.astro";
+ import LagrangeCheckFigure from "../../components/figures/LagrangeCheckFigure.astro";
+ import LagrangeQAPFigure from "../../components/figures/LagrangeQAPFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Every lesson so far started with a polynomial and worked outward from it — building, evaluating, combining. **Today flips the problem around**: given a handful of points, how do you find the one polynomial that passes through all of them? That question has a name, Lagrange interpolation, and it's the exact mechanism that turns an entire ZK circuit into a single polynomial.
+ 
+@@ -86,3 +87,13 @@ Here's the payoff. In a **QAP** — the structure behind Groth16 — every gate
+ </Figure>
+ 
+ Lagrange interpolation takes that entire set of points and produces a single polynomial representing the whole circuit at once. **This is literally what the Q in QAP stands for** — Quadratic Arithmetic Program — the same idea this lesson just built from scratch, running at the scale of a real circuit.
++
++<KeyTakeaways>
++
++- Lagrange interpolation finds the one polynomial that passes through a given set of points.
++- A Lagrange basis polynomial $L_i(x)$ equals $1$ at its own point and $0$ at every other point in the set.
++- The combined polynomial is built by scaling each basis polynomial by its point's $y$-value and summing them: $P(x) = \sum_i y_i \cdot L_i(x)$.
++- The construction works for any number of points, not just the three in this lesson's worked example.
++- In a QAP, every gate in a circuit becomes a point, and Lagrange interpolation turns that whole set into one polynomial representing the circuit — literally the "Q" in QAP.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/merkle-trees-vector-commitments.mdx b/src/content/lessons/merkle-trees-vector-commitments.mdx
+index 9fd70be..40ba2ac 100644
+--- a/src/content/lessons/merkle-trees-vector-commitments.mdx
++++ b/src/content/lessons/merkle-trees-vector-commitments.mdx
+@@ -22,6 +22,7 @@ import ProofSizeGrowthFigure from "../../components/figures/ProofSizeGrowthFigur
+ import VectorCommitmentFigure from "../../components/figures/VectorCommitmentFigure.astro";
+ import NullifierFigure from "../../components/figures/NullifierFigure.astro";
+ import MembershipCircuitFigure from "../../components/figures/MembershipCircuitFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson locked in one value, and then one polynomial, with a commitment. Now the problem gets bigger: how do you lock in a *whole list* — millions of names, accounts, or transactions — and later prove that one item is on it, without handing over the list? The tool for that is the **Merkle tree**. By the end of this lesson the goal is to see how it's built, why nobody can quietly edit it, how a handful of hashes can prove one item belongs, and how a ZK proof hides which item you're proving while still stopping you from using it twice.
+ 
+@@ -114,3 +115,13 @@ The membership proof from earlier in this lesson wasn't private: the verifier sa
+ The leaf secrets and the Merkle path stay private, inside the circuit. The circuit rebuilds the leaf, hashes up the path and checks it equals the root, and computes $N = H(nf)$ — all without ever showing its work. Out come only the root the verifier already knew, the nullifier $N$, and the proof itself. One practical note: hashing inside a circuit is expensive, so real systems use hash functions designed for circuits, like Poseidon, playing the same role as $H$ throughout this lesson.
+ 
+ That's the core of anonymous membership — private voting, anonymous credentials, mixers — and it's built from nothing more than the Merkle tree this lesson opened with.
++
++<KeyTakeaways>
++
++- A Merkle tree commits to a whole list with one short root, built by hashing leaves in pairs up to a single value.
++- Changing any leaf changes the root, and producing a different leaf that keeps the same root means finding a hash collision — infeasible.
++- A membership proof needs only the sibling hashes on a leaf's path, so proof size grows as $\log_2(n)$ — about 32 hashes proves one item among 4 billion.
++- A vector commitment generalizes this same promise; KZG is an alternative that compresses the proof to one point, at the cost of a trusted setup and pairings.
++- Nullifiers ($N = H(nf)$) let a member prove membership exactly once without revealing which member they are — the basis of anonymous voting, credentials, and mixers.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/modular-arithmetic.mdx b/src/content/lessons/modular-arithmetic.mdx
+index 1c32992..49fcaad 100644
+--- a/src/content/lessons/modular-arithmetic.mdx
++++ b/src/content/lessons/modular-arithmetic.mdx
+@@ -18,6 +18,7 @@ import ModularClockFigure from "../../components/figures/ModularClockFigure.astr
+ import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
+ import ClockWrapFigure from "../../components/figures/ClockWrapFigure.astro";
+ import NormalVsModFigure from "../../components/figures/NormalVsModFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Of everything in this track, **this is the one idea everything else sits on top of.** Every ZK proof system, every elliptic curve, every Circom circuit runs its arithmetic inside a modulus — and the surprising part is that you already use the same idea daily, just under a more familiar name.
+ 
+@@ -123,3 +124,13 @@ Add, subtract, or multiply — the output is always back inside range, every tim
+ ## Why Circom lives inside this
+ 
+ Every Circom circuit does its arithmetic modulo $p$, the same enormous prime from the previous lesson. Every signal a circuit touches is a number somewhere in $\{0, 1, \ldots, p-1\}$, and every addition, subtraction, or multiplication wraps back into that same range, exactly like the examples above just at a far larger scale. This structure — modular arithmetic over a prime — has its own name: a **finite field**, written $GF(p)$. That's the entire reason a circuit's arithmetic stays predictable instead of spiraling into arbitrarily large numbers, and it's the subject the next-but-one lesson in this track covers in full. First, though, there's one more piece modular arithmetic needs: what it means to *divide* inside a modulus, which is where modular inverses and Fermat's little theorem come in.
++
++<KeyTakeaways>
++
++- Modular arithmetic wraps around instead of growing forever, like a clock face — the single idea almost everything else in this track sits on top of.
++- $a \bmod n$ is the remainder left over once $a$ is divided by $n$.
++- Congruence ($\equiv$) means "leaves the same remainder," not "is the same value" — $17 \equiv 2 \equiv 22 \pmod 5$ even though the numbers themselves differ.
++- Addition, subtraction, and multiplication inside a modulus always land back inside $\{0, 1, \ldots, n-1\}$ — a closed system that can never produce a result outside the range.
++- Every Circom circuit does its arithmetic modulo the same enormous prime $p$ — this structure is called a finite field, $GF(p)$.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/modular-inverses-fermats.mdx b/src/content/lessons/modular-inverses-fermats.mdx
+index 70d036f..5edf536 100644
+--- a/src/content/lessons/modular-inverses-fermats.mdx
++++ b/src/content/lessons/modular-inverses-fermats.mdx
+@@ -18,6 +18,7 @@ import ModularDivisionFigure from "../../components/figures/ModularDivisionFigur
+ import ModularInverseSearchFigure from "../../components/figures/ModularInverseSearchFigure.astro";
+ import FermatDerivationFigure from "../../components/figures/FermatDerivationFigure.astro";
+ import CircuitDivisionFigure from "../../components/figures/CircuitDivisionFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson covered addition, subtraction, and multiplication inside a modulus, and quietly skipped the fourth operation. **That gap gets fixed here** — division turns out to be the one operation that doesn't survive the trip into modular arithmetic unchanged, and patching it back in is what this lesson is about.
+ 
+@@ -125,3 +126,13 @@ There's no division gate inside a finite field. A Circom circuit can't compute $
+ </Figure>
+ 
+ Every constraint in a circuit that looks like division is, underneath, running exactly the formula from this lesson. The next lesson gives this whole structure — a modulus, closed under addition, subtraction, multiplication, and now division too — its proper name: a **finite field**.
++
++<KeyTakeaways>
++
++- Division doesn't survive the trip into modular arithmetic unchanged — there's no slot in $\{0, \ldots, n-1\}$ for a fraction to occupy.
++- A modular inverse $x$ of $a$ satisfies $a \times x \equiv 1 \pmod n$ — it does the job a reciprocal does everywhere else.
++- An inverse exists only when $\gcd(a, n) = 1$, which is guaranteed for every nonzero value whenever $n$ is prime.
++- Fermat's little theorem ($a^{p-1} \equiv 1 \pmod p$) collapses a brute-force search into one formula: $a^{-1} \equiv a^{p-2} \pmod p$.
++- There's no division gate in a finite field — every "division" in a Circom circuit compiles to a multiplication by a modular inverse, computed with Fermat's shortcut.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/polynomial-arithmetic.mdx b/src/content/lessons/polynomial-arithmetic.mdx
+index a8f38ec..c58e702 100644
+--- a/src/content/lessons/polynomial-arithmetic.mdx
++++ b/src/content/lessons/polynomial-arithmetic.mdx
+@@ -20,6 +20,7 @@ import PolynomialMultiplyFigure from "../../components/figures/PolynomialMultipl
+ import PolynomialMultiplyFieldFigure from "../../components/figures/PolynomialMultiplyFieldFigure.astro";
+ import PolynomialDivideFigure from "../../components/figures/PolynomialDivideFigure.astro";
+ import PolynomialZKDivisionFigure from "../../components/figures/PolynomialZKDivisionFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson covered what a polynomial is. **This one covers what you can do with it** — adding, subtracting, multiplying, and dividing polynomials, which turns out to be exactly the same journey plain numbers took a few lessons back, just one level up.
+ 
+@@ -106,3 +107,13 @@ That connection between roots and clean division is the entire reason this opera
+ </Figure>
+ 
+ $p(x) \div (x - \text{root})$ leaves a remainder of $0$ **if and only if** that value really is a root of $p(x)$ — a zero remainder means a valid computation, a nonzero one means it isn't. **This exact check is how a QAP verifies a ZK witness**: not by recomputing everything, just by confirming one polynomial division comes out clean.
++
++<KeyTakeaways>
++
++- Adding or subtracting polynomials means combining the coefficients on matching powers of $x$.
++- Multiplying polynomials means every term in one multiplies every term in the other, then the products get combined.
++- Division runs the same long-division process plain numbers do: divide the leading terms, multiply back, subtract, repeat.
++- Over a finite field, every coefficient gets reduced mod $p$ after the arithmetic, exactly like any other number in $GF(p)$.
++- $p(x) \div (x - \text{root})$ leaves remainder $0$ if and only if that value really is a root — the exact check a QAP uses to verify a ZK witness.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/polynomials.mdx b/src/content/lessons/polynomials.mdx
+index 5f202b3..9acd7e8 100644
+--- a/src/content/lessons/polynomials.mdx
++++ b/src/content/lessons/polynomials.mdx
+@@ -19,6 +19,7 @@ import PolynomialEvalFigure from "../../components/figures/PolynomialEvalFigure.
+ import PolynomialRootsFigure from "../../components/figures/PolynomialRootsFigure.astro";
+ import PolynomialFieldEvalFigure from "../../components/figures/PolynomialFieldEvalFigure.astro";
+ import PolynomialComputationFigure from "../../components/figures/PolynomialComputationFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Foundations are done. **This track now moves into algebra** — and the shift matters more than it might look, because polynomials turn out to be the actual language ZK circuits get written in. Every program a ZK system proves gets translated into polynomials somewhere underneath. This lesson covers the basics that everything later builds on: what a polynomial is, its degree, how to evaluate one, and what a root is.
+ 
+@@ -97,3 +98,13 @@ Here's the payoff, and the reason this entire phase of the track exists: an enti
+ </Figure>
+ 
+ That one idea — compress a computation into a polynomial, verify it with a spot-check — **is the foundation underneath R1CS, QAP, and PLONK**, the systems ZK proofs are actually built from. The next lesson goes further into how polynomials behave under their own arithmetic, over a finite field.
++
++<KeyTakeaways>
++
++- A polynomial is powers of a variable, each scaled by a coefficient, all added together.
++- Degree is the highest power present — $0$ is constant, $1$ is linear, $2$ is quadratic, $3$ is cubic.
++- Evaluating a polynomial means substituting a specific number for $x$ and computing the result.
++- A root is an input that makes the polynomial equal zero, and every root corresponds to a factor of that polynomial.
++- An entire ZK computation can be encoded into a single polynomial, checkable at one random point — the foundation underneath R1CS, QAP, and PLONK.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/schwartz-zippel-lemma.mdx b/src/content/lessons/schwartz-zippel-lemma.mdx
+index 46c07a3..f1507fd 100644
+--- a/src/content/lessons/schwartz-zippel-lemma.mdx
++++ b/src/content/lessons/schwartz-zippel-lemma.mdx
+@@ -18,6 +18,7 @@ import SchwartzZippelCurveFigure from "../../components/figures/SchwartzZippelCu
+ import SchwartzZippelLemmaFigure from "../../components/figures/SchwartzZippelLemmaFigure.astro";
+ import FalseMatchProbabilityFigure from "../../components/figures/FalseMatchProbabilityFigure.astro";
+ import SoundnessCheckFigure from "../../components/figures/SoundnessCheckFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ The last lesson showed how Lagrange interpolation folds an entire circuit into a single polynomial. That raises an obvious follow-up question: **if a prover hands a verifier that polynomial and claims it represents a valid computation, how does the verifier check it without reading every single term?** The answer is one of the most useful tricks in all of cryptography — the Schwartz-Zippel lemma.
+ 
+@@ -95,3 +96,13 @@ That probability is exactly what lets a ZK verifier take a shortcut instead of d
+ </Figure>
+ 
+ Instead of reading a polynomial that could run to millions of terms, the verifier evaluates both sides at a single random point and compares. Thanks to the numbers from Fig. 3, that isn't really a gamble at all — **this is the soundness argument underneath Groth16, PLONK, and STARKs**, the same shortcut this lesson just built from a line and a curve.
++
++<KeyTakeaways>
++
++- A degree-$d$ polynomial can have at most $d$ roots — never more, no matter which polynomial it is.
++- Two different polynomials can only agree at a limited number of points, bounded by their degree.
++- The Schwartz-Zippel lemma: checking two different degree-$d$ polynomials at one random point gives a false-match probability of at most $d / |F|$.
++- Over a field the size real ZK systems use (roughly $2^{254}$), that false-match probability is far smaller than picking one atom out of the observable universe.
++- This is why a verifier can check one random point instead of reading an entire polynomial — the soundness argument underneath Groth16, PLONK, and STARKs.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/subgroups-cosets-roots-of-unity.mdx b/src/content/lessons/subgroups-cosets-roots-of-unity.mdx
+index e27d3ef..e023336 100644
+--- a/src/content/lessons/subgroups-cosets-roots-of-unity.mdx
++++ b/src/content/lessons/subgroups-cosets-roots-of-unity.mdx
+@@ -21,6 +21,7 @@ import RootsOfUnityFigure from "../../components/figures/RootsOfUnityFigure.astr
+ import VanishingPolynomialFigure from "../../components/figures/VanishingPolynomialFigure.astro";
+ import QuotientTrickFigure from "../../components/figures/QuotientTrickFigure.astro";
+ import DomainToolsSummaryFigure from "../../components/figures/DomainToolsSummaryFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ Last time added three number-theory tools: Euclid, the Chinese Remainder Theorem, and Euler. **This lesson looks at the structure inside a finite field itself** — how a group can contain smaller groups, how those smaller groups slice the big one into equal pieces, and how one special set of numbers, the roots of unity, becomes the "domain" that modern proof systems actually work on. One small example carries the whole lesson: the prime $13$.
+ 
+@@ -139,3 +140,14 @@ So where does all of this appear in practice?
+ </Figure>
+ 
+ Subgroup sizes must divide $p - 1$, so proof systems pick primes where $p - 1$ has a large power of $2$ — that's why the field gets chosen the way it does. Roots of unity become the evaluation domain: the exact points circuits and FFTs use. And cosets, together with the vanishing polynomial, are how a system checks that a polynomial is zero across a whole shifted copy of the domain — many checks folded into one. A small domain, in other words, is a very big shortcut. Next up: quadratic residues and square roots.
++
++<KeyTakeaways>
++
++- A cyclic group's generator reaches every element through its powers before cycling back to $1$; the number of steps is the group's order.
++- Every divisor of the group's size produces a subgroup, built by raising the generator to (group size ÷ divisor).
++- Cosets — shifted copies of a subgroup — tile the whole group into equal, non-overlapping slices.
++- Lagrange's theorem: a subgroup's size always divides the group's size; applied to a single element's order, this is exactly Fermat's little theorem from Topic 5.
++- Roots of unity are the subgroup whose elements satisfy $x^n \equiv 1$, and the vanishing polynomial $Z(x) = x^n - 1$ is zero exactly on that domain and nowhere else.
++- The quotient trick — checking whether $Z(x)$ divides a polynomial with zero remainder — replaces checking every domain point individually with a single division.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/variables-expressions-equations.mdx b/src/content/lessons/variables-expressions-equations.mdx
+index bc10f48..e18b13a 100644
+--- a/src/content/lessons/variables-expressions-equations.mdx
++++ b/src/content/lessons/variables-expressions-equations.mdx
+@@ -17,6 +17,7 @@ import Figure from "../../components/Figure.astro";
+ import VariableBoxFigure from "../../components/figures/VariableBoxFigure.astro";
+ import EquationBalanceFigure from "../../components/figures/EquationBalanceFigure.astro";
+ import FunctionRelationFigure from "../../components/figures/FunctionRelationFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ 
+ This one looks almost too simple to deserve its own lesson. It isn't. **Every cryptographic protocol and every ZK circuit, underneath all the theory, is a pile of variables tied together with equations** — look inside any real circuit and that's all you'll find: named values and the constraints that relate them. Modular arithmetic, finite fields, polynomial commitments — all of it is this same idea, just dressed up. So before any of that, it's worth being precise about what a variable, an expression, and an equation actually are.
+ 
+@@ -121,3 +122,13 @@ Pull these three ideas together and the earlier example from this track's introd
+ $$x \cdot x = 25$$
+ 
+ That's an equation. $x$ is a variable — the box that stays shut. $x \cdot x$ is the expression describing what gets checked. A zero-knowledge proof is a way to convince someone this equation holds **for some value inside that box, without ever opening it**. Strip away the cryptography and what's left is exactly what this lesson covered: a named value, a calculation, and a claim of equality. Everything from here — modular arithmetic, finite fields, polynomial constraints — is this same shape, scaled up.
++
++<KeyTakeaways>
++
++- A variable is a labeled box holding a value — exactly the role a secret value plays in a ZK proof: named, but never opened.
++- An expression is a calculation with no equals sign; an equation claims two expressions are equal.
++- Solving an equation means isolating the variable; verifying means plugging the answer back in — the solve-then-verify pattern every proof system relies on.
++- An equation in two variables ($y = x + 10$) is a single constraint: feed in $x$, the equation determines $y$ — the exact building block a real circuit chains millions of.
++- $x \cdot x = 25$ is this track's running example: a named value, a calculation, and a claim of equality — nothing more, and nothing a ZK proof can't eventually handle at scale.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/zk-math-introduction.mdx b/src/content/lessons/zk-math-introduction.mdx
+index 23abbb2..2e2b183 100644
+--- a/src/content/lessons/zk-math-introduction.mdx
++++ b/src/content/lessons/zk-math-introduction.mdx
+@@ -13,6 +13,7 @@ nextHref: "/learn/math/variables-expressions-equations"
+ import MathBox from "../../components/MathBox.astro";
+ import TopicCard from "../../components/TopicCard.astro";
+ import Figure from "../../components/Figure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
+ import ZKRevealFigure from "../../components/figures/ZKRevealFigure.astro";
+ import CyclicGroupFigure from "../../components/figures/CyclicGroupFigure.astro";
+ import EllipticCurveFigure from "../../components/figures/EllipticCurveFigure.astro";
+@@ -216,3 +217,13 @@ The exact curve used to generate Bitcoin and Ethereum key pairs. Pick a point on
+ </MathBox>
+ 
+ None of this has to click on the first pass. Finite fields and polynomial commitments take more than one look for almost everyone. This track works through the nine ideas above one lesson at a time, starting with modular arithmetic next, and keeps tying each one back to the cryptography and zero-knowledge systems that actually use it. Once the math stops being abstract and turns into something you can point to inside a real protocol, **the rest of ZK gets a lot easier to follow**.
++
++<KeyTakeaways>
++
++- The math, not the code, is what actually slows people down learning ZK — this track builds it from the ground up across nine ideas.
++- Zero-knowledge proofs let one side convince another a statement is true (e.g. "I'm over 18") without revealing why it's true.
++- A single equation like $x \cdot x = 25$ already touches algebra, finite fields, and polynomials — the same shape a real circuit uses at a much larger scale.
++- The nine ideas: arithmetic & algebra, number theory, modular arithmetic, finite fields, polynomial mathematics, linear algebra, probability, group theory, elliptic curves.
++- Finite fields remove the ambiguity plain integers have — $x \cdot x = 25$ has two solutions over the integers, but exactly one once evaluated inside a fixed modulus.
++
++</KeyTakeaways>
+diff --git a/src/styles/components.css b/src/styles/components.css
+index 2d80d30..8b0ef8b 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -1427,6 +1427,53 @@ a.sb-item:hover {
+   border-top: 1px solid var(--card-border);
+ }
+ 
++/* ---------- Key takeaways (lesson closer) ---------- */
++.key-takeaways {
++  background: var(--card);
++  border: 1px solid var(--card-border);
++  border-left: 3px solid var(--accent);
++  border-radius: 10px;
++  padding: 18px 22px;
++  margin: 36px 0 4px;
++  max-width: 680px;
++}
++
++.key-takeaways-label {
++  font-weight: 700;
++  letter-spacing: 0.08em;
++  text-transform: uppercase;
++  color: var(--accent);
++  font-size: 11px;
++  margin-bottom: 12px;
++}
++
++.key-takeaways-body ul {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: grid;
++  gap: 10px;
++}
++
++.lesson-article .key-takeaways-body li {
++  position: relative;
++  padding-left: 20px;
++  color: var(--text-soft);
++  font-size: 14px;
++  line-height: 1.6;
++}
++
++.key-takeaways-body li::before {
++  content: "";
++  position: absolute;
++  left: 2px;
++  top: 7px;
++  width: 6px;
++  height: 6px;
++  border-radius: 50%;
++  background: var(--accent);
++}
++
+ /* ---------- Prev / next lesson nav ---------- */
+ .prevnext {
+   display: flex;

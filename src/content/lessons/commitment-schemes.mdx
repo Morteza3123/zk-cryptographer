@@ -21,6 +21,7 @@ import PedersenCommitmentFigure from "../../components/figures/PedersenCommitmen
 import BlindingFactorFigure from "../../components/figures/BlindingFactorFigure.astro";
 import KZGCommitmentFigure from "../../components/figures/KZGCommitmentFigure.astro";
 import CommitOrderFigure from "../../components/figures/CommitOrderFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson showed a hash replacing a live verifier with a single computation. **This lesson tackles a different problem entirely: how does someone lock in a value now, prove later they never changed it, while keeping that value completely secret the whole time in between?** That's a commitment scheme — the second building block, alongside hashing, that almost every ZK proof system is built from.
 
@@ -97,3 +98,13 @@ Here's how commitments and the Fiat-Shamir transform from the last lesson fit to
 </Figure>
 
 The prover commits to their polynomials **first** — those are sealed by binding. Only *then* does the random challenge get generated, as $c = H(\text{commitments})$, straight from the Fiat-Shamir transform built last lesson. **Commit before seeing the question.** This exact ordering — commit, then challenge — is what stops a prover from cheating in Groth16, PLONK, and KZG alike.
+
+<KeyTakeaways>
+
+- A commitment scheme locks in a value now, like a sealed envelope, and lets you prove later you never changed it, while staying secret in between.
+- Two promises have to hold together: hiding ($C$ alone reveals nothing about $m$) and binding (it can never later be opened to a different $m$).
+- The Pedersen commitment, $C = g \cdot m + h \cdot r$, uses a random blinding factor $r$ so the same message commits to a different-looking $C$ every time.
+- KZG commits to an entire polynomial, compressing it down to a single curve point, and opens it at a random location using the pairings built two lessons back.
+- Commit before the challenge exists — this exact ordering, commit then challenge via Fiat-Shamir, is what stops a prover from cheating in Groth16, PLONK, and KZG.
+
+</KeyTakeaways>

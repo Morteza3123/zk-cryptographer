@@ -21,6 +21,7 @@ import RootsOfUnityFigure from "../../components/figures/RootsOfUnityFigure.astr
 import VanishingPolynomialFigure from "../../components/figures/VanishingPolynomialFigure.astro";
 import QuotientTrickFigure from "../../components/figures/QuotientTrickFigure.astro";
 import DomainToolsSummaryFigure from "../../components/figures/DomainToolsSummaryFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Last time added three number-theory tools: Euclid, the Chinese Remainder Theorem, and Euler. **This lesson looks at the structure inside a finite field itself** — how a group can contain smaller groups, how those smaller groups slice the big one into equal pieces, and how one special set of numbers, the roots of unity, becomes the "domain" that modern proof systems actually work on. One small example carries the whole lesson: the prime $13$.
 
@@ -139,3 +140,14 @@ So where does all of this appear in practice?
 </Figure>
 
 Subgroup sizes must divide $p - 1$, so proof systems pick primes where $p - 1$ has a large power of $2$ — that's why the field gets chosen the way it does. Roots of unity become the evaluation domain: the exact points circuits and FFTs use. And cosets, together with the vanishing polynomial, are how a system checks that a polynomial is zero across a whole shifted copy of the domain — many checks folded into one. A small domain, in other words, is a very big shortcut. Next up: quadratic residues and square roots.
+
+<KeyTakeaways>
+
+- A cyclic group's generator reaches every element through its powers before cycling back to $1$; the number of steps is the group's order.
+- Every divisor of the group's size produces a subgroup, built by raising the generator to (group size ÷ divisor).
+- Cosets — shifted copies of a subgroup — tile the whole group into equal, non-overlapping slices.
+- Lagrange's theorem: a subgroup's size always divides the group's size; applied to a single element's order, this is exactly Fermat's little theorem from Topic 5.
+- Roots of unity are the subgroup whose elements satisfy $x^n \equiv 1$, and the vanishing polynomial $Z(x) = x^n - 1$ is zero exactly on that domain and nowhere else.
+- The quotient trick — checking whether $Z(x)$ divides a polynomial with zero remainder — replaces checking every domain point individually with a single division.
+
+</KeyTakeaways>

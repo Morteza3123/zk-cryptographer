@@ -19,6 +19,7 @@ import FieldInverseTableFigure from "../../components/figures/FieldInverseTableF
 import FieldPrimalityFigure from "../../components/figures/FieldPrimalityFigure.astro";
 import CircuitFieldElementFigure from "../../components/figures/CircuitFieldElementFigure.astro";
 import FieldSizeComparisonFigure from "../../components/figures/FieldSizeComparisonFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last two lessons built modular addition, subtraction, multiplication, and — through modular inverses — division. **Today all four get packaged into one idea with a name**: a finite field.
 
@@ -99,3 +100,13 @@ $GF(7)$ has $7$ elements — trivial to search by hand. The BN254 field has roug
 </MathBox>
 
 Addition, subtraction, multiplication, division, all closed, all built on a single prime — that's the entire structure a Circom circuit runs on. The next lessons build on top of it: **polynomials**, which turn a field's numbers into something that can encode an entire computation at once.
+
+<KeyTakeaways>
+
+- A field is a set where $+, -, \times, \div$ all stay inside the set, with division by zero the one universal exception.
+- $GF(p)$ is $\{0, 1, \ldots, p-1\}$ with every operation done mod $p$ — the finite version of a field.
+- Closure is the defining property: no operation on elements of the field can ever produce a result outside it.
+- $p$ has to be prime, because division requires every nonzero element to have a modular inverse — one missing inverse disqualifies the whole set.
+- Every signal in a Circom circuit is literally an element of $GF(p)$ for the BN254 prime — a field with roughly $2^{254}$ elements, built from the exact same structure as a field as small as $GF(7)$.
+
+</KeyTakeaways>

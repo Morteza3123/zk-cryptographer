@@ -20,6 +20,7 @@ import OneWayHashFigure from "../../components/figures/OneWayHashFigure.astro";
 import CollisionResistanceFigure from "../../components/figures/CollisionResistanceFigure.astro";
 import RandomOracleFigure from "../../components/figures/RandomOracleFigure.astro";
 import FiatShamirFigure from "../../components/figures/FiatShamirFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 This series has spent thirteen lessons building up numbers, polynomials, fields, groups, and curves. **This lesson steps outside algebra entirely** — into a tool that doesn't come from any of that machinery, yet shows up everywhere in ZK anyway: the hash function. By the end, the goal is to see exactly how it turns a live, back-and-forth conversation between a prover and a verifier into something a prover can do completely alone.
 
@@ -88,3 +89,13 @@ The hash **plays the verifier's role**. Because it behaves like a random oracle,
 </MathBox>
 
 That one substitution — a hash standing in for a verifier's random coin flip — **is what turns an interactive proof into something a prover can run alone**, and it's the trick underneath every non-interactive proof system that follows.
+
+<KeyTakeaways>
+
+- A hash function maps any-length input to a fixed-length output, and is deterministic, fixed-size, and one-way.
+- Collision resistance means finding any two different inputs that hash to the same output must be infeasible to find, even though collisions mathematically exist.
+- The random oracle model treats a hash function as a box handing out fresh randomness for a new input, and that same stored answer again for a repeated one.
+- The Fiat-Shamir transform replaces a verifier's random challenge with $c = H(\text{transcript})$, letting the prover derive it alone.
+- That substitution turns a live, interactive proof into something a prover can run entirely alone — the trick underneath every non-interactive proof system.
+
+</KeyTakeaways>

@@ -24,6 +24,7 @@ import CRTFormulaFigure from "../../components/figures/CRTFormulaFigure.astro";
 import EulerTotientFigure from "../../components/figures/EulerTotientFigure.astro";
 import EulerTheoremFigure from "../../components/figures/EulerTheoremFigure.astro";
 import BridgeToolsSummaryFigure from "../../components/figures/BridgeToolsSummaryFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Topic 5 found modular inverses by brute force, and promised a shortcut for huge primes in Fermat's little theorem. **This lesson delivers the other half of that promise** — a fast way to find the gcd and the inverse for *any* modulus, not only a prime one — and then builds two more tools, the Chinese Remainder Theorem and Euler's theorem, that lean on exactly that machinery.
 
@@ -176,3 +177,13 @@ Three tools, each building on the last: Euclid's algorithm for a fast gcd and in
 </Figure>
 
 Every one of these is really a statement about the structure hiding underneath modular arithmetic — the sets of numbers that behave consistently under multiplication. Making that structure explicit, with groups, subgroups, cosets, and roots of unity, is exactly where the next lessons go.
+
+<KeyTakeaways>
+
+- Euclid's algorithm finds the gcd in roughly $\log(n)$ steps by repeatedly replacing a pair of numbers with a smaller pair sharing the same gcd.
+- Running Euclid's steps backwards — the extended Euclidean algorithm — finds the modular inverse directly, with no brute-force search.
+- An inverse exists exactly when $\gcd(a, n) = 1$, which is automatic for every nonzero value whenever $n$ is prime.
+- The Chinese Remainder Theorem combines two congruences with pairwise-coprime moduli into one answer, using a direct formula built from these same fast inverses.
+- Euler's theorem ($a^{\varphi(n)} \equiv 1 \pmod n$) generalizes Fermat's little theorem to any modulus — Fermat's is just its prime special case.
+
+</KeyTakeaways>

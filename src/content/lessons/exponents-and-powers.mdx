@@ -16,6 +16,7 @@ import MathBox from "../../components/MathBox.astro";
 import Figure from "../../components/Figure.astro";
 import PowerAnatomyFigure from "../../components/figures/PowerAnatomyFigure.astro";
 import PowerGrowthFigure from "../../components/figures/PowerGrowthFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 "256-bit security." "SHA-256." "$2^{128}$ possible keys." "$x^2 = 25$." Every one of those phrases is a power in disguise, and **cryptography is saturated with them** — not as decoration, but because repeated multiplication is one of the few operations that gets hard to undo fast enough to be useful for security. Before going further into this track, powers need to stop being a vague memory from school and start being something you can read fluently.
 
@@ -112,3 +113,13 @@ Raising a power to another power multiplies the exponents.
 </MathBox>
 
 None of these need to be memorized as abstract rules — they fall straight out of what a power already means: a count of repeated multiplications, which is easy to add, subtract, or scale. **Number theory, polynomials, and elliptic curves all lean on this same exponent arithmetic**, so it's worth being quick with it before those topics arrive.
+
+<KeyTakeaways>
+
+- A power is repeated multiplication written compactly: a base, multiplied by itself as many times as the exponent says.
+- Powers of two grow far faster than intuition suggests — $2^{128} \approx 3.4 \times 10^{38}$, which is what "128-bit security" actually means.
+- That growth is the entire reason brute force fails: even a trillion guesses a second can't search a 128-bit space before the sun burns out.
+- Three rules fall straight out of what a power means: multiplying same-base powers adds exponents, dividing subtracts them, raising a power to a power multiplies them.
+- Number theory, polynomials, and elliptic curves all lean on this same exponent arithmetic later in the track.
+
+</KeyTakeaways>

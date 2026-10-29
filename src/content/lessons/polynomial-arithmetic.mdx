@@ -20,6 +20,7 @@ import PolynomialMultiplyFigure from "../../components/figures/PolynomialMultipl
 import PolynomialMultiplyFieldFigure from "../../components/figures/PolynomialMultiplyFieldFigure.astro";
 import PolynomialDivideFigure from "../../components/figures/PolynomialDivideFigure.astro";
 import PolynomialZKDivisionFigure from "../../components/figures/PolynomialZKDivisionFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 The last lesson covered what a polynomial is. **This one covers what you can do with it** — adding, subtracting, multiplying, and dividing polynomials, which turns out to be exactly the same journey plain numbers took a few lessons back, just one level up.
 
@@ -106,3 +107,13 @@ That connection between roots and clean division is the entire reason this opera
 </Figure>
 
 $p(x) \div (x - \text{root})$ leaves a remainder of $0$ **if and only if** that value really is a root of $p(x)$ — a zero remainder means a valid computation, a nonzero one means it isn't. **This exact check is how a QAP verifies a ZK witness**: not by recomputing everything, just by confirming one polynomial division comes out clean.
+
+<KeyTakeaways>
+
+- Adding or subtracting polynomials means combining the coefficients on matching powers of $x$.
+- Multiplying polynomials means every term in one multiplies every term in the other, then the products get combined.
+- Division runs the same long-division process plain numbers do: divide the leading terms, multiply back, subtract, repeat.
+- Over a finite field, every coefficient gets reduced mod $p$ after the arithmetic, exactly like any other number in $GF(p)$.
+- $p(x) \div (x - \text{root})$ leaves remainder $0$ if and only if that value really is a root — the exact check a QAP uses to verify a ZK witness.
+
+</KeyTakeaways>

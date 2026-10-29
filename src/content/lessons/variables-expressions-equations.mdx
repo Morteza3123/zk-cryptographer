@@ -17,6 +17,7 @@ import Figure from "../../components/Figure.astro";
 import VariableBoxFigure from "../../components/figures/VariableBoxFigure.astro";
 import EquationBalanceFigure from "../../components/figures/EquationBalanceFigure.astro";
 import FunctionRelationFigure from "../../components/figures/FunctionRelationFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 This one looks almost too simple to deserve its own lesson. It isn't. **Every cryptographic protocol and every ZK circuit, underneath all the theory, is a pile of variables tied together with equations** — look inside any real circuit and that's all you'll find: named values and the constraints that relate them. Modular arithmetic, finite fields, polynomial commitments — all of it is this same idea, just dressed up. So before any of that, it's worth being precise about what a variable, an expression, and an equation actually are.
 
@@ -121,3 +122,13 @@ Pull these three ideas together and the earlier example from this track's introd
 $$x \cdot x = 25$$
 
 That's an equation. $x$ is a variable — the box that stays shut. $x \cdot x$ is the expression describing what gets checked. A zero-knowledge proof is a way to convince someone this equation holds **for some value inside that box, without ever opening it**. Strip away the cryptography and what's left is exactly what this lesson covered: a named value, a calculation, and a claim of equality. Everything from here — modular arithmetic, finite fields, polynomial constraints — is this same shape, scaled up.
+
+<KeyTakeaways>
+
+- A variable is a labeled box holding a value — exactly the role a secret value plays in a ZK proof: named, but never opened.
+- An expression is a calculation with no equals sign; an equation claims two expressions are equal.
+- Solving an equation means isolating the variable; verifying means plugging the answer back in — the solve-then-verify pattern every proof system relies on.
+- An equation in two variables ($y = x + 10$) is a single constraint: feed in $x$, the equation determines $y$ — the exact building block a real circuit chains millions of.
+- $x \cdot x = 25$ is this track's running example: a named value, a calculation, and a claim of equality — nothing more, and nothing a ZK proof can't eventually handle at scale.
+
+</KeyTakeaways>

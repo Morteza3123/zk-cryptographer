@@ -22,6 +22,7 @@ import PerfectHidingFigure from "../../components/figures/PerfectHidingFigure.as
 import SecurityTypesFigure from "../../components/figures/SecurityTypesFigure.astro";
 import SimulationArgumentFigure from "../../components/figures/SimulationArgumentFigure.astro";
 import ThreePromisesFigure from "../../components/figures/ThreePromisesFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
 
 Sixteen lessons have built numbers, polynomials, fields, groups, curves, pairings, hashes, commitments, and Merkle trees. **This lesson adds the last idea: how do you measure a secret, and what does it actually mean for a proof to reveal nothing?** The tool is entropy. Once it's measurable, "zero-knowledge" stops being a slogan and becomes something you can check.
 
@@ -114,3 +115,13 @@ Put all of this together, and every proof system built across this series — Gr
 Completeness: if the statement is true and the prover is honest, the verifier always accepts — built from polynomial division with zero remainder and the pairing equation. Soundness: if the statement is false, a cheating prover gets caught except with negligible probability — built from Schwartz-Zippel and binding commitments. Zero-knowledge: the verifier learns nothing except that the statement is true — built from random blinding factors and the simulator this lesson just walked through.
 
 That's the full arc of this series, from modular arithmetic to these three guarantees. Complete, sound, and zero-knowledge — no longer a slogan, but something you can now measure and check.
+
+<KeyTakeaways>
+
+- Entropy measures how many yes/no questions it takes to pin down an unknown secret, counted in bits.
+- Entropy depends on the odds, not just the count — a predictable secret is weak even with many possible values, and uniform randomness maximizes it.
+- A hash only hides a secret as well as the secret's own entropy allows — a 4-digit PIN is broken in moments once its hash is public, a 256-bit random value never is.
+- The Pedersen commitment hides perfectly (information-theoretic security, safe against unlimited computing power) but binds only computationally (depends on the discrete log problem staying hard).
+- The simulation argument — a fake transcript indistinguishable from a real one, built without the secret — is the formal meaning of zero-knowledge, completing this series' three promises: completeness, soundness, and zero-knowledge.
+
+</KeyTakeaways>
