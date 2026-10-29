@@ -76,7 +76,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Modular Arithmetic",
       items: [
         { num: "04", title: "Modular Arithmetic", duration: "5:22", slug: "modular-arithmetic" },
-        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:31", slug: "modular-inverses-fermats" },
+        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:02", slug: "modular-inverses-fermats" },
         { num: "06", title: "Finite Fields", duration: "4:08", slug: "finite-fields" },
       ],
     },
@@ -100,37 +100,37 @@ export const lessonManifest: Record<string, LessonModule[]> = {
     {
       module: "Hash Functions",
       items: [
-        { num: "14", title: "Hash Functions & Random Oracles", duration: "4:02", slug: "hash-functions-random-oracles" },
+        { num: "14", title: "Hash Functions & Random Oracles", duration: "3:59", slug: "hash-functions-random-oracles" },
       ],
     },
     {
       module: "Commitments",
       items: [
-        { num: "15", title: "Commitment Schemes", duration: "5:43", slug: "commitment-schemes" },
+        { num: "15", title: "Commitment Schemes", duration: "5:58", slug: "commitment-schemes" },
       ],
     },
     {
       module: "Merkle Trees",
       items: [
-        { num: "16", title: "Merkle Trees & Vector Commitments", duration: "16:00", slug: "merkle-trees-vector-commitments" },
+        { num: "16", title: "Merkle Trees & Vector Commitments", duration: "12:43", slug: "merkle-trees-vector-commitments" },
       ],
     },
     {
       module: "Entropy",
       items: [
-        { num: "17", title: "Information Theory & Entropy", duration: "12:45", slug: "information-theory-entropy" },
+        { num: "17", title: "Information Theory & Entropy", duration: "7:07", slug: "information-theory-entropy" },
       ],
     },
     {
       module: "The Bridge",
       items: [
-        { num: "18", title: "Euclid, CRT & Euler", duration: "18:15", slug: "euclid-crt-euler" },
+        { num: "18", title: "Euclid, CRT & Euler", duration: "13:28", slug: "euclid-crt-euler" },
       ],
     },
     {
       module: "Roots of Unity",
       items: [
-        { num: "19", title: "Subgroups, Cosets & Roots of Unity", duration: "15:15", slug: "subgroups-cosets-roots-of-unity" },
+        { num: "19", title: "Subgroups, Cosets & Roots of Unity", duration: "12:14", slug: "subgroups-cosets-roots-of-unity" },
       ],
     },
   ],

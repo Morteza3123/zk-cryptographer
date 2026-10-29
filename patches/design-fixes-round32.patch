@@ -1,0 +1,148 @@
+diff --git a/src/content/lessons/commitment-schemes.mdx b/src/content/lessons/commitment-schemes.mdx
+index bd765ac..58f6dce 100644
+--- a/src/content/lessons/commitment-schemes.mdx
++++ b/src/content/lessons/commitment-schemes.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "Commitments"
+ lessonNumber: "15"
+ title: "Commitment Schemes"
+-duration: "5:43"
++duration: "5:58"
+ description: "The second building block alongside hashing that almost every ZK proof system is built from — how to lock in a value now, keep it completely secret, and still prove later you never changed it."
+ order: 15
+ youtubeHref: "https://www.youtube.com/watch?v=UBLUmCA0tQI"
+diff --git a/src/content/lessons/euclid-crt-euler.mdx b/src/content/lessons/euclid-crt-euler.mdx
+index d331cb9..be8379b 100644
+--- a/src/content/lessons/euclid-crt-euler.mdx
++++ b/src/content/lessons/euclid-crt-euler.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "The Bridge"
+ lessonNumber: "18"
+ title: "Euclid, CRT & Euler"
+-duration: "18:15"
++duration: "13:28"
+ description: "A faster way to find the gcd and the inverse for any modulus, not just a prime; how two small congruences combine into one big one through the Chinese Remainder Theorem; and Euler's theorem, the one formula that makes Fermat's little theorem from Topic 5 just its prime special case."
+ order: 18
+ youtubeHref: "https://youtu.be/5dkVbJZWJ0U"
+diff --git a/src/content/lessons/hash-functions-random-oracles.mdx b/src/content/lessons/hash-functions-random-oracles.mdx
+index 4b2223f..607fbda 100644
+--- a/src/content/lessons/hash-functions-random-oracles.mdx
++++ b/src/content/lessons/hash-functions-random-oracles.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "Hash Functions"
+ lessonNumber: "14"
+ title: "Hash Functions & Random Oracles"
+-duration: "4:02"
++duration: "3:59"
+ description: "The tool that doesn't come from algebra at all but shows up everywhere in ZK — how a hash function turns a live back-and-forth between a prover and a verifier into something the prover can do entirely alone."
+ order: 14
+ youtubeHref: "https://www.youtube.com/watch?v=55oVOIype58"
+diff --git a/src/content/lessons/information-theory-entropy.mdx b/src/content/lessons/information-theory-entropy.mdx
+index eacc3b2..f0614d4 100644
+--- a/src/content/lessons/information-theory-entropy.mdx
++++ b/src/content/lessons/information-theory-entropy.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "Entropy"
+ lessonNumber: "17"
+ title: "Information Theory & Entropy"
+-duration: "12:45"
++duration: "7:07"
+ description: "How to measure a secret with entropy, why the Pedersen commitment hides perfectly but binds only computationally, and the simulation argument that turns 'zero-knowledge' from a slogan into something you can check — the final piece of math behind every proof system in this series."
+ order: 17
+ youtubeHref: "https://youtu.be/DSiYjBHIj4w"
+diff --git a/src/content/lessons/merkle-trees-vector-commitments.mdx b/src/content/lessons/merkle-trees-vector-commitments.mdx
+index 4ac9215..9fd70be 100644
+--- a/src/content/lessons/merkle-trees-vector-commitments.mdx
++++ b/src/content/lessons/merkle-trees-vector-commitments.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "Merkle Trees"
+ lessonNumber: "16"
+ title: "Merkle Trees & Vector Commitments"
+-duration: "16:00"
++duration: "12:43"
+ description: "How to lock in a whole list — millions of items — with one short root, prove a single one belongs with a handful of hashes, and let a hidden member prove membership exactly once."
+ order: 16
+ youtubeHref: "https://youtu.be/v5YK7LMho9s"
+diff --git a/src/content/lessons/modular-inverses-fermats.mdx b/src/content/lessons/modular-inverses-fermats.mdx
+index 67b6bfd..70d036f 100644
+--- a/src/content/lessons/modular-inverses-fermats.mdx
++++ b/src/content/lessons/modular-inverses-fermats.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "Modular Arithmetic"
+ lessonNumber: "05"
+ title: "Modular Inverses & Fermat's"
+-duration: "4:31"
++duration: "4:02"
+ description: "What it means to divide inside a modulus, where that operation quietly breaks, and the one theorem that turns a slow brute-force search into a single exponentiation — the same trick every Circom division constraint runs underneath."
+ order: 5
+ youtubeHref: "https://www.youtube.com/watch?v=P5W-Hhoe5IE"
+diff --git a/src/content/lessons/subgroups-cosets-roots-of-unity.mdx b/src/content/lessons/subgroups-cosets-roots-of-unity.mdx
+index 7e42415..e27d3ef 100644
+--- a/src/content/lessons/subgroups-cosets-roots-of-unity.mdx
++++ b/src/content/lessons/subgroups-cosets-roots-of-unity.mdx
+@@ -3,7 +3,7 @@ track: math
+ module: "Roots of Unity"
+ lessonNumber: "19"
+ title: "Subgroups, Cosets & Roots of Unity"
+-duration: "15:15"
++duration: "12:14"
+ description: "How a cyclic group hides smaller groups inside it, why every subgroup's size has to divide the group's size, and how one special subgroup — the roots of unity — becomes the evaluation domain every proof system runs its polynomials over, checked all at once by a single vanishing polynomial."
+ order: 19
+ youtubeHref: "https://youtu.be/tUQG_7wRDFo"
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index eb784b9..62a7bc0 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -76,7 +76,7 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+       module: "Modular Arithmetic",
+       items: [
+         { num: "04", title: "Modular Arithmetic", duration: "5:22", slug: "modular-arithmetic" },
+-        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:31", slug: "modular-inverses-fermats" },
++        { num: "05", title: "Modular Inverses & Fermat's", duration: "4:02", slug: "modular-inverses-fermats" },
+         { num: "06", title: "Finite Fields", duration: "4:08", slug: "finite-fields" },
+       ],
+     },
+@@ -100,37 +100,37 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+     {
+       module: "Hash Functions",
+       items: [
+-        { num: "14", title: "Hash Functions & Random Oracles", duration: "4:02", slug: "hash-functions-random-oracles" },
++        { num: "14", title: "Hash Functions & Random Oracles", duration: "3:59", slug: "hash-functions-random-oracles" },
+       ],
+     },
+     {
+       module: "Commitments",
+       items: [
+-        { num: "15", title: "Commitment Schemes", duration: "5:43", slug: "commitment-schemes" },
++        { num: "15", title: "Commitment Schemes", duration: "5:58", slug: "commitment-schemes" },
+       ],
+     },
+     {
+       module: "Merkle Trees",
+       items: [
+-        { num: "16", title: "Merkle Trees & Vector Commitments", duration: "16:00", slug: "merkle-trees-vector-commitments" },
++        { num: "16", title: "Merkle Trees & Vector Commitments", duration: "12:43", slug: "merkle-trees-vector-commitments" },
+       ],
+     },
+     {
+       module: "Entropy",
+       items: [
+-        { num: "17", title: "Information Theory & Entropy", duration: "12:45", slug: "information-theory-entropy" },
++        { num: "17", title: "Information Theory & Entropy", duration: "7:07", slug: "information-theory-entropy" },
+       ],
+     },
+     {
+       module: "The Bridge",
+       items: [
+-        { num: "18", title: "Euclid, CRT & Euler", duration: "18:15", slug: "euclid-crt-euler" },
++        { num: "18", title: "Euclid, CRT & Euler", duration: "13:28", slug: "euclid-crt-euler" },
+       ],
+     },
+     {
+       module: "Roots of Unity",
+       items: [
+-        { num: "19", title: "Subgroups, Cosets & Roots of Unity", duration: "15:15", slug: "subgroups-cosets-roots-of-unity" },
++        { num: "19", title: "Subgroups, Cosets & Roots of Unity", duration: "12:14", slug: "subgroups-cosets-roots-of-unity" },
+       ],
+     },
+   ],
