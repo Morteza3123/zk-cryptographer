@@ -1,14 +1,23 @@
 ---
 // A labeled callout for a definition/theorem used inside lesson and post
-// MDX content. The formula itself is written as ordinary $...$/$$...$$
-// math in the slot — remark-math + rehype-katex render it to real KaTeX,
-// so this component only supplies the chrome (label + box).
+// MDX content. Formulas are written as ordinary $...$/$$...$$ math —
+// remark-math + rehype-katex render them to real KaTeX, so this component
+// mostly supplies the chrome (label + box).
+//
+// The optional `formula` slot is for a box that leads with one standalone
+// display formula: putting it there (instead of the default slot, where
+// the prose goes) gives it its own bordered panel, visually separated
+// from the description underneath — easier to read at a glance than a
+// formula and its explanation sitting in the same block of text. A box
+// that doesn't use the slot renders exactly as before.
 interface Props {
   label: string;
 }
 const { label } = Astro.props;
+const hasFormula = Astro.slots.has("formula");
 ---
-<div class="math-box">
+<div class={`math-box ${hasFormula ? "has-formula" : ""}`}>
   <div class="math-box-label">{label}</div>
+  {hasFormula && <div class="math-box-formula"><slot name="formula" /></div>}
   <div class="math-box-body"><slot /></div>
 </div>

@@ -37,7 +37,11 @@ Checking every number up to $n$ for a shared factor works, but it's slow. Euclid
 
 <MathBox label="Euclid's algorithm">
 
+<div slot="formula">
+
 $$\gcd(a, b) = \gcd(b, a \bmod b)$$
+
+</div>
 
 Divide $a$ by $b$, keep the remainder, and repeat with the smaller pair. The **last nonzero remainder** is the gcd. Each step at least halves the numbers, so the whole chain finishes in roughly $\log(n)$ steps — fast enough for the 254-bit numbers this series actually uses.
 
@@ -63,7 +67,11 @@ Running Euclid forward finds *that* an inverse exists. Running the same three li
 
 <MathBox label="The extended Euclidean algorithm">
 
+<div slot="formula">
+
 $$a x + n y = \gcd(a, n)$$
+
+</div>
 
 Back-substitution finds integers $x$ and $y$ satisfying this equation — called **Bézout's identity**. When $\gcd(a, n) = 1$, that equation reads $ax + ny = 1$, which is exactly $ax \equiv 1 \pmod n$: $x$ **is** the inverse, read straight off the last line.
 
@@ -79,7 +87,11 @@ Not every pair cooperates. Check $6 \bmod 9$ against every $x$ from $1$ to $9$, 
 
 <MathBox label="When an inverse exists">
 
+<div slot="formula">
+
 $$\gcd(a, n) = 1$$
+
+</div>
 
 Same condition as Topic 5, now checkable in three division steps instead of a brute-force search of size $n$. With a **prime** modulus this is automatic — every number from $1$ to $p - 1$ shares no factor with $p$ — which is exactly why ZK systems build their field out of a prime.
 
@@ -105,7 +117,11 @@ Searching works for small moduli, but the CRT formula builds the same answer dir
 
 <MathBox label="The CRT formula">
 
+<div slot="formula">
+
 $$x \equiv a_1 M_1 M_1^{-1} + a_2 M_2 M_2^{-1} \pmod{M}$$
+
+</div>
 
 $M = m_1 m_2$, and $M_i = M / m_i$. Because $M_i$ is a multiple of every modulus except $m_i$, the term $a_i M_i M_i^{-1}$ keeps remainder $a_i$ under $m_i$ and vanishes to $0$ under every other modulus — so the sum satisfies every congruence at once.
 
@@ -121,7 +137,11 @@ Euler's theorem — the next and last tool in this lesson — needs one more ide
 
 <MathBox label="Euler's totient function">
 
+<div slot="formula">
+
 $$\varphi(p) = p - 1, \qquad \varphi(p \times q) = (p-1)(q-1)$$
+
+</div>
 
 The first formula holds for any prime $p$ — every nonzero number below it qualifies. The second holds whenever $p$ and $q$ are distinct primes, which is exactly the structure behind an RSA modulus $n = p \times q$.
 
@@ -137,7 +157,11 @@ With $\varphi(n)$ in hand, Euler's theorem generalizes Fermat's little theorem f
 
 <MathBox label="Euler's theorem">
 
+<div slot="formula">
+
 $$a^{\varphi(n)} \equiv 1 \pmod{n}, \qquad \text{whenever } \gcd(a, n) = 1$$
+
+</div>
 
 Set $n$ to a prime $p$: $\varphi(p) = p - 1$, and the statement collapses to $a^{p-1} \equiv 1 \pmod p$ — Fermat's little theorem from Topic 5, now visibly just the prime special case of this more general rule.
 

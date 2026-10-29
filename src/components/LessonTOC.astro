@@ -1,0 +1,31 @@
+---
+// "What you'll learn" jump-list rendered at the top of a lesson, built
+// from the H2 section headings. Astro's markdown pipeline already slugs
+// every heading and exposes it via entry.render()'s `headings` array, so
+// these links just target `#<slug>` directly — no extra plugin needed.
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+interface Props {
+  headings: Heading[];
+}
+const { headings } = Astro.props;
+const sections = headings.filter((h) => h.depth === 2);
+---
+{sections.length > 1 && (
+  <nav class="lesson-toc" aria-label="What you'll learn in this lesson">
+    <div class="lesson-toc-label">What you&rsquo;ll learn</div>
+    <ol class="lesson-toc-list">
+      {sections.map((h, i) => (
+        <li>
+          <a href={`#${h.slug}`}>
+            <span class="lesson-toc-num">{String(i + 1).padStart(2, "0")}</span>
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

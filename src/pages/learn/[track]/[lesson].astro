@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { entry, track } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 const modules = lessonManifest[track.id] ?? [];
 const lessonsInTrack = track.data.lessonCount;
 ---
@@ -36,6 +36,7 @@ const lessonsInTrack = track.data.lessonCount;
   duration={entry.data.duration}
   description={entry.data.description}
   youtubeHref={entry.data.youtubeHref}
+  headings={headings}
   prevTitle={entry.data.prevTitle}
   prevHref={entry.data.prevHref}
   nextTitle={entry.data.nextTitle}

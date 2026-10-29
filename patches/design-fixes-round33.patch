@@ -1,0 +1,377 @@
+diff --git a/src/components/LessonTOC.astro b/src/components/LessonTOC.astro
+new file mode 100644
+index 0000000..7bc63b5
+--- /dev/null
++++ b/src/components/LessonTOC.astro
+@@ -0,0 +1,31 @@
++---
++// "What you'll learn" jump-list rendered at the top of a lesson, built
++// from the H2 section headings. Astro's markdown pipeline already slugs
++// every heading and exposes it via entry.render()'s `headings` array, so
++// these links just target `#<slug>` directly — no extra plugin needed.
++interface Heading {
++  depth: number;
++  slug: string;
++  text: string;
++}
++interface Props {
++  headings: Heading[];
++}
++const { headings } = Astro.props;
++const sections = headings.filter((h) => h.depth === 2);
++---
++{sections.length > 1 && (
++  <nav class="lesson-toc" aria-label="What you'll learn in this lesson">
++    <div class="lesson-toc-label">What you&rsquo;ll learn</div>
++    <ol class="lesson-toc-list">
++      {sections.map((h, i) => (
++        <li>
++          <a href={`#${h.slug}`}>
++            <span class="lesson-toc-num">{String(i + 1).padStart(2, "0")}</span>
++            {h.text}
++          </a>
++        </li>
++      ))}
++    </ol>
++  </nav>
++)}
+diff --git a/src/components/MathBox.astro b/src/components/MathBox.astro
+index 0311cf0..7a79ece 100644
+--- a/src/components/MathBox.astro
++++ b/src/components/MathBox.astro
+@@ -1,14 +1,23 @@
+ ---
+ // A labeled callout for a definition/theorem used inside lesson and post
+-// MDX content. The formula itself is written as ordinary $...$/$$...$$
+-// math in the slot — remark-math + rehype-katex render it to real KaTeX,
+-// so this component only supplies the chrome (label + box).
++// MDX content. Formulas are written as ordinary $...$/$$...$$ math —
++// remark-math + rehype-katex render them to real KaTeX, so this component
++// mostly supplies the chrome (label + box).
++//
++// The optional `formula` slot is for a box that leads with one standalone
++// display formula: putting it there (instead of the default slot, where
++// the prose goes) gives it its own bordered panel, visually separated
++// from the description underneath — easier to read at a glance than a
++// formula and its explanation sitting in the same block of text. A box
++// that doesn't use the slot renders exactly as before.
+ interface Props {
+   label: string;
+ }
+ const { label } = Astro.props;
++const hasFormula = Astro.slots.has("formula");
+ ---
+-<div class="math-box">
++<div class={`math-box ${hasFormula ? "has-formula" : ""}`}>
+   <div class="math-box-label">{label}</div>
++  {hasFormula && <div class="math-box-formula"><slot name="formula" /></div>}
+   <div class="math-box-body"><slot /></div>
+ </div>
+diff --git a/src/components/figures/ExtendedEuclidForwardFigure.astro b/src/components/figures/ExtendedEuclidForwardFigure.astro
+index 9b8f9cb..61e9e41 100644
+--- a/src/components/figures/ExtendedEuclidForwardFigure.astro
++++ b/src/components/figures/ExtendedEuclidForwardFigure.astro
+@@ -8,19 +8,19 @@
+   <text x="380" y="50" text-anchor="middle" fill="#8b96a8" font-size="12" font-style="italic" font-family="-apple-system,Arial,sans-serif">run the same division chain on (26, 7)</text>
+ 
+   <text x="40" y="84" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1</text>
+-  <rect x="640" y="68" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
+-  <text x="680" y="83" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+   <text x="40" y="106" fill="#e9eef5" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">26 = 3 &#215; 7 + <tspan fill="#5ddc8a">5</tspan></text>
++  <rect x="640" y="88" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
++  <text x="680" y="103" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+ 
+   <text x="40" y="148" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2</text>
+-  <rect x="640" y="132" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
+-  <text x="680" y="147" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+   <text x="40" y="170" fill="#e9eef5" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">7 = 1 &#215; 5 + <tspan fill="#5ddc8a">2</tspan></text>
++  <rect x="640" y="152" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
++  <text x="680" y="167" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+ 
+   <text x="40" y="212" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3</text>
+-  <rect x="640" y="196" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
+-  <text x="680" y="211" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+   <text x="40" y="234" fill="#e9eef5" font-size="18" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">5 = 2 &#215; 2 + <tspan fill="#5ddc8a">1</tspan></text>
++  <rect x="640" y="216" width="80" height="22" rx="5" fill="#0d1a12" stroke="#5ddc8a" stroke-width="1" />
++  <text x="680" y="231" text-anchor="middle" fill="#5ddc8a" font-size="11" font-weight="700" font-family="-apple-system,Arial,sans-serif">KEEP</text>
+ 
+   <text x="40" y="276" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 4</text>
+   <text x="40" y="298" fill="#8b96a8" font-size="18" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2 = 2 &#215; 1 + 0</text>
+diff --git a/src/components/figures/GcdEuclidFigure.astro b/src/components/figures/GcdEuclidFigure.astro
+index 0d83bc5..2292831 100644
+--- a/src/components/figures/GcdEuclidFigure.astro
++++ b/src/components/figures/GcdEuclidFigure.astro
+@@ -11,12 +11,12 @@
+   <text x="40" y="94" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1</text>
+   <text x="40" y="118" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">252 = 2 &#215; <tspan fill="#8fdcff">105</tspan> + <tspan fill="#8fdcff">42</tspan></text>
+   <text x="720" y="118" text-anchor="end" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">105 fits in 252 twice (210). Left over: 42.</text>
+-  <path d="M 100 130 C 100 155 60 155 60 178" fill="none" stroke="#8fdcff" stroke-width="1.4" marker-end="url(#ge-arrow)" />
++  <path d="M 100 130 Q 72 152 60 176" fill="none" stroke="#8fdcff" stroke-width="1.4" marker-end="url(#ge-arrow)" />
+ 
+   <text x="40" y="188" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2</text>
+   <text x="40" y="212" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">105 = 2 &#215; <tspan fill="#8fdcff">42</tspan> + <tspan fill="#8fdcff">21</tspan></text>
+   <text x="720" y="212" text-anchor="end" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">42 fits in 105 twice (84). Left over: 21.</text>
+-  <path d="M 90 224 C 90 249 60 249 60 272" fill="none" stroke="#8fdcff" stroke-width="1.4" marker-end="url(#ge-arrow)" />
++  <path d="M 90 224 Q 68 248 60 270" fill="none" stroke="#8fdcff" stroke-width="1.4" marker-end="url(#ge-arrow)" />
+ 
+   <text x="40" y="282" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3</text>
+   <text x="40" y="306" fill="#e9eef5" font-size="19" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">42 = 2 &#215; <tspan fill="#8fdcff">21</tspan> + <tspan fill="#5ddc8a">0</tspan></text>
+diff --git a/src/content/lessons/euclid-crt-euler.mdx b/src/content/lessons/euclid-crt-euler.mdx
+index be8379b..063ddc7 100644
+--- a/src/content/lessons/euclid-crt-euler.mdx
++++ b/src/content/lessons/euclid-crt-euler.mdx
+@@ -37,8 +37,12 @@ Checking every number up to $n$ for a shared factor works, but it's slow. Euclid
+ 
+ <MathBox label="Euclid's algorithm">
+ 
++<div slot="formula">
++
+ $$\gcd(a, b) = \gcd(b, a \bmod b)$$
+ 
++</div>
++
+ Divide $a$ by $b$, keep the remainder, and repeat with the smaller pair. The **last nonzero remainder** is the gcd. Each step at least halves the numbers, so the whole chain finishes in roughly $\log(n)$ steps — fast enough for the 254-bit numbers this series actually uses.
+ 
+ </MathBox>
+@@ -63,8 +67,12 @@ Running Euclid forward finds *that* an inverse exists. Running the same three li
+ 
+ <MathBox label="The extended Euclidean algorithm">
+ 
++<div slot="formula">
++
+ $$a x + n y = \gcd(a, n)$$
+ 
++</div>
++
+ Back-substitution finds integers $x$ and $y$ satisfying this equation — called **Bézout's identity**. When $\gcd(a, n) = 1$, that equation reads $ax + ny = 1$, which is exactly $ax \equiv 1 \pmod n$: $x$ **is** the inverse, read straight off the last line.
+ 
+ </MathBox>
+@@ -79,8 +87,12 @@ Not every pair cooperates. Check $6 \bmod 9$ against every $x$ from $1$ to $9$,
+ 
+ <MathBox label="When an inverse exists">
+ 
++<div slot="formula">
++
+ $$\gcd(a, n) = 1$$
+ 
++</div>
++
+ Same condition as Topic 5, now checkable in three division steps instead of a brute-force search of size $n$. With a **prime** modulus this is automatic — every number from $1$ to $p - 1$ shares no factor with $p$ — which is exactly why ZK systems build their field out of a prime.
+ 
+ </MathBox>
+@@ -105,8 +117,12 @@ Searching works for small moduli, but the CRT formula builds the same answer dir
+ 
+ <MathBox label="The CRT formula">
+ 
++<div slot="formula">
++
+ $$x \equiv a_1 M_1 M_1^{-1} + a_2 M_2 M_2^{-1} \pmod{M}$$
+ 
++</div>
++
+ $M = m_1 m_2$, and $M_i = M / m_i$. Because $M_i$ is a multiple of every modulus except $m_i$, the term $a_i M_i M_i^{-1}$ keeps remainder $a_i$ under $m_i$ and vanishes to $0$ under every other modulus — so the sum satisfies every congruence at once.
+ 
+ </MathBox>
+@@ -121,8 +137,12 @@ Euler's theorem — the next and last tool in this lesson — needs one more ide
+ 
+ <MathBox label="Euler's totient function">
+ 
++<div slot="formula">
++
+ $$\varphi(p) = p - 1, \qquad \varphi(p \times q) = (p-1)(q-1)$$
+ 
++</div>
++
+ The first formula holds for any prime $p$ — every nonzero number below it qualifies. The second holds whenever $p$ and $q$ are distinct primes, which is exactly the structure behind an RSA modulus $n = p \times q$.
+ 
+ </MathBox>
+@@ -137,8 +157,12 @@ With $\varphi(n)$ in hand, Euler's theorem generalizes Fermat's little theorem f
+ 
+ <MathBox label="Euler's theorem">
+ 
++<div slot="formula">
++
+ $$a^{\varphi(n)} \equiv 1 \pmod{n}, \qquad \text{whenever } \gcd(a, n) = 1$$
+ 
++</div>
++
+ Set $n$ to a prime $p$: $\varphi(p) = p - 1$, and the statement collapses to $a^{p-1} \equiv 1 \pmod p$ — Fermat's little theorem from Topic 5, now visibly just the prime special case of this more general rule.
+ 
+ </MathBox>
+diff --git a/src/layouts/LessonLayout.astro b/src/layouts/LessonLayout.astro
+index 9853b35..f8f09ae 100644
+--- a/src/layouts/LessonLayout.astro
++++ b/src/layouts/LessonLayout.astro
+@@ -1,6 +1,7 @@
+ ---
+ import BaseLayout from "./BaseLayout.astro";
+ import YouTubeEmbed from "../components/YouTubeEmbed.astro";
++import LessonTOC from "../components/LessonTOC.astro";
+ import "katex/dist/katex.min.css";
+ 
+ interface ManifestItem {
+@@ -13,6 +14,11 @@ interface ManifestModule {
+   module: string;
+   items: ManifestItem[];
+ }
++interface Heading {
++  depth: number;
++  slug: string;
++  text: string;
++}
+ interface Props {
+   trackTitle: string;
+   trackHref: string;
+@@ -26,6 +32,7 @@ interface Props {
+   duration: string;
+   description: string;
+   youtubeHref?: string;
++  headings?: Heading[];
+   prevTitle?: string;
+   prevHref?: string;
+   nextTitle?: string;
+@@ -44,6 +51,7 @@ const {
+   duration,
+   description,
+   youtubeHref,
++  headings = [],
+   prevTitle,
+   prevHref,
+   nextTitle,
+@@ -108,6 +116,7 @@ const hasCustomPoster = posterHtml.length > 0;
+       <div class="lesson-title">{lessonNumber}. {title}</div>
+       <div class="lesson-meta">{moduleLabel} · Lesson {Number(lessonNumber) + 1} of {lessonsInTrack} · {duration}</div>
+       <div class="lesson-desc">{description}</div>
++      <LessonTOC headings={headings} />
+       <article class="lesson-article">
+         <slot />
+       </article>
+diff --git a/src/pages/learn/[track]/[lesson].astro b/src/pages/learn/[track]/[lesson].astro
+index 596c290..21bdb32 100644
+--- a/src/pages/learn/[track]/[lesson].astro
++++ b/src/pages/learn/[track]/[lesson].astro
+@@ -18,7 +18,7 @@ export async function getStaticPaths() {
+ }
+ 
+ const { entry, track } = Astro.props;
+-const { Content } = await entry.render();
++const { Content, headings } = await entry.render();
+ const modules = lessonManifest[track.id] ?? [];
+ const lessonsInTrack = track.data.lessonCount;
+ ---
+@@ -36,6 +36,7 @@ const lessonsInTrack = track.data.lessonCount;
+   duration={entry.data.duration}
+   description={entry.data.description}
+   youtubeHref={entry.data.youtubeHref}
++  headings={headings}
+   prevTitle={entry.data.prevTitle}
+   prevHref={entry.data.prevHref}
+   nextTitle={entry.data.nextTitle}
+diff --git a/src/styles/components.css b/src/styles/components.css
+index a430f60..2d80d30 100644
+--- a/src/styles/components.css
++++ b/src/styles/components.css
+@@ -1209,6 +1209,65 @@ a.sb-item:hover {
+   margin-bottom: 8px;
+ }
+ 
++/* ---------- "What you'll learn" jump-list ---------- */
++.lesson-toc {
++  max-width: 680px;
++  margin: 18px 0 8px;
++  padding: 16px 20px;
++  background: var(--card);
++  border: 1px solid var(--card-border);
++  border-radius: var(--radius-md);
++}
++
++.lesson-toc-label {
++  font-weight: 700;
++  letter-spacing: 0.08em;
++  text-transform: uppercase;
++  color: var(--accent);
++  font-size: 11px;
++  margin-bottom: 10px;
++}
++
++.lesson-toc-list {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: grid;
++  gap: 2px;
++}
++
++.lesson-toc-list a {
++  display: flex;
++  align-items: baseline;
++  gap: 10px;
++  padding: 6px 8px;
++  margin: 0 -8px;
++  color: var(--text-soft);
++  font-size: 14px;
++  line-height: 1.5;
++  text-decoration: none;
++  border-radius: 6px;
++  transition: background 0.15s ease, color 0.15s ease;
++}
++
++.lesson-toc-list a:hover,
++.lesson-toc-list a:focus-visible {
++  background: var(--bg-alt);
++  color: var(--accent-light);
++}
++
++.lesson-toc-num {
++  flex: 0 0 auto;
++  color: var(--muted);
++  font-family: "SF Mono", "Fira Code", Consolas, monospace;
++  font-size: 12px;
++  min-width: 17px;
++}
++
++@media (max-width: 640px) {
++  .lesson-toc { padding: 14px 16px; }
++}
++
+ .lesson-article {
+   max-width: 680px;
+   margin-top: 22px;
+@@ -1238,6 +1297,7 @@ a.sb-item:hover {
+   font-size: 22px;
+   line-height: 1.3;
+   margin: 40px 0 16px;
++  scroll-margin-top: 20px;
+ }
+ 
+ .lesson-article h2:first-child {
+@@ -1344,6 +1404,29 @@ a.sb-item:hover {
+   margin: 0;
+ }
+ 
++/* Optional "formula" slot — used when a math box leads with a standalone
++   display formula that should read as visually distinct from the prose
++   underneath it. Boxes that don't use the slot (most inline-math-in-prose
++   ones) are unaffected. */
++.math-box-formula {
++  margin: 2px 0 14px;
++  padding: 14px 18px;
++  background: var(--bg-alt);
++  border: 1px solid var(--card-border);
++  border-radius: var(--radius-sm);
++  color: var(--text);
++  overflow-x: auto;
++}
++
++.math-box-formula .katex-display {
++  margin: 0;
++}
++
++.math-box.has-formula .math-box-body {
++  padding-top: 14px;
++  border-top: 1px solid var(--card-border);
++}
++
+ /* ---------- Prev / next lesson nav ---------- */
+ .prevnext {
+   display: flex;
