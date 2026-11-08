@@ -1,0 +1,34 @@
+---
+// Fig. for "Quadratic Residues & Square Roots": the square test (the
+// Legendre symbol) — raising a to (p − 1) / 2 answers "is a a square mod
+// p?" in one exponentiation, derived from the even/odd-power picture in
+// the previous figure and checked against four example values mod 13.
+---
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">the square test</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Is there a quick test for whether a is a square mod p?</text>
+
+  <rect x="40" y="96" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="122" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">a<tspan dy="-7" font-size="65%">(p&#8722;1)/2</tspan><tspan dy="7"> = 1 if a is a square, &#8722;1 if it is not</tspan></text>
+
+  <text x="380" y="160" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; why it works (p = 13, so the power is 6)</text>
+  <text x="380" y="184" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">write a = 2<tspan dy="-6" font-size="65%">k</tspan><tspan dy="6">. Then a</tspan><tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 2</tspan><tspan dy="-6" font-size="65%">6k</tspan></text>
+  <text x="380" y="208" text-anchor="middle" fill="#c3cedd" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">if k is even, 2<tspan dy="-6" font-size="65%">6k</tspan><tspan dy="6"> = (2</tspan><tspan dy="-6" font-size="65%">12</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">k&#247;2</tspan><tspan dy="6"> = 1</tspan></text>
+  <text x="380" y="232" text-anchor="middle" fill="#c3cedd" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">if k is odd, we get 2<tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 64 = 12 = &#8722;1</tspan></text>
+
+  <line x1="40" y1="250" x2="720" y2="250" stroke="#223049" stroke-width="1" />
+
+  <text x="380" y="276" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; try it</text>
+  <text x="380" y="300" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3<tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 729 = 56 &#215; 13 + 1 = 1 &#10003;  square</tspan></text>
+  <text x="380" y="324" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2<tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 64 = 12 = &#8722;1 &#10007;  not a square</tspan></text>
+  <text x="380" y="348" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">5<tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = (5</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> = (&#8722;1)</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> = &#8722;1 &#10007;  not a square</tspan></text>
+  <text x="380" y="372" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">10<tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = (10</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = (&#8722;1)</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 1 &#10003;  square</tspan></text>
+
+  <text x="380" y="404" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">matches the table: 3 and 10 are squares, 2 and 5 are not &#10003;</text>
+
+  <line x1="40" y1="422" x2="720" y2="422" stroke="#223049" stroke-width="1" />
+  <text x="380" y="448" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ONE POWER TELLS SQUARE FROM NON-SQUARE</text>
+  <text x="380" y="470" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This is the Legendre symbol, written (a / p).</text>
+</svg>

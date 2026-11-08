@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "65", label: "Lessons" },
+    { num: "66", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -131,6 +131,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Roots of Unity",
       items: [
         { num: "19", title: "Subgroups, Cosets & Roots of Unity", duration: "12:14", slug: "subgroups-cosets-roots-of-unity" },
+      ],
+    },
+    {
+      module: "Quadratic Residues",
+      items: [
+        { num: "20", title: "Quadratic Residues & Square Roots", duration: "15:45", slug: "quadratic-residues-square-roots" },
       ],
     },
   ],

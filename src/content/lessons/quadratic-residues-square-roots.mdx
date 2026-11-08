@@ -1,0 +1,180 @@
+---
+track: math
+module: "Quadratic Residues"
+lessonNumber: "20"
+title: "Quadratic Residues & Square Roots"
+duration: "15:45"
+description: "Why some numbers in a finite field have a square root and some don't, a one-exponentiation test for telling them apart, two ways to find the root itself, and how both get used to compress elliptic-curve points and to map arbitrary data onto a curve."
+order: 20
+youtubeHref: "https://youtu.be/vDxcgYwj3Io"
+prevTitle: "Subgroups, Cosets & Roots of Unity"
+prevHref: "/learn/math/subgroups-cosets-roots-of-unity"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import QuadraticResiduesTableFigure from "../../components/figures/QuadraticResiduesTableFigure.astro";
+import SquaresAsEvenPowersFigure from "../../components/figures/SquaresAsEvenPowersFigure.astro";
+import LegendreSquareTestFigure from "../../components/figures/LegendreSquareTestFigure.astro";
+import EasySquareRootFigure from "../../components/figures/EasySquareRootFigure.astro";
+import TonelliShanksFigure from "../../components/figures/TonelliShanksFigure.astro";
+import PointCompressionFigure from "../../components/figures/PointCompressionFigure.astro";
+import HashToCurveFigure from "../../components/figures/HashToCurveFigure.astro";
+import QuadResSummaryFigure from "../../components/figures/QuadResSummaryFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
+
+Last time added subgroups, cosets, and roots of unity. **This lesson asks a question those tools didn't answer: inside a finite field, does every number have a square root?** In ordinary math, yes, always. In a finite field, no — some numbers have two square roots and some have none at all, and ZK systems need to know which is which. One small example carries the whole lesson: the prime $13$.
+
+## Which numbers are squares?
+
+Square every nonzero number from $1$ to $12$ mod $13$, and a pattern shows up immediately: every result appears exactly twice.
+
+<Figure caption="Fig. 1 — squaring every number from 1 to 12 mod 13. Each result appears twice, because x and 13 − x always give the same square, leaving six squares and six non-squares.">
+  <QuadraticResiduesTableFigure />
+</Figure>
+
+<MathBox label="Quadratic residues">
+
+That symmetry isn't a coincidence: $13 - x$ is the same as $-x$ mod $13$, and $(-x)^2$ is just $x^2$. A number that is the square of something is called a **quadratic residue**. Here, exactly six of the twelve nonzero numbers are — half.
+
+</MathBox>
+
+## Squares are the even powers
+
+Topic 19 built this group from a generator, $2$. Looking at squares through that lens explains *why* it's exactly half, not just confirms it.
+
+<Figure caption="Fig. 2 — the powers of 2 mod 13, colored by whether the exponent is even or odd. The even powers are exactly the squares from Fig. 1, and the odd powers are exactly the non-squares.">
+  <SquaresAsEvenPowersFigure />
+</Figure>
+
+<MathBox label="Squares as even powers">
+
+<div slot="formula">
+
+$$(g^j)^2 = g^{2j}$$
+
+</div>
+
+Squaring any power of the generator doubles its exponent, landing on an even power every time. So every square is an even power of $g$, and every even power is a square — splitting the group's twelve elements into six even-power squares and six odd-power non-squares.
+
+</MathBox>
+
+## The square test
+
+Building a full table doesn't scale to a 254-bit prime. One exponentiation does the same job in a single step.
+
+<Figure caption="Fig. 3 — the square test worked through four values mod 13: raising a to (p − 1)/2 gives 1 for a square and −1 for a non-square, matching the table from Fig. 1 exactly.">
+  <LegendreSquareTestFigure />
+</Figure>
+
+<MathBox label="The square test">
+
+<div slot="formula">
+
+$$a^{(p-1)/2} \equiv 1 \pmod p \text{ if } a \text{ is a square, and } -1 \text{ otherwise}$$
+
+</div>
+
+Write $a$ as $g^k$ for the generator $g$. Then $a^{(p-1)/2} = g^{k(p-1)/2}$, and the last section showed this collapses to $1$ when $k$ is even and $-1$ when $k$ is odd — exactly the square / non-square split. This quantity is called the **Legendre symbol**, written $\left(\frac{a}{p}\right)$.
+
+</MathBox>
+
+## An easy square root
+
+The test says whether a root exists. Finding the root itself is just as fast — when the prime has the right shape.
+
+<Figure caption="Fig. 4 — finding √3 mod 11 in one exponentiation, since 11 leaves remainder 3 when divided by 4. Both roots check out, and a short derivation shows why the formula works.">
+  <EasySquareRootFigure />
+</Figure>
+
+<MathBox label="A square root, when p ≡ 3 (mod 4)">
+
+<div slot="formula">
+
+$$\sqrt{a} \equiv a^{(p+1)/4} \pmod p$$
+
+</div>
+
+Squaring this candidate gives $a^{(p+1)/2} = a \cdot a^{(p-1)/2}$, and the square test says that last factor is $1$ whenever $a$ is a square — so the square of the candidate really is $a$. This only works when $p$ leaves remainder $3$ mod $4$; $13$ leaves remainder $1$, so $13$ needs a different tool.
+
+</MathBox>
+
+## When the shortcut fails
+
+For a prime like $13$, the easy formula doesn't apply. The Tonelli–Shanks algorithm handles every prime, by maintaining a guess $R$ and an error term $t$, and fixing the guess until the error disappears.
+
+<Figure caption="Fig. 5 — finding √10 mod 13 with Tonelli–Shanks. R is a running guess satisfying R² = 10 × t; one round of fixing the guess drives the error t to 1, which means R is exact.">
+  <TonelliShanksFigure />
+</Figure>
+
+<MathBox label="Tonelli–Shanks">
+
+<div slot="formula">
+
+$$R^2 \equiv a \cdot t \pmod p, \qquad \text{fix } R \text{ and } t \text{ together until } t \equiv 1$$
+
+</div>
+
+Split $p - 1 = Q \cdot 2^S$, pick any non-square $z$ as a lever, and start from $R = a^{(Q+1)/2}$ and $t = a^Q$. Each round measures how many squarings turn $t$ into $1$, then multiplies $R$ and $t$ by a correction built from $z$ that cancels exactly that much error. When $t$ finally equals $1$, $R^2 = a$, and $R$ is the square root.
+
+</MathBox>
+
+## One extra bit instead of y
+
+Here's the first payoff. A curve point has two coordinates, but $x$ almost determines $y$ on its own — only the sign is missing, and a square root recovers it.
+
+<Figure caption="Fig. 6 — compressing the point (3, 11) on y² = x³ + 3 mod 13 down to x and a single parity bit, then rebuilding y with a square root and that bit.">
+  <PointCompressionFigure />
+</Figure>
+
+<MathBox label="Point compression">
+
+<div slot="formula">
+
+$$y = \pm\sqrt{x^3 + 3}, \quad \text{picked by one stored parity bit}$$
+
+</div>
+
+Store $x$ and one bit for whether $y$ is even or odd. To rebuild the point, compute $x^3 + 3$, take its square root — which gives both $y$ and $-y$ — and use the bit to pick the right one. If $x^3 + 3$ isn't a square at all, no point exists with that $x$. This is exactly how a compressed public key fits a 256-bit $x$ plus one bit instead of a full 512-bit pair.
+
+</MathBox>
+
+## Turning a number into a point
+
+The reverse direction matters too: given an arbitrary number — say, the output of a hash — can it be turned into a point on the curve?
+
+<Figure caption="Fig. 7 — mapping a number onto the curve by trying it as x: x = 2 fails the square test, so the search increments to x = 3, which works, giving the point (3, 2).">
+  <HashToCurveFigure />
+</Figure>
+
+<MathBox label="A basic hash-to-curve">
+
+<div slot="formula">
+
+$$\text{try } x, x+1, x+2, \ldots \text{ until } x^3 + 3 \text{ is a square}$$
+
+</div>
+
+Try a candidate $x$, test whether $x^3 + 3$ is a square, and increment if it isn't. Because exactly half of all numbers are squares — the fact this lesson opened with — about half of all $x$ values work, so the odds of failing $n$ times in a row fall off as $1/2^n$ and a few tries are always enough. Real systems use more careful versions of this, since the number of tries taken can leak timing information.
+
+</MathBox>
+
+## Where these tools show up
+
+Three tools, all built from the same idea: telling squares apart from non-squares, and moving between a number and its root.
+
+<Figure caption="Fig. 8 — the square test, square roots, and compression/hash-to-curve, and what each one is for.">
+  <QuadResSummaryFigure />
+</Figure>
+
+The square test gives a fast yes-or-no on whether a root exists at all. Square roots — the easy shortcut or Tonelli–Shanks — actually solve $y^2 = a$. And compression plus hash-to-curve are where both get used in practice: shrinking a stored point down to $x$ and one bit, and turning arbitrary data into a point on the curve. But every one of these tools has a gap: $2$ has no square root mod $13$ at all. The next lesson builds a bigger field that contains one.
+
+<KeyTakeaways>
+
+- Exactly half of the nonzero numbers mod a prime are squares (quadratic residues), because $x$ and $-x$ always square to the same value.
+- A square is exactly an even power of a generator, since squaring any power doubles its exponent — this is why the split is exactly half and half.
+- The square test — raising $a$ to $(p-1)/2$ — answers "is $a$ a square?" in one exponentiation; this quantity is the Legendre symbol.
+- When $p \equiv 3 \pmod 4$, a square root is a single power, $a^{(p+1)/4}$; otherwise the Tonelli–Shanks algorithm finds it by fixing a guess until its error term reaches $1$.
+- Point compression stores a curve point as $x$ plus one parity bit and rebuilds $y$ with a square root; hash-to-curve runs the idea in reverse, trying values of $x$ until $x^3 + 3$ is a square.
+
+</KeyTakeaways>

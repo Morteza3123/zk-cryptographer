@@ -1,0 +1,36 @@
+---
+// Fig. for "Quadratic Residues & Square Roots": Tonelli–Shanks, for when
+// p ≡ 1 (mod 4) and the easy shortcut from the previous figure doesn't
+// apply — worked through √10 mod 13. R is a running guess and t is its
+// error against a; each fix-the-guess round halves how far t is from 1,
+// and the loop stops the moment t reaches 1.
+---
+<svg viewBox="0 0 760 506" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">when the shortcut fails</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Find &#8730;10 mod 13. The shortcut needs remainder 3 mod 4, but 13 = 4 &#215; 3 + 1.</text>
+
+  <text x="380" y="106" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">SETUP</text>
+  <text x="380" y="130" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">p &#8722; 1 = 12 = 3 &#215; 2<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">, so Q = 3 and S = 2</tspan></text>
+  <text x="380" y="152" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">Take a non-square z = 2 (from the square test)</text>
+  <text x="380" y="176" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">c = 2<tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> = 8,  t = 10</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> = 1000 = &#8722;1,  R = 10</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 100 = 9</tspan></text>
+  <text x="380" y="198" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">R<tspan dy="-5" font-size="70%">2</tspan><tspan dy="5"> = 81 = 3 and 10 &#215; t = 120 = 3, so R</tspan><tspan dy="-5" font-size="70%">2</tspan><tspan dy="5"> = 10 &#215; t &#10003;</tspan></text>
+
+  <line x1="40" y1="216" x2="720" y2="216" stroke="#223049" stroke-width="1" />
+
+  <text x="380" y="242" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; find i</text>
+  <text x="380" y="266" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">t<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 144 = 1, so i = 1, and b = c = 8</tspan></text>
+
+  <text x="380" y="300" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; fix the guess</text>
+  <text x="380" y="326" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">R = 9 &#215; 8 = 72 = 7,  c = b<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 64 = 12,  t = 12 &#215; 12 = 144 = 1</tspan></text>
+
+  <text x="380" y="360" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; stop</text>
+  <text x="380" y="386" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">t = 1, so &#8730;10 = 7 (and 6)</text>
+
+  <text x="380" y="420" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">7<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 49 = 3 &#215; 13 + 10 &#10003;  and  6</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 36 = 2 &#215; 13 + 10 &#10003;</tspan></text>
+
+  <line x1="40" y1="438" x2="720" y2="438" stroke="#223049" stroke-width="1" />
+  <text x="380" y="464" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">FIX A WRONG GUESS UNTIL t BECOMES 1</text>
+  <text x="380" y="486" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This is the Tonelli&#8211;Shanks algorithm.</text>
+</svg>

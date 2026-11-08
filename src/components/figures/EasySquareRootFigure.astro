@@ -1,0 +1,32 @@
+---
+// Fig. for "Quadratic Residues & Square Roots": the p ≡ 3 (mod 4)
+// shortcut — a single exponentiation finds a square root directly,
+// worked through √3 mod 11, with a derivation of why it works from the
+// square test in the previous figure.
+---
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">an easy square root</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Find &#8730;3 mod 11. (11 leaves remainder 3 when divided by 4.)</text>
+
+  <rect x="40" y="96" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="122" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">if p leaves remainder 3 mod 4, then &#8730;a = a<tspan dy="-6" font-size="65%">(p+1)/4</tspan></text>
+
+  <text x="380" y="160" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; is 3 a square?</text>
+  <text x="380" y="186" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3<tspan dy="-6" font-size="65%">5</tspan><tspan dy="6"> = 243 = 22 &#215; 11 + 1 = 1 &#10003;</tspan></text>
+
+  <text x="380" y="222" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; apply the formula</text>
+  <text x="380" y="248" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(11 + 1) &#247; 4 = 3, so &#8730;3 = 3<tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> = 27 = 5</tspan></text>
+
+  <text x="380" y="284" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; check</text>
+  <text x="380" y="310" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">5<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 25 = 2 &#215; 11 + 3 = 3 &#10003;</tspan></text>
+  <text x="380" y="334" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">the other root is &#8722;5 = 6: 6<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 36 = 3 &#215; 11 + 3 = 3 &#10003;</tspan></text>
+
+  <text x="380" y="368" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 4 &#8212; why it works</text>
+  <text x="380" y="392" text-anchor="middle" fill="#c3cedd" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">(a<tspan dy="-6" font-size="65%">(p+1)&#247;4</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = a</tspan><tspan dy="-6" font-size="65%">(p+1)&#247;2</tspan><tspan dy="6"> = a &#215; a</tspan><tspan dy="-6" font-size="65%">(p&#8722;1)&#247;2</tspan><tspan dy="6"> = a &#215; 1 = a</tspan></text>
+
+  <line x1="40" y1="410" x2="720" y2="410" stroke="#223049" stroke-width="1" />
+  <text x="380" y="434" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">A SQUARE ROOT IS JUST A POWER</text>
+  <text x="380" y="456" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This works when p leaves remainder 3 when divided by 4.</text>
+</svg>

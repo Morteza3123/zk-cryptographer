@@ -1,0 +1,28 @@
+---
+// Fig. for "Quadratic Residues & Square Roots": the reverse direction of
+// point compression — mapping an arbitrary number onto the curve by
+// trying it as x, testing whether the resulting y² is a square, and
+// incrementing until one works (a basic hash-to-curve).
+---
+<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">turning a number into a point</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">Can we turn any number into a point on y<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = x</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> + 3 mod 13?</tspan></text>
+
+  <text x="380" y="108" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; try x = 2</text>
+  <text x="380" y="132" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">y<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 2</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> + 3 = 11. Square test: 11 = &#8722;2, so 11</tspan><tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = (&#8722;2)</tspan><tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 64 = &#8722;1 &#10007;</tspan></text>
+
+  <text x="380" y="166" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; increment to x = 3</text>
+  <text x="380" y="190" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">y<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 3</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> + 3 = 30 = 4. Square test: 4</tspan><tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 4096 = 315 &#215; 13 + 1 = 1 &#10003;</tspan></text>
+
+  <text x="380" y="224" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; take the root</text>
+  <text x="380" y="250" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">y = 2 (or 11), giving the point (3, 2)</text>
+
+  <text x="380" y="284" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">2<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 4 and 3</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"> + 3 = 30 = 4 &#10003;</tspan></text>
+  <text x="380" y="308" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">this is the simplest method; real systems use more careful versions</text>
+
+  <line x1="40" y1="326" x2="720" y2="326" stroke="#223049" stroke-width="1" />
+  <text x="380" y="352" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">TRY, TEST, INCREMENT</text>
+  <text x="380" y="374" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">On a real curve about half of all x values work, so a few tries are enough.</text>
+</svg>
