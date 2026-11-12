@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "66", label: "Lessons" },
+    { num: "67", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -137,6 +137,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Quadratic Residues",
       items: [
         { num: "20", title: "Quadratic Residues & Square Roots", duration: "15:45", slug: "quadratic-residues-square-roots" },
+      ],
+    },
+    {
+      module: "Extension Fields",
+      items: [
+        { num: "21", title: "Extension Fields & Towers", duration: "10:50", slug: "extension-fields-towers" },
       ],
     },
   ],

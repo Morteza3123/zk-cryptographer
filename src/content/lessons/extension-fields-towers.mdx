@@ -1,0 +1,143 @@
+---
+track: math
+module: "Extension Fields"
+lessonNumber: "21"
+title: "Extension Fields & Towers"
+duration: "10:50"
+description: "How to build a bigger field that fixes a missing square root by inventing a new symbol, how to add, multiply, and divide in it, and how stacking these extensions produces the exact tower that real pairing-friendly curves like BN254 and BLS12-381 compute on."
+order: 21
+prevTitle: "Quadratic Residues & Square Roots"
+prevHref: "/learn/math/quadratic-residues-square-roots"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import MissingRootFigure from "../../components/figures/MissingRootFigure.astro";
+import ExtensionArithmeticFigure from "../../components/figures/ExtensionArithmeticFigure.astro";
+import ExtensionDivisionFigure from "../../components/figures/ExtensionDivisionFigure.astro";
+import TowerBuildingFigure from "../../components/figures/TowerBuildingFigure.astro";
+import PairingTowerFigure from "../../components/figures/PairingTowerFigure.astro";
+import ExtensionSummaryFigure from "../../components/figures/ExtensionSummaryFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
+
+Last lesson ended at a wall: $2$ has no square root mod $13$ — not one. **This lesson builds a bigger field that fixes exactly that**, the same way mathematicians once fixed the missing square root of $-1$. One small example carries the whole lesson: the prime $13$, extended twice.
+
+## The missing root
+
+Mathematicians have a standard move for a missing root: invent it, and declare one rule about how it behaves.
+
+<Figure caption="Fig. 1 — 2 is not among the squares mod 13, so a new symbol u is invented with u² = 2, giving 13 × 13 = 169 numbers of the form a + b·u.">
+  <MissingRootFigure />
+</Figure>
+
+<MathBox label="An extension field">
+
+<div slot="formula">
+
+$$u^2 = 2, \qquad \text{every element is } a + bu \text{ for } a, b \in \{0, \ldots, 12\}$$
+
+</div>
+
+$u$ isn't any of the old numbers — it's new, defined purely by this one rule. With $13$ choices for $a$ and $13$ for $b$, the extension has $169$ elements, including the original $13$ numbers as the ones where $b = 0$. This is exactly how the complex numbers are built: the reals have no square root of $-1$, so $i$ is invented with $i^2 = -1$.
+
+</MathBox>
+
+## Add and multiply
+
+The new numbers only matter if arithmetic still works. Both operations reduce to ordinary algebra plus one substitution.
+
+<Figure caption="Fig. 2 — adding (3 + 5u) + (4 + 9u) part by part, and multiplying (3 + u)(2 + 5u) by expanding normally and replacing u² with 2 wherever it appears.">
+  <ExtensionArithmeticFigure />
+</Figure>
+
+<MathBox label="Arithmetic in the extension">
+
+<div slot="formula">
+
+$$(a + bu) \cdot (c + du) = (ac + 2bd) + (ad + bc)u$$
+
+</div>
+
+Addition combines the plain parts and the $u$ parts separately. Multiplication expands the product normally, then replaces every $u^2$ with $2$ — so a $u^2$ term never survives, and the result always has exactly the same two-part shape, $a + bu$.
+
+</MathBox>
+
+## Divide
+
+A field needs division too. The trick is the same one used for complex numbers: multiply by the conjugate to clear the $u$ term.
+
+<Figure caption="Fig. 3 — finding 1 ÷ (3 + u) by multiplying top and bottom by the conjugate 3 − u, which clears u from the denominator and leaves an ordinary division mod 13.">
+  <ExtensionDivisionFigure />
+</Figure>
+
+<MathBox label="The conjugate trick">
+
+<div slot="formula">
+
+$$(a + bu)(a - bu) = a^2 - 2b^2$$
+
+</div>
+
+Multiplying by the conjugate $a - bu$ cancels the middle terms, leaving a plain number with no $u$ in it — which can be inverted with ordinary modular division. This denominator is never $0$: that would require $a^2 = 2b^2$, making $2$ a square mod $13$, which it isn't (unless $a = b = 0$, which is just the number $0$ itself).
+
+</MathBox>
+
+## Building a tower
+
+Once $F(13^2)$ exists, the same move can be applied again — if there's a root still missing from it.
+
+<Figure caption="Fig. 4 — testing whether u itself is a square in F(13²); it isn't, so a second symbol v with v² = u is added, producing a three-floor tower.">
+  <TowerBuildingFigure />
+</Figure>
+
+<MathBox label="A second extension">
+
+<div slot="formula">
+
+$$v^2 = u \implies v^4 = u^2 = 2$$
+
+</div>
+
+The square test from the last lesson still applies, just with $168$ (the nonzero count of $F(13^2)$) playing the role of $p - 1$. Testing shows $u$ isn't a square in $F(13^2)$, so a new symbol $v$ is added with $v^2 = u$ — making $v$ a fourth root of $2$, and $F(13^4)$ a tower three floors tall: $13$, then $169$, then $28{,}561$ elements.
+
+</MathBox>
+
+## Towers in practice
+
+This toy tower mirrors exactly what real pairing-friendly curves do, just with a 254-bit or 381-bit prime instead of $13$.
+
+<Figure caption="Fig. 5 — the tower a pairing-friendly curve computes on: F(p) extended by a square root to F(p²), a cube root to F(p⁶), and another square root to F(p¹²), where pairing results live.">
+  <PairingTowerFigure />
+</Figure>
+
+<MathBox label="The degree-12 tower">
+
+<div slot="formula">
+
+$$F(p) \to F(p^2) \to F(p^6) \to F(p^{12}), \qquad 2 \times 3 \times 2 = 12$$
+
+</div>
+
+A cubic step works the same way as a quadratic one — it adds a cube root instead of a square root, the same idea of a missing root supplied by hand. On BN254, $p$ has $254$ bits; on BLS12-381, $p$ has $381$ bits. $G_2$ points have coordinates in $F(p^2)$, and a pairing's result lives in $F(p^{12})$ — never computed in one jump, but climbed one small extension at a time.
+
+</MathBox>
+
+## Where this shows up
+
+Three ideas, each building on the last: invent a missing root, keep ordinary arithmetic working in the bigger field, and stack extensions into a tower.
+
+<Figure caption="Fig. 6 — the missing root, the arithmetic, and towers, and what each one is for.">
+  <ExtensionSummaryFigure />
+</Figure>
+
+Adding $u$ with $u^2 = 2$ gives a bigger field that still obeys every field rule — addition, multiplication, and division, by the same conjugate trick used for complex numbers. Stacking extensions of degree $2$ and $3$ is exactly where real pairings live. Everything so far has worked with one number at a time; the next lesson moves to many numbers at once.
+
+<KeyTakeaways>
+
+- When a root is missing from a field, it can be invented: adding a symbol $u$ with $u^2 = 2$ builds a bigger field of $13 \times 13 = 169$ elements, each of the form $a + bu$.
+- Addition combines parts separately, and multiplication is ordinary algebra with every $u^2$ replaced by $2$ — the result always keeps the same two-part shape.
+- Division works by multiplying by the conjugate $a - bu$, which clears $u$ from the denominator and leaves an ordinary number to invert; the denominator is never $0$ because $2$ isn't a square mod $13$.
+- Extensions can be stacked: testing whether $u$ is a square in $F(13^2)$ and finding it isn't leads to a second symbol $v$ with $v^2 = u$, producing a three-floor tower.
+- Real pairing-friendly curves compute on exactly this kind of tower — $F(p) \to F(p^2) \to F(p^6) \to F(p^{12})$ — with $G_2$ coordinates in $F(p^2)$ and pairing results in $F(p^{12})$.
+
+</KeyTakeaways>

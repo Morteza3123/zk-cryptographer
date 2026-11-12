@@ -1,0 +1,30 @@
+---
+// Fig. for "Extension Fields & Towers": extending F(13²) again — the
+// square test from Topic 20 shows u itself isn't a square in F(13²), so a
+// second symbol v with v² = u is added, giving a three-floor tower
+// F(13) → F(13²) → F(13⁴).
+---
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">building a tower</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">Can we extend again, on top of F(13<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">)?</tspan></text>
+
+  <text x="380" y="108" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; is u a square?</text>
+  <text x="380" y="132" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">F(13<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">) has 168 nonzero numbers, so the test is u to the power 168 &#247; 2 = 84</tspan></text>
+
+  <text x="380" y="168" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; compute</text>
+  <text x="380" y="194" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">u<tspan dy="-6" font-size="65%">84</tspan><tspan dy="6"> = (u</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">42</tspan><tspan dy="6"> = 2</tspan><tspan dy="-6" font-size="65%">42</tspan><tspan dy="6"> = 2</tspan><tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 64 = 12 = &#8722;1 &#10007;  not a square</tspan></text>
+
+  <text x="380" y="230" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; add another symbol</text>
+  <text x="380" y="254" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">add v with v<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = u, so v</tspan><tspan dy="-6" font-size="65%">4</tspan><tspan dy="6"> = u</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 2</tspan></text>
+
+  <rect x="140" y="276" width="480" height="48" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="380" y="300" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">F(13) &#8594; F(13<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">) &#8594; F(13</tspan><tspan dy="-6" font-size="65%">4</tspan><tspan dy="6">): 13, 169, 28561 numbers</tspan></text>
+
+  <text x="380" y="346" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">13<tspan dy="-6" font-size="65%">4</tspan><tspan dy="6"> = 169 &#215; 169 = 28561 &#10003;</tspan></text>
+
+  <line x1="40" y1="364" x2="720" y2="364" stroke="#223049" stroke-width="1" />
+  <text x="380" y="388" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">EACH FLOOR STANDS ON THE ONE BELOW</text>
+  <text x="380" y="410" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A stack of fields like this is called a tower.</text>
+</svg>

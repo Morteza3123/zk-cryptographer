@@ -1,0 +1,448 @@
+diff --git a/src/components/figures/ExtensionArithmeticFigure.astro b/src/components/figures/ExtensionArithmeticFigure.astro
+new file mode 100644
+index 0000000..ccd0d1b
+--- /dev/null
++++ b/src/components/figures/ExtensionArithmeticFigure.astro
+@@ -0,0 +1,31 @@
++---
++// Fig. for "Extension Fields & Towers": addition is part-by-part, and
++// multiplication is ordinary algebra plus one replacement rule, u² = 2 —
++// worked through (3 + 5u) + (4 + 9u) and (3 + u)(2 + 5u) mod 13.
++---
++<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">add and multiply</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">How do the new numbers add and multiply?</text>
++
++  <text x="380" y="108" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; add part by part</text>
++  <text x="380" y="132" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3 + 5u) + (4 + 9u) = 7 + 14u = 7 + 1u</text>
++  <text x="380" y="152" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="SF Mono, Fira Code, Consolas, monospace">14 &#8722; 13 = 1</text>
++
++  <text x="380" y="186" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; multiply, then replace u<tspan dy="-5" font-size="70%">2</tspan></text>
++  <text x="380" y="210" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3 + u)(2 + 5u) = 6 + 15u + 2u + 5u<tspan dy="-6" font-size="65%">2</tspan></text>
++  <text x="380" y="232" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">replace u<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> with 2: 6 + 17u + 10 = 16 + 17u</tspan></text>
++
++  <text x="380" y="266" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; reduce mod 13</text>
++  <text x="380" y="290" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">16 = 3 and 17 = 4, so the answer is 3 + 4u</text>
++
++  <rect x="220" y="310" width="320" height="48" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="340" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">(3 + u)(2 + 5u) = 3 + 4u</text>
++
++  <text x="380" y="382" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">constants: 6 + 10 = 16, and 16 &#8722; 13 = 3 &#10003;</text>
++
++  <line x1="40" y1="400" x2="720" y2="400" stroke="#223049" stroke-width="1" />
++  <text x="380" y="424" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ORDINARY ALGEBRA, PLUS u<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 2</tspan></text>
++  <text x="380" y="446" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The answer always has just two parts: a + b&#183;u.</text>
++</svg>
+diff --git a/src/components/figures/ExtensionDivisionFigure.astro b/src/components/figures/ExtensionDivisionFigure.astro
+new file mode 100644
+index 0000000..761d5e8
+--- /dev/null
++++ b/src/components/figures/ExtensionDivisionFigure.astro
+@@ -0,0 +1,33 @@
++---
++// Fig. for "Extension Fields & Towers": division via the conjugate trick
++// — multiplying a + b·u by its flip a − b·u clears the u term, leaving a
++// plain number to divide by — worked through 1 ÷ (3 + u) mod 13, with a
++// note on why the denominator a² − 2b² can never be 0.
++---
++<svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">divide</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">What is 1 &#247; (3 + u)?</text>
++
++  <rect x="40" y="96" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="122" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(a + b&#183;u)(a &#8722; b&#183;u) = a<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> &#8722; 2b</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">, a plain number</tspan></text>
++
++  <text x="380" y="158" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; multiply by the flip</text>
++  <text x="380" y="184" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(3 + u)(3 &#8722; u) = 9 &#8722; u<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 9 &#8722; 2 = 7</tspan></text>
++
++  <text x="380" y="220" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; divide by 7 mod 13</text>
++  <text x="380" y="246" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">7 &#215; 2 = 14 = 1, so 1 &#247; 7 = 2</text>
++
++  <text x="380" y="282" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; put it together</text>
++  <text x="380" y="308" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">1 &#247; (3 + u) = 2 &#215; (3 &#8722; u) = 6 &#8722; 2u = 6 + 11u</text>
++
++  <text x="380" y="340" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">(3 + u)(6 + 11u) = 18 + 39u + 22 = 40 + 39u = 1 &#10003;</text>
++  <text x="380" y="362" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="SF Mono, Fira Code, Consolas, monospace">40 = 3 &#215; 13 + 1 and 39 = 3 &#215; 13</text>
++
++  <text x="380" y="394" text-anchor="middle" fill="#ff5c7a" font-size="12.5" font-family="-apple-system,Arial,sans-serif">the bottom is never 0: a<tspan dy="-5" font-size="70%">2</tspan><tspan dy="5"> = 2b</tspan><tspan dy="-5" font-size="70%">2</tspan><tspan dy="5"> would make 2 a square in F(13), and it is not</tspan></text>
++
++  <line x1="40" y1="412" x2="720" y2="412" stroke="#223049" stroke-width="1" />
++  <text x="380" y="436" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">A FLIP TURNS DIVISION INTO MULTIPLICATION</text>
++  <text x="380" y="458" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The flipped number a &#8722; b&#183;u is called the conjugate.</text>
++</svg>
+diff --git a/src/components/figures/ExtensionSummaryFigure.astro b/src/components/figures/ExtensionSummaryFigure.astro
+new file mode 100644
+index 0000000..840a3d1
+--- /dev/null
++++ b/src/components/figures/ExtensionSummaryFigure.astro
+@@ -0,0 +1,34 @@
++---
++// Fig. for "Extension Fields & Towers": where this shows up — mirrors the
++// three-column summary pattern used by the entropy, Euclid/CRT/Euler, and
++// quadratic-residues lessons' closing figures.
++---
++<svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">where this shows up</text>
++
++  <!-- the missing root -->
++  <rect x="30" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="140" y="90" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE MISSING ROOT</text>
++  <text x="140" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">add a symbol u</text>
++  <text x="140" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">with u<tspan dy="-5" font-size="70%">2</tspan><tspan dy="5"> = 2</tspan></text>
++  <text x="140" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">A bigger field.</text>
++
++  <!-- the arithmetic -->
++  <rect x="270" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="90" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE ARITHMETIC</text>
++  <text x="380" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">add part by part,</text>
++  <text x="380" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">multiply and replace u<tspan dy="-5" font-size="70%">2</tspan><tspan dy="5">,</tspan></text>
++  <text x="380" y="166" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">divide by the flip</text>
++  <text x="380" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">Still a field.</text>
++
++  <!-- towers -->
++  <rect x="510" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#8fdcff" stroke-width="1.8" />
++  <text x="620" y="90" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">TOWERS</text>
++  <text x="620" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">stack extensions</text>
++  <text x="620" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">of degree 2 and 3</text>
++  <text x="620" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">Pairings live here.</text>
++
++  <line x1="30" y1="316" x2="730" y2="316" stroke="#223049" stroke-width="1" />
++  <text x="380" y="340" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">SAME RULES, BIGGER FIELD</text>
++  <text x="380" y="362" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Next up: linear algebra over finite fields.</text>
++</svg>
+diff --git a/src/components/figures/MissingRootFigure.astro b/src/components/figures/MissingRootFigure.astro
+new file mode 100644
+index 0000000..6bfbe9a
+--- /dev/null
++++ b/src/components/figures/MissingRootFigure.astro
+@@ -0,0 +1,31 @@
++---
++// Fig. for "Extension Fields & Towers": 2 has no square root mod 13, so a
++// new symbol u is invented with u² = 2 — the same move that builds the
++// complex numbers from the reals — giving 13 × 13 = 169 numbers of the
++// form a + b·u.
++---
++<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">the missing root</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Does 2 have a square root mod 13?</text>
++
++  <text x="380" y="108" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; list the squares</text>
++  <text x="380" y="132" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">squares mod 13: 1, 3, 4, 9, 10, 12</text>
++  <text x="380" y="154" text-anchor="middle" fill="#ff5c7a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2 is not in the list</text>
++
++  <text x="380" y="190" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; invent one</text>
++  <text x="380" y="214" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">add a new symbol u and declare u<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 2</tspan></text>
++
++  <text x="380" y="250" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; the new numbers have two parts</text>
++  <text x="380" y="274" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">every new number looks like a + b&#183;u, where a and b are numbers from 0 to 12</text>
++
++  <rect x="200" y="296" width="360" height="48" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="326" text-anchor="middle" fill="#5ddc8a" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">13 &#215; 13 = 169 numbers in all</text>
++
++  <text x="380" y="368" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">u &#215; u = 2, so u is a square root of 2 &#10003;</text>
++
++  <line x1="40" y1="386" x2="720" y2="386" stroke="#223049" stroke-width="1" />
++  <text x="380" y="410" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">IF A ROOT IS MISSING, ADD IT</text>
++  <text x="380" y="432" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This is the same trick that builds the complex numbers from the real numbers.</text>
++</svg>
+diff --git a/src/components/figures/PairingTowerFigure.astro b/src/components/figures/PairingTowerFigure.astro
+new file mode 100644
+index 0000000..688c239
+--- /dev/null
++++ b/src/components/figures/PairingTowerFigure.astro
+@@ -0,0 +1,54 @@
++---
++// Fig. for "Extension Fields & Towers": the tower real pairing curves
++// compute on — F(p) extended by a quadratic step to F(p²), a cubic step
++// to F(p⁶), and a second quadratic step to F(p¹²), the field a pairing's
++// result lives in.
++const levels = [
++  { html: "F(p<tspan dy=\"-7\" font-size=\"65%\">12</tspan>)", sub: "12 numbers" },
++  { html: "F(p<tspan dy=\"-7\" font-size=\"65%\">6</tspan>)", sub: "6 numbers" },
++  { html: "F(p<tspan dy=\"-7\" font-size=\"65%\">2</tspan>)", sub: "2 numbers" },
++  { html: "F(p)", sub: "1 number" },
++];
++const steps = ["&#215; 2", "&#215; 3", "&#215; 2"];
++const g2Note = "G2 points have coordinates in F(p<tspan dy=\"-5\" font-size=\"70%\">2</tspan>). Pairing results live in F(p<tspan dy=\"-5\" font-size=\"70%\">12</tspan>).";
++const boxH = 58;
++const gap = 42;
++const boxW = 300;
++const boxX = 230;
++const startY = 100;
++const afterTowerY = startY + 4 * boxH + 3 * gap;
++---
++<svg viewBox="0 0 760 650" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">towers in practice</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">What tower do real pairing curves use?</text>
++
++  {levels.map((lvl, i) => {
++    const y = startY + i * (boxH + gap);
++    return (
++      <>
++        <rect x={boxX} y={y} width={boxW} height={boxH} rx="12" fill="#121c2c" stroke="#e9eef5" stroke-width="1.5" />
++        <text x="380" y={y + 27} text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace" set:html={lvl.html} />
++        <text x="380" y={y + 47} text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="-apple-system,Arial,sans-serif">{lvl.sub}</text>
++        {i < steps.length && (
++          <>
++            <line x1="340" y1={y + boxH} x2="340" y2={y + boxH + gap} stroke="#223049" stroke-width="1.5" />
++            <line x1="420" y1={y + boxH} x2="420" y2={y + boxH + gap} stroke="#223049" stroke-width="1.5" />
++            <text x="380" y={y + boxH + gap / 2 + 5} text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace" set:html={steps[i]} />
++          </>
++        )}
++      </>
++    );
++  })}
++
++  <rect x="260" y={afterTowerY + 20} width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y={afterTowerY + 46} text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">2 &#215; 3 &#215; 2 = 12</text>
++
++  <text x="380" y={afterTowerY + 86} text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">BN254: p has 254 bits. BLS12-381: p has 381 bits.</text>
++  <text x="380" y={afterTowerY + 106} text-anchor="middle" fill="#8b96a8" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace" set:html={g2Note} />
++
++  <line x1="40" y1={afterTowerY + 124} x2="720" y2={afterTowerY + 124} stroke="#223049" stroke-width="1" />
++  <text x="380" y={afterTowerY + 148} text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">BIG FIELDS FROM SMALL STEPS</text>
++  <text x="380" y={afterTowerY + 170} text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Pairings on these curves compute on this tower.</text>
++</svg>
+diff --git a/src/components/figures/TowerBuildingFigure.astro b/src/components/figures/TowerBuildingFigure.astro
+new file mode 100644
+index 0000000..574ed5f
+--- /dev/null
++++ b/src/components/figures/TowerBuildingFigure.astro
+@@ -0,0 +1,30 @@
++---
++// Fig. for "Extension Fields & Towers": extending F(13²) again — the
++// square test from Topic 20 shows u itself isn't a square in F(13²), so a
++// second symbol v with v² = u is added, giving a three-floor tower
++// F(13) → F(13²) → F(13⁴).
++---
++<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">building a tower</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">Can we extend again, on top of F(13<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">)?</tspan></text>
++
++  <text x="380" y="108" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; is u a square?</text>
++  <text x="380" y="132" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">F(13<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">) has 168 nonzero numbers, so the test is u to the power 168 &#247; 2 = 84</tspan></text>
++
++  <text x="380" y="168" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; compute</text>
++  <text x="380" y="194" text-anchor="middle" fill="#ff5c7a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">u<tspan dy="-6" font-size="65%">84</tspan><tspan dy="6"> = (u</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">)</tspan><tspan dy="-6" font-size="65%">42</tspan><tspan dy="6"> = 2</tspan><tspan dy="-6" font-size="65%">42</tspan><tspan dy="6"> = 2</tspan><tspan dy="-6" font-size="65%">6</tspan><tspan dy="6"> = 64 = 12 = &#8722;1 &#10007;  not a square</tspan></text>
++
++  <text x="380" y="230" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; add another symbol</text>
++  <text x="380" y="254" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">add v with v<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = u, so v</tspan><tspan dy="-6" font-size="65%">4</tspan><tspan dy="6"> = u</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> = 2</tspan></text>
++
++  <rect x="140" y="276" width="480" height="48" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="300" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">F(13) &#8594; F(13<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">) &#8594; F(13</tspan><tspan dy="-6" font-size="65%">4</tspan><tspan dy="6">): 13, 169, 28561 numbers</tspan></text>
++
++  <text x="380" y="346" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">13<tspan dy="-6" font-size="65%">4</tspan><tspan dy="6"> = 169 &#215; 169 = 28561 &#10003;</tspan></text>
++
++  <line x1="40" y1="364" x2="720" y2="364" stroke="#223049" stroke-width="1" />
++  <text x="380" y="388" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">EACH FLOOR STANDS ON THE ONE BELOW</text>
++  <text x="380" y="410" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A stack of fields like this is called a tower.</text>
++</svg>
+diff --git a/src/content/lessons/extension-fields-towers.mdx b/src/content/lessons/extension-fields-towers.mdx
+new file mode 100644
+index 0000000..f454ab3
+--- /dev/null
++++ b/src/content/lessons/extension-fields-towers.mdx
+@@ -0,0 +1,143 @@
++---
++track: math
++module: "Extension Fields"
++lessonNumber: "21"
++title: "Extension Fields & Towers"
++duration: "10:50"
++description: "How to build a bigger field that fixes a missing square root by inventing a new symbol, how to add, multiply, and divide in it, and how stacking these extensions produces the exact tower that real pairing-friendly curves like BN254 and BLS12-381 compute on."
++order: 21
++prevTitle: "Quadratic Residues & Square Roots"
++prevHref: "/learn/math/quadratic-residues-square-roots"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import MissingRootFigure from "../../components/figures/MissingRootFigure.astro";
++import ExtensionArithmeticFigure from "../../components/figures/ExtensionArithmeticFigure.astro";
++import ExtensionDivisionFigure from "../../components/figures/ExtensionDivisionFigure.astro";
++import TowerBuildingFigure from "../../components/figures/TowerBuildingFigure.astro";
++import PairingTowerFigure from "../../components/figures/PairingTowerFigure.astro";
++import ExtensionSummaryFigure from "../../components/figures/ExtensionSummaryFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
++
++Last lesson ended at a wall: $2$ has no square root mod $13$ — not one. **This lesson builds a bigger field that fixes exactly that**, the same way mathematicians once fixed the missing square root of $-1$. One small example carries the whole lesson: the prime $13$, extended twice.
++
++## The missing root
++
++Mathematicians have a standard move for a missing root: invent it, and declare one rule about how it behaves.
++
++<Figure caption="Fig. 1 — 2 is not among the squares mod 13, so a new symbol u is invented with u² = 2, giving 13 × 13 = 169 numbers of the form a + b·u.">
++  <MissingRootFigure />
++</Figure>
++
++<MathBox label="An extension field">
++
++<div slot="formula">
++
++$$u^2 = 2, \qquad \text{every element is } a + bu \text{ for } a, b \in \{0, \ldots, 12\}$$
++
++</div>
++
++$u$ isn't any of the old numbers — it's new, defined purely by this one rule. With $13$ choices for $a$ and $13$ for $b$, the extension has $169$ elements, including the original $13$ numbers as the ones where $b = 0$. This is exactly how the complex numbers are built: the reals have no square root of $-1$, so $i$ is invented with $i^2 = -1$.
++
++</MathBox>
++
++## Add and multiply
++
++The new numbers only matter if arithmetic still works. Both operations reduce to ordinary algebra plus one substitution.
++
++<Figure caption="Fig. 2 — adding (3 + 5u) + (4 + 9u) part by part, and multiplying (3 + u)(2 + 5u) by expanding normally and replacing u² with 2 wherever it appears.">
++  <ExtensionArithmeticFigure />
++</Figure>
++
++<MathBox label="Arithmetic in the extension">
++
++<div slot="formula">
++
++$$(a + bu) \cdot (c + du) = (ac + 2bd) + (ad + bc)u$$
++
++</div>
++
++Addition combines the plain parts and the $u$ parts separately. Multiplication expands the product normally, then replaces every $u^2$ with $2$ — so a $u^2$ term never survives, and the result always has exactly the same two-part shape, $a + bu$.
++
++</MathBox>
++
++## Divide
++
++A field needs division too. The trick is the same one used for complex numbers: multiply by the conjugate to clear the $u$ term.
++
++<Figure caption="Fig. 3 — finding 1 ÷ (3 + u) by multiplying top and bottom by the conjugate 3 − u, which clears u from the denominator and leaves an ordinary division mod 13.">
++  <ExtensionDivisionFigure />
++</Figure>
++
++<MathBox label="The conjugate trick">
++
++<div slot="formula">
++
++$$(a + bu)(a - bu) = a^2 - 2b^2$$
++
++</div>
++
++Multiplying by the conjugate $a - bu$ cancels the middle terms, leaving a plain number with no $u$ in it — which can be inverted with ordinary modular division. This denominator is never $0$: that would require $a^2 = 2b^2$, making $2$ a square mod $13$, which it isn't (unless $a = b = 0$, which is just the number $0$ itself).
++
++</MathBox>
++
++## Building a tower
++
++Once $F(13^2)$ exists, the same move can be applied again — if there's a root still missing from it.
++
++<Figure caption="Fig. 4 — testing whether u itself is a square in F(13²); it isn't, so a second symbol v with v² = u is added, producing a three-floor tower.">
++  <TowerBuildingFigure />
++</Figure>
++
++<MathBox label="A second extension">
++
++<div slot="formula">
++
++$$v^2 = u \implies v^4 = u^2 = 2$$
++
++</div>
++
++The square test from the last lesson still applies, just with $168$ (the nonzero count of $F(13^2)$) playing the role of $p - 1$. Testing shows $u$ isn't a square in $F(13^2)$, so a new symbol $v$ is added with $v^2 = u$ — making $v$ a fourth root of $2$, and $F(13^4)$ a tower three floors tall: $13$, then $169$, then $28{,}561$ elements.
++
++</MathBox>
++
++## Towers in practice
++
++This toy tower mirrors exactly what real pairing-friendly curves do, just with a 254-bit or 381-bit prime instead of $13$.
++
++<Figure caption="Fig. 5 — the tower a pairing-friendly curve computes on: F(p) extended by a square root to F(p²), a cube root to F(p⁶), and another square root to F(p¹²), where pairing results live.">
++  <PairingTowerFigure />
++</Figure>
++
++<MathBox label="The degree-12 tower">
++
++<div slot="formula">
++
++$$F(p) \to F(p^2) \to F(p^6) \to F(p^{12}), \qquad 2 \times 3 \times 2 = 12$$
++
++</div>
++
++A cubic step works the same way as a quadratic one — it adds a cube root instead of a square root, the same idea of a missing root supplied by hand. On BN254, $p$ has $254$ bits; on BLS12-381, $p$ has $381$ bits. $G_2$ points have coordinates in $F(p^2)$, and a pairing's result lives in $F(p^{12})$ — never computed in one jump, but climbed one small extension at a time.
++
++</MathBox>
++
++## Where this shows up
++
++Three ideas, each building on the last: invent a missing root, keep ordinary arithmetic working in the bigger field, and stack extensions into a tower.
++
++<Figure caption="Fig. 6 — the missing root, the arithmetic, and towers, and what each one is for.">
++  <ExtensionSummaryFigure />
++</Figure>
++
++Adding $u$ with $u^2 = 2$ gives a bigger field that still obeys every field rule — addition, multiplication, and division, by the same conjugate trick used for complex numbers. Stacking extensions of degree $2$ and $3$ is exactly where real pairings live. Everything so far has worked with one number at a time; the next lesson moves to many numbers at once.
++
++<KeyTakeaways>
++
++- When a root is missing from a field, it can be invented: adding a symbol $u$ with $u^2 = 2$ builds a bigger field of $13 \times 13 = 169$ elements, each of the form $a + bu$.
++- Addition combines parts separately, and multiplication is ordinary algebra with every $u^2$ replaced by $2$ — the result always keeps the same two-part shape.
++- Division works by multiplying by the conjugate $a - bu$, which clears $u$ from the denominator and leaves an ordinary number to invert; the denominator is never $0$ because $2$ isn't a square mod $13$.
++- Extensions can be stacked: testing whether $u$ is a square in $F(13^2)$ and finding it isn't leads to a second symbol $v$ with $v^2 = u$, producing a three-floor tower.
++- Real pairing-friendly curves compute on exactly this kind of tower — $F(p) \to F(p^2) \to F(p^6) \to F(p^{12})$ — with $G_2$ coordinates in $F(p^2)$ and pairing results in $F(p^{12})$.
++
++</KeyTakeaways>
+diff --git a/src/content/lessons/quadratic-residues-square-roots.mdx b/src/content/lessons/quadratic-residues-square-roots.mdx
+index b2cb5d9..886f603 100644
+--- a/src/content/lessons/quadratic-residues-square-roots.mdx
++++ b/src/content/lessons/quadratic-residues-square-roots.mdx
+@@ -9,6 +9,8 @@ order: 20
+ youtubeHref: "https://youtu.be/vDxcgYwj3Io"
+ prevTitle: "Subgroups, Cosets & Roots of Unity"
+ prevHref: "/learn/math/subgroups-cosets-roots-of-unity"
++nextTitle: "Extension Fields & Towers"
++nextHref: "/learn/math/extension-fields-towers"
+ ---
+ 
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 21263d5..33f4cc4 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -11,7 +11,7 @@ export const learnHero = {
+   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
+   stats: [
+     { num: "4", label: "Tracks" },
+-    { num: "66", label: "Lessons" },
++    { num: "67", label: "Lessons" },
+     { num: "0 → Prod", label: "Outcome" },
+   ],
+ };
+@@ -139,6 +139,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "20", title: "Quadratic Residues & Square Roots", duration: "15:45", slug: "quadratic-residues-square-roots" },
+       ],
+     },
++    {
++      module: "Extension Fields",
++      items: [
++        { num: "21", title: "Extension Fields & Towers", duration: "10:50", slug: "extension-fields-towers" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],
+diff --git a/src/content/tracks/math.json b/src/content/tracks/math.json
+index e50eb6d..043c94a 100644
+--- a/src/content/tracks/math.json
++++ b/src/content/tracks/math.json
+@@ -4,5 +4,5 @@
+   "title": "Math",
+   "level": "BEGINNER – INTERMEDIATE",
+   "description": "Finite fields, elliptic curves, and the algebra that underlies every proof system.",
+-  "lessonCount": 20
++  "lessonCount": 21
+ }
