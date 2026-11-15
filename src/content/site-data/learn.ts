@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "67", label: "Lessons" },
+    { num: "68", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -143,6 +143,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Extension Fields",
       items: [
         { num: "21", title: "Extension Fields & Towers", duration: "10:50", slug: "extension-fields-towers" },
+      ],
+    },
+    {
+      module: "Linear Algebra",
+      items: [
+        { num: "22", title: "Linear Algebra over Finite Fields", duration: "13:00", slug: "linear-algebra-finite-fields" },
       ],
     },
   ],

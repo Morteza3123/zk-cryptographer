@@ -1,0 +1,32 @@
+---
+// Reusable inline 2x2 matrix: a bracket pair drawn with SVG paths around a
+// 2x2 grid of values. Meant to be dropped inside another figure's <svg> as
+// a positioned <g>, e.g. <Matrix2x2 x={120} y={40} a="1" b="2" c="3" d="4" />.
+interface Props {
+  x: number;
+  y: number;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  color?: string;
+  scale?: number;
+}
+const { x, y, a, b, c, d, color = "#e9eef5", scale = 1 } = Astro.props;
+const rowH = 20 * scale;
+const colW = 24 * scale;
+const padX = 10 * scale;
+const padY = 8 * scale;
+const h = rowH * 2 + padY * 2 - 4 * scale;
+const w = colW * 2 + padX * 2;
+const tick = 7 * scale;
+const fontSize = 13 * scale;
+---
+<g transform={`translate(${x}, ${y})`}>
+  <path d={`M ${tick} 0 L 0 0 L 0 ${h} L ${tick} ${h}`} fill="none" stroke={color} stroke-width="1.5" />
+  <path d={`M ${w - tick} 0 L ${w} 0 L ${w} ${h} L ${w - tick} ${h}`} fill="none" stroke={color} stroke-width="1.5" />
+  <text x={padX + colW / 2} y={padY + rowH * 0.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{a}</text>
+  <text x={padX + colW * 1.5} y={padY + rowH * 0.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{b}</text>
+  <text x={padX + colW / 2} y={padY + rowH * 1.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{c}</text>
+  <text x={padX + colW * 1.5} y={padY + rowH * 1.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{d}</text>
+</g>

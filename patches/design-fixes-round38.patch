@@ -1,0 +1,487 @@
+diff --git a/src/components/figures/ConstraintDotProductFigure.astro b/src/components/figures/ConstraintDotProductFigure.astro
+new file mode 100644
+index 0000000..49b2d7f
+--- /dev/null
++++ b/src/components/figures/ConstraintDotProductFigure.astro
+@@ -0,0 +1,34 @@
++---
++// Fig. for "Linear Algebra over Finite Fields": packing a claimed computation
++// into a vector z = (1, x, y, w) and checking each multiplication step as
++// (row A • z) × (row B • z) = (row C • z) — the shape of an R1CS constraint.
++---
++<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">constraints as dot products</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Can a computation be checked with dot products?</text>
++
++  <text x="380" y="108" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">SETUP</text>
++  <text x="380" y="130" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">claim: x = 3, y = x &#215; x = 9 = 2, w = y &#215; x = 6 (mod 7)</text>
++  <text x="380" y="152" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">pack everything into one vector z = (1, x, y, w) = (1, 3, 2, 6)</text>
++
++  <text x="380" y="186" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; constraint y = x &#215; x</text>
++  <text x="380" y="210" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">(row A)&#8226;z = (0, 1, 0, 0)&#8226;z = 3</text>
++  <text x="380" y="230" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">(row B)&#8226;z = (0, 1, 0, 0)&#8226;z = 3</text>
++  <text x="380" y="250" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">(row C)&#8226;z = (0, 0, 1, 0)&#8226;z = 2</text>
++  <text x="380" y="276" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3 &#215; 3 = 9 = 2 &#10003;</text>
++
++  <text x="380" y="310" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; constraint w = y &#215; x</text>
++  <text x="380" y="334" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">(row A)&#8226;z = (0, 0, 1, 0)&#8226;z = 2</text>
++  <text x="380" y="354" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">(row B)&#8226;z = (0, 1, 0, 0)&#8226;z = 3</text>
++  <text x="380" y="374" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-family="SF Mono, Fira Code, Consolas, monospace">(row C)&#8226;z = (0, 0, 0, 1)&#8226;z = 6</text>
++  <text x="380" y="400" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">2 &#215; 3 = 6 &#10003;</text>
++
++  <rect x="60" y="412" width="640" height="48" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="442" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">every constraint: (row A &#8226; z) &#215; (row B &#8226; z) = (row C &#8226; z)</text>
++
++  <line x1="40" y1="486" x2="720" y2="486" stroke="#223049" stroke-width="1" />
++  <text x="380" y="510" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ONE MULTIPLY PER CONSTRAINT</text>
++  <text x="380" y="532" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This is the shape of R1CS, a constraint system many ZK proofs use.</text>
++</svg>
+diff --git a/src/components/figures/InverseMatrixFigure.astro b/src/components/figures/InverseMatrixFigure.astro
+new file mode 100644
+index 0000000..4ff48f8
+--- /dev/null
++++ b/src/components/figures/InverseMatrixFigure.astro
+@@ -0,0 +1,48 @@
++---
++// Fig. for "Linear Algebra over Finite Fields": building A⁻¹ by determinant,
++// invert, swap/negate/scale — then checking A⁻¹ × (3,4) recovers (5,6), and
++// noting a zero determinant (rows carrying the same information) has no inverse.
++import Matrix2x2 from "./Matrix2x2.astro";
++---
++<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">the inverse matrix</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">Can we undo A in one step?</text>
++
++  <text x="380" y="112" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; the determinant</text>
++  <text x="161" y="150" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">for the grid</text>
++  <Matrix2x2 x={281} y={127} a="1" b="2" c="3" d="4" scale={0.7} />
++  <text x="339" y="150" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">: 1 &#215; 4 &#8722; 2 &#215; 3 = &#8722;2 = 5</text>
++
++  <text x="380" y="190" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; invert it</text>
++  <text x="380" y="216" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">5 &#215; 3 = 15 = 1, so 1 &#247; 5 = 3</text>
++
++  <text x="380" y="250" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; swap, negate, scale</text>
++
++  <text x="160" y="285" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3 &#215;</text>
++  <Matrix2x2 x={204} y={258} a="4" b="&#8722;2" c="&#8722;3" d="1" scale={0.85} />
++  <text x="272" y="285" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">=</text>
++  <text x="302" y="285" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3 &#215;</text>
++  <Matrix2x2 x={346} y={258} a="4" b="5" c="4" d="1" scale={0.85} />
++  <text x="414" y="285" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">=</text>
++  <Matrix2x2 x={444} y={258} a="12" b="15" c="12" d="3" scale={0.85} />
++  <text x="512" y="285" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">=</text>
++  <Matrix2x2 x={542} y={258} a="5" b="1" c="5" d="3" scale={0.85} />
++
++  <text x="380" y="320" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="SF Mono, Fira Code, Consolas, monospace">&#8722;2 = 5 and &#8722;3 = 4</text>
++
++  <rect x="240" y="342" width="280" height="56" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="316" y="376" fill="#5ddc8a" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">A<tspan dy="-6" font-size="65%">&#8722;1</tspan><tspan dy="6"> =</tspan></text>
++  <Matrix2x2 x={386} y={348} a="5" b="1" c="5" d="3" scale={0.85} color="#5ddc8a" />
++
++  <text x="380" y="428" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">A<tspan dy="-6" font-size="65%">&#8722;1</tspan><tspan dy="6">&#215; (3, 4) = (5&#8226;3 + 1&#8226;4, 5&#8226;3 + 3&#8226;4) = (19, 27) = (5, 6) &#10003;, the same answer as before</tspan></text>
++
++  <text x="101" y="454" fill="#ff5c7a" font-size="12.5" font-family="-apple-system,Arial,sans-serif">if the determinant is 0, there is no inverse:</text>
++  <Matrix2x2 x={431} y={431} a="1" b="2" c="2" d="4" scale={0.7} color="#ff5c7a" />
++  <text x="489" y="454" fill="#ff5c7a" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">has 1 &#215; 4 &#8722; 2 &#215; 2 = 0</text>
++
++  <line x1="40" y1="486" x2="720" y2="486" stroke="#223049" stroke-width="1" />
++  <text x="380" y="510" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">A NON-ZERO DETERMINANT MEANS YOU CAN UNDO IT</text>
++  <text x="380" y="532" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Zero determinant means two rows carry the same information.</text>
++</svg>
+diff --git a/src/components/figures/LinearAlgebraSummaryFigure.astro b/src/components/figures/LinearAlgebraSummaryFigure.astro
+new file mode 100644
+index 0000000..c86252f
+--- /dev/null
++++ b/src/components/figures/LinearAlgebraSummaryFigure.astro
+@@ -0,0 +1,36 @@
++---
++// Fig. for "Linear Algebra over Finite Fields": where this shows up — the
++// three-column summary pattern used by the quadratic-residues and
++// extension-fields lessons' closing figures.
++---
++<svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">where this shows up</text>
++
++  <!-- the dot product -->
++  <rect x="30" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.8" />
++  <text x="140" y="90" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE DOT PRODUCT</text>
++  <text x="140" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">multiply matching</text>
++  <text x="140" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">entries, add,</text>
++  <text x="140" y="166" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">reduce mod 7</text>
++  <text x="140" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">Two lists, one number.</text>
++
++  <!-- matrices and solving -->
++  <rect x="270" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="90" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">MATRICES AND SOLVING</text>
++  <text x="380" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">matrix times vector,</text>
++  <text x="380" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">row reduction,</text>
++  <text x="380" y="166" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">inverses</text>
++  <text x="380" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">Undo a matrix.</text>
++
++  <!-- constraints -->
++  <rect x="510" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#8fdcff" stroke-width="1.8" />
++  <text x="620" y="90" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">CONSTRAINTS</text>
++  <text x="620" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">each check is three</text>
++  <text x="620" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">dot products and</text>
++  <text x="620" y="166" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">one multiply</text>
++  <text x="620" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">The shape of R1CS.</text>
++
++  <line x1="30" y1="316" x2="730" y2="316" stroke="#223049" stroke-width="1" />
++  <text x="380" y="340" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">DOT PRODUCTS ARE THE BUILDING BLOCK</text>
++  <text x="380" y="362" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Next up: FFT and NTT.</text>
++</svg>
+diff --git a/src/components/figures/Matrix2x2.astro b/src/components/figures/Matrix2x2.astro
+new file mode 100644
+index 0000000..3f0b44b
+--- /dev/null
++++ b/src/components/figures/Matrix2x2.astro
+@@ -0,0 +1,32 @@
++---
++// Reusable inline 2x2 matrix: a bracket pair drawn with SVG paths around a
++// 2x2 grid of values. Meant to be dropped inside another figure's <svg> as
++// a positioned <g>, e.g. <Matrix2x2 x={120} y={40} a="1" b="2" c="3" d="4" />.
++interface Props {
++  x: number;
++  y: number;
++  a: string;
++  b: string;
++  c: string;
++  d: string;
++  color?: string;
++  scale?: number;
++}
++const { x, y, a, b, c, d, color = "#e9eef5", scale = 1 } = Astro.props;
++const rowH = 20 * scale;
++const colW = 24 * scale;
++const padX = 10 * scale;
++const padY = 8 * scale;
++const h = rowH * 2 + padY * 2 - 4 * scale;
++const w = colW * 2 + padX * 2;
++const tick = 7 * scale;
++const fontSize = 13 * scale;
++---
++<g transform={`translate(${x}, ${y})`}>
++  <path d={`M ${tick} 0 L 0 0 L 0 ${h} L ${tick} ${h}`} fill="none" stroke={color} stroke-width="1.5" />
++  <path d={`M ${w - tick} 0 L ${w} 0 L ${w} ${h} L ${w - tick} ${h}`} fill="none" stroke={color} stroke-width="1.5" />
++  <text x={padX + colW / 2} y={padY + rowH * 0.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{a}</text>
++  <text x={padX + colW * 1.5} y={padY + rowH * 0.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{b}</text>
++  <text x={padX + colW / 2} y={padY + rowH * 1.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{c}</text>
++  <text x={padX + colW * 1.5} y={padY + rowH * 1.5 + 4} text-anchor="middle" fill={color} font-size={fontSize} font-family="SF Mono, Fira Code, Consolas, monospace">{d}</text>
++</g>
+diff --git a/src/components/figures/MatrixVectorFigure.astro b/src/components/figures/MatrixVectorFigure.astro
+new file mode 100644
+index 0000000..44c6616
+--- /dev/null
++++ b/src/components/figures/MatrixVectorFigure.astro
+@@ -0,0 +1,32 @@
++---
++// Fig. for "Linear Algebra over Finite Fields": a matrix times a vector is
++// one dot product per row — A = [[1,2],[3,4]] turns v = (5,6) into (3,4) mod 7.
++import Matrix2x2 from "./Matrix2x2.astro";
++---
++<svg viewBox="0 0 760 510" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">matrix times vector</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">What does a matrix do to a vector?</text>
++
++  <text x="270" y="150" text-anchor="end" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">A =</text>
++  <Matrix2x2 x={300} y={110} a="1" b="2" c="3" d="4" scale={1.3} />
++  <text x="560" y="150" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">v = (5, 6)</text>
++
++  <text x="380" y="216" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">A &#215; v</text>
++
++  <text x="380" y="250" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; row 1 &#8226; v</text>
++  <text x="380" y="276" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">1 &#215; 5 + 2 &#215; 6 = 5 + 12 = 17 = 3</text>
++
++  <text x="380" y="308" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; row 2 &#8226; v</text>
++  <text x="380" y="334" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3 &#215; 5 + 4 &#215; 6 = 15 + 24 = 39 = 4</text>
++
++  <rect x="260" y="356" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="382" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">A &#215; v = (3, 4)</text>
++
++  <text x="380" y="424" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">17 = 2 &#215; 7 + 3 and 39 = 5 &#215; 7 + 4 &#10003;</text>
++
++  <line x1="40" y1="444" x2="720" y2="444" stroke="#223049" stroke-width="1" />
++  <text x="380" y="468" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ONE ROW, ONE DOT PRODUCT</text>
++  <text x="380" y="490" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A matrix is a machine that turns one vector into another.</text>
++</svg>
+diff --git a/src/components/figures/SolvingSystemFigure.astro b/src/components/figures/SolvingSystemFigure.astro
+new file mode 100644
+index 0000000..031948c
+--- /dev/null
++++ b/src/components/figures/SolvingSystemFigure.astro
+@@ -0,0 +1,35 @@
++---
++// Fig. for "Linear Algebra over Finite Fields": running A·v = (3,4) backwards
++// — eliminate x, divide by 5 mod 7, back-substitute — recovers v = (5,6),
++// the same vector Fig. 2 started from.
++---
++<svg viewBox="0 0 760 550" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">solving a system</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">Which vector v = (x, y) does A turn into (3, 4)?</text>
++
++  <text x="380" y="112" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">SETUP</text>
++  <text x="380" y="136" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x + 2y = 3</text>
++  <text x="380" y="158" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3x + 4y = 4</text>
++
++  <text x="380" y="192" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; clear x from row 2</text>
++  <text x="380" y="214" text-anchor="middle" fill="#e9eef5" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">subtract 3 &#215; row 1 from row 2: (3x + 4y) &#8722; 3(x + 2y) = 4 &#8722; 3 &#215; 3</text>
++  <text x="380" y="236" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#8722;2y = &#8722;5</text>
++  <text x="380" y="258" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">&#8722;2 = 5 and &#8722;5 = 2, so 5y = 2</text>
++
++  <text x="380" y="292" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; divide</text>
++  <text x="380" y="316" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">5 &#215; 3 = 15 = 1, so 1 &#247; 5 = 3, and y = 2 &#215; 3 = 6</text>
++
++  <text x="380" y="350" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; back-substitute</text>
++  <text x="380" y="374" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">x = 3 &#8722; 2y = 3 &#8722; 12 = &#8722;9 = 5</text>
++
++  <rect x="260" y="396" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="422" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">(x, y) = (5, 6)</text>
++
++  <text x="380" y="464" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">1 &#215; 5 + 2 &#215; 6 = 17 = 3 &#10003; and 3 &#215; 5 + 4 &#215; 6 = 39 = 4 &#10003;</text>
++
++  <line x1="40" y1="484" x2="720" y2="484" stroke="#223049" stroke-width="1" />
++  <text x="380" y="508" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ELIMINATE, DIVIDE, BACK-SUBSTITUTE</text>
++  <text x="380" y="530" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Same steps as with real numbers, but division means multiplying by the inverse mod 7.</text>
++</svg>
+diff --git a/src/components/figures/VectorDotProductFigure.astro b/src/components/figures/VectorDotProductFigure.astro
+new file mode 100644
+index 0000000..f914b75
+--- /dev/null
++++ b/src/components/figures/VectorDotProductFigure.astro
+@@ -0,0 +1,29 @@
++---
++// Fig. for "Linear Algebra over Finite Fields": vectors add and scale
++// entry-by-entry mod 7, and the dot product (2,3,5)·(4,1,6) = 41 = 6
++// collapses two lists into one number.
++---
++<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">vectors and the dot product</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">What can we do with lists of numbers mod 7?</text>
++
++  <text x="380" y="118" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; add and scale, entry by entry</text>
++  <text x="380" y="146" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(2, 3, 5) + (4, 1, 6) = (6, 4, 11) = (6, 4, 4)</text>
++  <text x="380" y="176" text-anchor="middle" fill="#e9eef5" font-size="14.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3 &#215; (2, 3, 5) = (6, 9, 15) = (6, 2, 1)</text>
++  <text x="380" y="202" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-family="SF Mono, Fira Code, Consolas, monospace">11 &#8722; 7 = 4, 9 &#8722; 7 = 2, 15 &#8722; 14 = 1</text>
++
++  <text x="380" y="246" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; the dot product</text>
++  <text x="380" y="274" text-anchor="middle" fill="#e9eef5" font-size="15" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(2, 3, 5) &#8226; (4, 1, 6) = 2&#215;4 + 3&#215;1 + 5&#215;6 = 8 + 3 + 30 = 41</text>
++  <text x="380" y="300" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">41 = 5 &#215; 7 + 6 = 6</text>
++
++  <rect x="260" y="322" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="348" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">a dot product gives one number</text>
++
++  <text x="380" y="396" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">reduce first: 8 = 1 and 30 = 2, so 1 + 3 + 2 = 6 &#10003;</text>
++
++  <line x1="40" y1="416" x2="720" y2="416" stroke="#223049" stroke-width="1" />
++  <text x="380" y="440" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">TWO LISTS IN, ONE NUMBER OUT</text>
++  <text x="380" y="462" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Every step is ordinary arithmetic, then reduce mod 7.</text>
++</svg>
+diff --git a/src/content/lessons/extension-fields-towers.mdx b/src/content/lessons/extension-fields-towers.mdx
+index fc9eb52..2554f6a 100644
+--- a/src/content/lessons/extension-fields-towers.mdx
++++ b/src/content/lessons/extension-fields-towers.mdx
+@@ -9,6 +9,8 @@ order: 21
+ youtubeHref: "https://youtu.be/F_0mVTFmHCQ"
+ prevTitle: "Quadratic Residues & Square Roots"
+ prevHref: "/learn/math/quadratic-residues-square-roots"
++nextTitle: "Linear Algebra over Finite Fields"
++nextHref: "/learn/math/linear-algebra-finite-fields"
+ ---
+ 
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/lessons/linear-algebra-finite-fields.mdx b/src/content/lessons/linear-algebra-finite-fields.mdx
+new file mode 100644
+index 0000000..431c4e4
+--- /dev/null
++++ b/src/content/lessons/linear-algebra-finite-fields.mdx
+@@ -0,0 +1,143 @@
++---
++track: math
++module: "Linear Algebra"
++lessonNumber: "22"
++title: "Linear Algebra over Finite Fields"
++duration: "13:00"
++description: "How vectors and matrices work over a finite field — the dot product, matrix times vector, solving a system, and building an inverse — and how a computation's claimed values get packed into a vector and checked with exactly the dot products that give R1CS its shape."
++order: 22
++prevTitle: "Extension Fields & Towers"
++prevHref: "/learn/math/extension-fields-towers"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import VectorDotProductFigure from "../../components/figures/VectorDotProductFigure.astro";
++import MatrixVectorFigure from "../../components/figures/MatrixVectorFigure.astro";
++import SolvingSystemFigure from "../../components/figures/SolvingSystemFigure.astro";
++import InverseMatrixFigure from "../../components/figures/InverseMatrixFigure.astro";
++import ConstraintDotProductFigure from "../../components/figures/ConstraintDotProductFigure.astro";
++import LinearAlgebraSummaryFigure from "../../components/figures/LinearAlgebraSummaryFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
++
++The last two lessons worked with one number at a time. **This lesson puts many numbers together, in lists and in grids** — linear algebra, but every number is reduced mod a prime. A ZK proof starts life as a computation, and that computation gets turned into a pile of checks written with exactly this machinery. One small example carries the whole lesson: the prime $7$, small enough that every step is easy to check by hand.
++
++## Vectors and the dot product
++
++A list of numbers is called a vector. Vectors add and scale entry by entry, just like ordinary numbers — and one more operation, the dot product, turns two vectors into a single number.
++
++<Figure caption="Fig. 1 — adding and scaling (2, 3, 5) entry by entry, then taking its dot product with (4, 1, 6): multiply matching entries, add, and reduce mod 7.">
++  <VectorDotProductFigure />
++</Figure>
++
++<MathBox label="The dot product">
++
++<div slot="formula">
++
++$$(a_1, a_2, a_3) \cdot (b_1, b_2, b_3) = a_1 b_1 + a_2 b_2 + a_3 b_3$$
++
++</div>
++
++Addition and scaling work entry by entry, with the usual reduction mod $7$ at the end. The dot product is different: it multiplies matching entries and adds the results, collapsing two lists into one number. Every other operation in this lesson — matrices, systems, constraints — is built entirely out of dot products.
++
++</MathBox>
++
++## Matrix times vector
++
++A matrix is a grid of numbers, and multiplying it by a vector means taking the dot product of each row with that vector.
++
++<Figure caption="Fig. 2 — A = [[1, 2], [3, 4]] times v = (5, 6): row 1 dotted with v gives 3, row 2 dotted with v gives 4, so A × v = (3, 4).">
++  <MatrixVectorFigure />
++</Figure>
++
++<MathBox label="Matrix times vector">
++
++<div slot="formula">
++
++$$(Av)_i = \text{row}_i(A) \cdot v$$
++
++</div>
++
++Each output entry is one row of $A$ dotted with $v$ — nothing more. A matrix, seen this way, is just a stack of dot products: a machine that turns one vector into another. Keep $A$, $v = (5, 6)$, and the output $(3, 4)$ in mind; they carry through the rest of this lesson.
++
++</MathBox>
++
++## Solving a system
++
++Running the machine backwards — given the output, find the input — is where division mod $7$ earns its keep.
++
++<Figure caption="Fig. 3 — recovering v from A × v = (3, 4): eliminate x from the second equation, divide by 5 mod 7, then back-substitute to get v = (5, 6) again.">
++  <SolvingSystemFigure />
++</Figure>
++
++<MathBox label="Elimination mod p">
++
++<div slot="formula">
++
++$$\text{eliminate} \to \text{divide by the inverse mod } p \to \text{back-substitute}$$
++
++</div>
++
++The two rows of $A$ give two equations in $x$ and $y$. Eliminating $x$ leaves one equation in $y$ alone, solved by multiplying by $5$'s inverse mod $7$ rather than dividing. Substituting $y$ back into the first equation recovers $x$. The answer, $(5, 6)$, is exactly the vector Fig. 2 started from — the system undoes the matrix.
++
++</MathBox>
++
++## The inverse matrix
++
++Solving from scratch every time is wasteful. A single matrix, $A^{-1}$, can undo $A$ in one multiplication — as long as a number called the determinant isn't $0$.
++
++<Figure caption="Fig. 4 — building A⁻¹ from the determinant of A, then checking A⁻¹ × (3, 4) = (5, 6); a determinant of 0, as in [[1, 2], [2, 4]], means no inverse exists.">
++  <InverseMatrixFigure />
++</Figure>
++
++<MathBox label="The 2×2 inverse">
++
++<div slot="formula">
++
++$$\det \begin{pmatrix} a & b \\ c & d \end{pmatrix} = ad - bc, \qquad A^{-1} = \frac{1}{\det A}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$$
++
++</div>
++
++The determinant of $A$ is $ad - bc$; for this $A$, that's $5$ mod $7$. Swap the diagonal entries, negate the other two, and scale everything by the determinant's inverse to get $A^{-1}$. A determinant of $0$ means the rows carry the same information — one is a multiple of the other — so the matrix loses information and can't be undone.
++
++</MathBox>
++
++## Constraints as dot products
++
++Here's the payoff. A claimed computation — a handful of numbers satisfying some equations — packs into one vector, and each equation becomes a check built entirely from dot products.
++
++<Figure caption="Fig. 5 — packing the claim x = 3, y = x², w = yx into z = (1, 3, 2, 6), then checking each multiplication step as (row A · z) × (row B · z) = (row C · z).">
++  <ConstraintDotProductFigure />
++</Figure>
++
++<MathBox label="R1CS, one constraint">
++
++<div slot="formula">
++
++$$(\text{row}_A \cdot z) \times (\text{row}_B \cdot z) = \text{row}_C \cdot z$$
++
++</div>
++
++Pack the claim's values — including a leading $1$ for constants — into a vector $z$. Three carefully chosen rows, $A$, $B$, and $C$, each pick out the right entries of $z$ by dotting with it, and the single real multiplication checks that the computation's claimed step actually happened. Stack many such rows into matrices $A$, $B$, $C$, and this becomes $Az \times Bz = Cz$ entry by entry — the shape of R1CS, a constraint system many ZK proofs use.
++
++</MathBox>
++
++## Where this shows up
++
++Three ideas, each resting on the last: the dot product, matrices built from dot products, and constraints that are nothing but dot products wearing a disguise.
++
++<Figure caption="Fig. 6 — the dot product, matrices and solving, and constraints, and what each one is for.">
++  <LinearAlgebraSummaryFigure />
++</Figure>
++
++A dot product turns two lists into one number. A matrix is a stack of dot products, and it can be undone — by solving directly, or by building its inverse once — whenever its determinant isn't $0$. And a ZK constraint is exactly three dot products and one multiplication. But real proofs work with lists of millions of entries, and multiplying that many numbers the slow way is too expensive. The next lesson meets the trick that makes it fast.
++
++<KeyTakeaways>
++
++- A dot product multiplies matching entries of two vectors and adds the results, reducing mod $p$ — two lists in, one number out.
++- A matrix times a vector is one dot product per row; the matrix is a machine that turns one vector into another.
++- Solving $Av = b$ for $v$ works by eliminating variables and dividing by the inverse mod $p$, the same elimination used with ordinary numbers.
++- A matrix has an inverse exactly when its determinant $ad - bc$ isn't $0$; a zero determinant means two rows carry the same information and the matrix can't be undone.
++- A computation's claimed values pack into a vector $z$, and each step becomes a constraint $(\text{row}_A \cdot z) \times (\text{row}_B \cdot z) = \text{row}_C \cdot z$ — the shape of R1CS.
++
++</KeyTakeaways>
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 33f4cc4..cca918e 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -11,7 +11,7 @@ export const learnHero = {
+   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
+   stats: [
+     { num: "4", label: "Tracks" },
+-    { num: "67", label: "Lessons" },
++    { num: "68", label: "Lessons" },
+     { num: "0 → Prod", label: "Outcome" },
+   ],
+ };
+@@ -145,6 +145,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "21", title: "Extension Fields & Towers", duration: "10:50", slug: "extension-fields-towers" },
+       ],
+     },
++    {
++      module: "Linear Algebra",
++      items: [
++        { num: "22", title: "Linear Algebra over Finite Fields", duration: "13:00", slug: "linear-algebra-finite-fields" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],
+diff --git a/src/content/tracks/math.json b/src/content/tracks/math.json
+index 043c94a..6c173b2 100644
+--- a/src/content/tracks/math.json
++++ b/src/content/tracks/math.json
+@@ -4,5 +4,5 @@
+   "title": "Math",
+   "level": "BEGINNER – INTERMEDIATE",
+   "description": "Finite fields, elliptic curves, and the algebra that underlies every proof system.",
+-  "lessonCount": 21
++  "lessonCount": 22
+ }
