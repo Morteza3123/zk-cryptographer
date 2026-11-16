@@ -1,0 +1,143 @@
+---
+track: math
+module: "FFT & NTT"
+lessonNumber: "23"
+title: "FFT and NTT"
+duration: "13:00"
+description: "Why multiplying two polynomials the obvious way costs n × n multiplications, how multiplying their values at the roots of unity instead turns that into a matrix, and how splitting into even and odd parts — the FFT, or NTT over a finite field — brings the cost down to about n × log n."
+order: 23
+prevTitle: "Linear Algebra over Finite Fields"
+prevHref: "/learn/math/linear-algebra-finite-fields"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import SlowPolyMultFigure from "../../components/figures/SlowPolyMultFigure.astro";
+import ValuesNotCoeffsFigure from "../../components/figures/ValuesNotCoeffsFigure.astro";
+import TransformMatrixFigure from "../../components/figures/TransformMatrixFigure.astro";
+import FastFFTTrickFigure from "../../components/figures/FastFFTTrickFigure.astro";
+import InverseTransformFigure from "../../components/figures/InverseTransformFigure.astro";
+import FFTSummaryFigure from "../../components/figures/FFTSummaryFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
+
+Last lesson built vectors, matrices, and constraints out of dot products. **This lesson meets one of the most important algorithms in ZK: the FFT**, and its finite-field version, the NTT. Its job is simple to state — multiply polynomials fast — and it needs exactly the roots of unity from Topic 19 and the matrix-times-vector idea from Topic 22. One example carries the whole lesson: $(1 + 2x)$ times $(3 + x)$, mod the prime $13$.
+
+## The slow way
+
+Before building something fast, it helps to see exactly what's slow about the obvious method.
+
+<Figure caption="Fig. 1 — multiplying (1 + 2x)(3 + x) the obvious way: multiply every pair of terms, collect by power of x, getting 3 + 7x + 2x². Doubling the degree quadruples the work.">
+  <SlowPolyMultFigure />
+</Figure>
+
+<MathBox label="Schoolbook multiplication">
+
+<div slot="formula">
+
+$$(a_0 + a_1x)(b_0 + b_1x) = a_0b_0 + (a_0b_1 + a_1b_0)x + a_1b_1x^2$$
+
+</div>
+
+Multiplying two polynomials with $n$ coefficients each the schoolbook way takes $n \times n$ multiplications — every coefficient of one against every coefficient of the other. For $2$ coefficients that's $4$ multiplications; for $1{,}000$, that's a million. Real proofs work with polynomials far larger than that.
+
+</MathBox>
+
+## Values instead of coefficients
+
+Here's the key idea that makes everything else in this lesson possible: multiplying polynomials and multiplying their values at the same points are the same operation.
+
+<Figure caption="Fig. 2 — evaluating f = 1 + 2x and g = 3 + x at the four 4th roots of unity mod 13 (1, 5, 12, 8), then multiplying point by point to get the values of the answer.">
+  <ValuesNotCoeffsFigure />
+</Figure>
+
+<MathBox label="Pointwise multiplication">
+
+<div slot="formula">
+
+$$(fg)(\omega^i) = f(\omega^i) \cdot g(\omega^i)$$
+
+</div>
+
+A degree-$2$ answer needs at least $3$ points to pin it down; $4$ — the $4$th roots of unity — is the convenient choice, because they form a structured set. At each point, multiplying is a single multiplication, not a grid of pairs. The catch: finding the values in the first place still costs something. That's what the next three sections fix.
+
+</MathBox>
+
+## The transform as a matrix
+
+Evaluating a polynomial at every root of unity at once has a single formula — and it's exactly a matrix times a vector, the operation from last lesson.
+
+<Figure caption="Fig. 3 — the matrix whose row j, column k holds ω^(j×k), applied to f's coefficient vector (1, 2, 0, 0) to get its values (3, 11, 12, 4) at all four roots at once.">
+  <TransformMatrixFigure />
+</Figure>
+
+<MathBox label="The DFT matrix">
+
+<div slot="formula">
+
+$$M_{jk} = \omega^{jk}, \qquad M \cdot (\text{coefficients}) = (\text{values at } \omega^0, \omega^1, \ldots)$$
+
+</div>
+
+Row $j$, column $k$ of this matrix holds $\omega^{jk}$, and multiplying it by the coefficient vector evaluates the polynomial at every root of unity simultaneously — each output entry is one row dotted with the coefficients. This matrix has a name, the DFT matrix, but computing $M$ times a vector directly still costs $n \times n$ multiplications. The structure inside $M$ is what the next section exploits.
+
+</MathBox>
+
+## The fast trick
+
+This is the heart of the FFT: split the polynomial into even and odd halves, notice that $x$ and $-x$ square to the same value, and combine two half-size results with a plus and a minus.
+
+<Figure caption="Fig. 4 — transforming (1, 2, 3, 4) by splitting f into even part E and odd part O, evaluating each at just two points (1 and 12, since 5 and 8 square to the same values), then combining with ± to get all four values.">
+  <FastFFTTrickFigure />
+</Figure>
+
+<MathBox label="The FFT split">
+
+<div slot="formula">
+
+$$f(x) = E(x^2) + x \cdot O(x^2), \qquad f(-x) = E(x^2) - x \cdot O(x^2)$$
+
+</div>
+
+Splitting $f$ into its even-power and odd-power terms gives two half-size polynomials, $E$ and $O$. Because $x$ and $-x$ have the same square, evaluating $f$ at a root and its negation only needs $E$ and $O$ at one shared point each — one addition and one subtraction recovers both values. Repeating this split on each half, recursively, turns $n \times n$ work into about $n \log n$: for a million coefficients, roughly $20$ million steps instead of a trillion.
+
+</MathBox>
+
+## Coming back to coefficients
+
+The round trip needs a way back: from values to coefficients. It turns out to be the exact same algorithm, run with the inverse root, then scaled down.
+
+<Figure caption="Fig. 5 — recovering the coefficients from the values (12, 10, 11, 5) by running the same transform with ω⁻¹ = 8, then dividing every entry by 4 — landing back on 3 + 7x + 2x².">
+  <InverseTransformFigure />
+</Figure>
+
+<MathBox label="The inverse transform">
+
+<div slot="formula">
+
+$$\text{coefficients} = \frac{1}{n} \cdot \text{transform with } \omega^{-1}$$
+
+</div>
+
+Running the transform with $\omega^{-1}$ instead of $\omega$, then multiplying every entry by $n^{-1}$, undoes the forward transform exactly — the same matrix structure, just with the inverse root and a final scaling. The full pipeline: transform both polynomials to values, multiply pointwise, transform back — and with the fast trick on both ends, every step is cheap.
+
+</MathBox>
+
+## Where this shows up
+
+Three ideas: the slow cost that motivates everything, the fast trick that fixes it, and where fields with the right structure make this work at ZK scale.
+
+<Figure caption="Fig. 6 — the slow way, the fast way, and where this shows up in ZK, and what each one costs.">
+  <FFTSummaryFigure />
+</Figure>
+
+Schoolbook multiplication costs $n \times n$; splitting into even and odd parts brings that to about $n \log n$. This only works when the field has enough roots of unity to split all the way down — real proof systems choose their field so that $p - 1$ is divisible by a large power of $2$: BN254's scalar field has roots of unity of order $2^{28}$, and BLS12-381's has order $2^{32}$. So far every polynomial here has had one variable; the next lesson gives them several.
+
+<KeyTakeaways>
+
+- Multiplying two polynomials the schoolbook way costs $n \times n$ multiplications; multiplying their values at shared points instead costs only $n$ — one multiplication per point.
+- Evaluating a polynomial at every root of unity at once is a matrix times its coefficient vector, where row $j$, column $k$ holds $\omega^{jk}$.
+- The FFT speeds this up by splitting into even and odd parts and using that $x$ and $-x$ square to the same value, so each pair of points shares one dot product; repeating the split brings the cost to about $n \log n$.
+- The inverse transform is the same algorithm run with $\omega^{-1}$ instead of $\omega$, followed by dividing every entry by $n$.
+- Real pairing-friendly curves are chosen so $p - 1$ has a large power of $2$ as a factor, giving a field with enough roots of unity for the FFT to split all the way down.
+
+</KeyTakeaways>

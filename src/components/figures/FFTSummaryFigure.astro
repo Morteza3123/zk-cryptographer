@@ -1,0 +1,35 @@
+---
+// Fig. for "FFT and NTT": where this shows up — the three-column summary
+// pattern used by the quadratic-residues, extension-fields, and
+// linear-algebra lessons' closing figures.
+---
+<svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">where this shows up</text>
+
+  <!-- the slow way -->
+  <rect x="30" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#3ab7ff" stroke-width="1.8" />
+  <text x="140" y="90" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE SLOW WAY</text>
+  <text x="140" y="140" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">multiply every pair</text>
+  <text x="140" y="158" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">of coefficients</text>
+  <text x="140" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">n &#215; n steps.</text>
+
+  <!-- the fast way -->
+  <rect x="270" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="380" y="90" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE FAST WAY</text>
+  <text x="380" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">split into even and odd,</text>
+  <text x="380" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">combine with plus</text>
+  <text x="380" y="166" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">and minus</text>
+  <text x="380" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">About n &#215; log n steps.</text>
+
+  <!-- in zk -->
+  <rect x="510" y="56" width="220" height="230" rx="12" fill="#121c2c" stroke="#8fdcff" stroke-width="1.8" />
+  <text x="620" y="90" text-anchor="middle" fill="#8fdcff" font-size="14.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">IN ZK</text>
+  <text x="620" y="130" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">fields with many roots of</text>
+  <text x="620" y="148" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">unity, so huge polynomials</text>
+  <text x="620" y="166" text-anchor="middle" fill="#c3cedd" font-size="12" font-family="-apple-system,Arial,sans-serif">can be multiplied fast</text>
+  <text x="620" y="256" text-anchor="middle" fill="#5ddc8a" font-size="12.5" font-style="italic" font-family="-apple-system,Arial,sans-serif">Polynomials at scale.</text>
+
+  <line x1="30" y1="316" x2="730" y2="316" stroke="#223049" stroke-width="1" />
+  <text x="380" y="340" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">FAST POLYNOMIALS NEED ROOTS OF UNITY</text>
+  <text x="380" y="362" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Next up: multivariate and multilinear polynomials.</text>
+</svg>

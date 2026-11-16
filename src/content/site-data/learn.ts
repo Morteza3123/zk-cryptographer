@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "68", label: "Lessons" },
+    { num: "69", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -149,6 +149,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Linear Algebra",
       items: [
         { num: "22", title: "Linear Algebra over Finite Fields", duration: "13:00", slug: "linear-algebra-finite-fields" },
+      ],
+    },
+    {
+      module: "FFT & NTT",
+      items: [
+        { num: "23", title: "FFT and NTT", duration: "13:00", slug: "fft-ntt" },
       ],
     },
   ],

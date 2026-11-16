@@ -1,0 +1,55 @@
+---
+// Reusable inline 4x4 matrix: a bracket pair drawn with SVG paths around a
+// 4x4 grid of values, with an optional highlighted row (a rounded outline
+// around one row's cells, e.g. to call out the row used in a worked dot
+// product). Meant to be dropped inside another figure's <svg> as a
+// positioned <g>.
+interface Props {
+  x: number;
+  y: number;
+  rows: string[][]; // 4 rows of 4 values each
+  highlightRow?: number; // 0-indexed
+  color?: string;
+  highlightColor?: string;
+  scale?: number;
+}
+const { x, y, rows, highlightRow, color = "#e9eef5", highlightColor = "#8fdcff", scale = 1 } = Astro.props;
+const rowH = 20 * scale;
+const colW = 26 * scale;
+const padX = 10 * scale;
+const padY = 8 * scale;
+const h = rowH * 4 + padY * 2 - 4 * scale;
+const w = colW * 4 + padX * 2;
+const tick = 7 * scale;
+const fontSize = 13 * scale;
+---
+<g transform={`translate(${x}, ${y})`}>
+  <path d={`M ${tick} 0 L 0 0 L 0 ${h} L ${tick} ${h}`} fill="none" stroke={color} stroke-width="1.5" />
+  <path d={`M ${w - tick} 0 L ${w} 0 L ${w} ${h} L ${w - tick} ${h}`} fill="none" stroke={color} stroke-width="1.5" />
+  {highlightRow !== undefined && (
+    <rect
+      x={tick - 2}
+      y={padY + rowH * highlightRow - 2}
+      width={w - 2 * tick + 4}
+      height={rowH + 4}
+      rx="6"
+      fill="none"
+      stroke={highlightColor}
+      stroke-width="1.5"
+    />
+  )}
+  {rows.map((row, r) =>
+    row.map((val, c) => (
+      <text
+        x={padX + colW * c + colW / 2}
+        y={padY + rowH * r + rowH / 2 + 4}
+        text-anchor="middle"
+        fill={color}
+        font-size={fontSize}
+        font-family="SF Mono, Fira Code, Consolas, monospace"
+      >
+        {val}
+      </text>
+    ))
+  )}
+</g>

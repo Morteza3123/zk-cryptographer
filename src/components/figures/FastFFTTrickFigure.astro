@@ -1,0 +1,38 @@
+---
+// Fig. for "FFT and NTT": the heart of the FFT — split f into even/odd
+// halves, use that roots come in ± pairs so both halves need only two
+// points, then combine with plus and minus to get all four values.
+---
+<svg viewBox="0 0 760 616" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">the fast trick</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">How can we transform (1, 2, 3, 4) faster?</text>
+
+  <text x="380" y="112" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">f(x) = 1 + 2x + 3x<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> + 4x</tspan><tspan dy="-6" font-size="65%">3</tspan><tspan dy="6"></tspan></text>
+
+  <text x="380" y="146" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 1 &#8212; split into even and odd</text>
+  <text x="380" y="170" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">f(x) = E(x<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">) + x &#215; O(x</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">), with E(y) = 1 + 3y and O(y) = 2 + 4y</tspan></text>
+
+  <text x="380" y="204" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 2 &#8212; roots come in pairs</text>
+  <text x="380" y="228" text-anchor="middle" fill="#e9eef5" font-size="13" font-family="SF Mono, Fira Code, Consolas, monospace">x and &#8722;x have the same square: 1 and 12 give 1, 5 and 8 give 12</text>
+
+  <text x="380" y="262" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 3 &#8212; two small problems</text>
+  <text x="380" y="286" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">E(1) = 4 and E(12) = 1 + 36 = 11</text>
+  <text x="380" y="308" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">O(1) = 6 and O(12) = 2 + 48 = 11</text>
+
+  <text x="380" y="342" text-anchor="middle" fill="#8b96a8" font-size="12" font-weight="700" font-family="-apple-system,Arial,sans-serif">STEP 4 &#8212; combine with plus and minus</text>
+  <text x="380" y="366" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">f(1) = 4 + 1 &#215; 6 = 10</text>
+  <text x="380" y="388" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">f(12) = 4 &#8722; 1 &#215; 6 = &#8722;2 = 11</text>
+  <text x="380" y="410" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">f(5) = 11 + 5 &#215; 11 = 66 = 1</text>
+  <text x="380" y="432" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">f(8) = 11 &#8722; 5 &#215; 11 = &#8722;44 = 8</text>
+
+  <rect x="260" y="454" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="380" y="480" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">transform = (10, 1, 11, 8)</text>
+
+  <text x="380" y="524" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-family="SF Mono, Fira Code, Consolas, monospace">directly: f(5) = 1 + 10 + 75 + 500 = 586 = 45 &#215; 13 + 1 = 1 &#10003;</text>
+
+  <line x1="40" y1="548" x2="720" y2="548" stroke="#223049" stroke-width="1" />
+  <text x="380" y="572" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">ONE BIG PROBLEM BECOMES TWO HALF-SIZE PROBLEMS</text>
+  <text x="380" y="594" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Repeat the split on each half: about n &#215; log n steps instead of n &#215; n.</text>
+</svg>
