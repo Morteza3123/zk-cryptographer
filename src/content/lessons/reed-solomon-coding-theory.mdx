@@ -1,0 +1,143 @@
+---
+track: math
+module: "Coding Theory"
+lessonNumber: "25"
+title: "Coding Theory & Reed–Solomon Codes"
+duration: "13:00"
+description: "How the rigidity behind Lagrange interpolation and Schwartz–Zippel becomes a practical tool for surviving lost or corrupted data — the Hamming distance between two words, the Reed–Solomon code that sends many evaluations of one low-degree polynomial, and how that same code underlies soundness checks and data availability in modern proof systems."
+order: 25
+prevTitle: "Multivariate & Multilinear Polynomials"
+prevHref: "/learn/math/multivariate-multilinear-polynomials"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import ErrorCorrectionBasicsFigure from "../../components/figures/ErrorCorrectionBasicsFigure.astro";
+import ReedSolomonLineFigure from "../../components/figures/ReedSolomonLineFigure.astro";
+import ErasureRecoveryFigure from "../../components/figures/ErasureRecoveryFigure.astro";
+import CodewordDistanceFigure from "../../components/figures/CodewordDistanceFigure.astro";
+import CorruptedNumberFigure from "../../components/figures/CorruptedNumberFigure.astro";
+import ReedSolomonZKFigure from "../../components/figures/ReedSolomonZKFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
+
+The last few lessons showed how rigid polynomials really are: a low-degree one is pinned down by just a few points, and two different ones can only agree in a few places. **This lesson puts that rigidity to work on a very practical problem** — sending information when some of it gets lost or damaged along the way. This is coding theory, and its star is the Reed–Solomon code: it protects QR codes, CDs, and satellite links, and it sits underneath modern proof systems and blockchain data availability. One notation note carried over from the last lesson: there, $d$ meant a polynomial's degree; here, $d$ means a code's distance.
+
+## Why send extra numbers?
+
+Sending a message plainly leaves no way to tell that anything went wrong. Redundancy — extra numbers computed from the message — is what makes mistakes visible, and distance is what decides how many mistakes survive.
+
+<Figure caption="Fig. 1 — a message corrupted in transit looks just as valid as the real one; the fix is redundancy, measured by the Hamming distance between words, with circles of radius t around each codeword that must not overlap.">
+  <ErrorCorrectionBasicsFigure />
+</Figure>
+
+<MathBox label="Detecting and correcting errors">
+
+<div slot="formula">
+
+$$d \geq 2t + 1 \implies \text{correct up to } t \text{ errors}$$
+
+</div>
+
+The Hamming distance between two words is the number of positions where they differ. A code's distance $d$ is the smallest Hamming distance between any two of its codewords. With distance $d$, a receiver can always detect up to $d - 1$ errors, and correct up to $t$ errors whenever $d \geq 2t + 1$ — picture a circle of radius $t$ around each codeword; as long as those circles don't overlap, a corrupted word still lands closest to the codeword it came from.
+
+</MathBox>
+
+## Reed–Solomon: a message as a line
+
+Reed–Solomon's trick is to turn the message itself into a low-degree polynomial, then send its value at several agreed points instead of the raw numbers.
+
+<Figure caption="Fig. 2 — the message (3, 5) becomes f(x) = 3 + 5x, evaluated at x = 0 through 4 in F(13) to give the codeword (3, 8, 0, 5, 10); any 2 of those 5 numbers are enough to recover the line.">
+  <ReedSolomonLineFigure />
+</Figure>
+
+<MathBox label="Reed–Solomon encoding">
+
+<div slot="formula">
+
+$$\text{message} \to f(x), \qquad \text{codeword} = \big(f(x_1), f(x_2), \ldots, f(x_n)\big)$$
+
+</div>
+
+A message of $k$ numbers becomes a degree-$(k-1)$ polynomial, and the codeword is that polynomial's value at $n$ agreed points, with $n > k$. The rate $k/n$ tells you how much of what's sent actually carries the message — here, $2/5$. Because any $k$ points pin down a degree-$(k-1)$ polynomial exactly, any $k$ of the $n$ transmitted numbers are enough to reconstruct it.
+
+</MathBox>
+
+## Recovering lost numbers
+
+When some numbers go missing but the receiver knows exactly which positions were lost — an erasure — the surviving points are still enough to rebuild the line.
+
+<Figure caption="Fig. 3 — with three of five numbers erased, the two surviving points (1, 8) and (3, 5) are enough to solve for the slope and intercept, recovering f(x) = 3 + 5x and every missing value.">
+  <ErasureRecoveryFigure />
+</Figure>
+
+<MathBox label="Erasures">
+
+<div slot="formula">
+
+$$\text{survives up to } n - k \text{ erasures}$$
+
+</div>
+
+An erasure is a lost value at a known position — different from an error, where a value is wrong but its position looks fine. Because $k$ points determine the message, a Reed–Solomon code with $n$ total points tolerates losing up to $n - k$ of them and still recovers everything exactly, the same way two points determine a line here.
+
+</MathBox>
+
+## How far apart are two codewords?
+
+The error-correcting power of this code all traces back to one fact already familiar from Schwartz–Zippel: two different low-degree polynomials can only agree at a handful of points.
+
+<Figure caption="Fig. 4 — two different messages give polynomials that agree at only one of five evaluation points, so their codewords differ in n − k + 1 = 4 of 5 places — the maximum distance any code of this size could have.">
+  <CodewordDistanceFigure />
+</Figure>
+
+<MathBox label="Minimum distance">
+
+<div slot="formula">
+
+$$d = n - k + 1$$
+
+</div>
+
+Two different polynomials of degree below $k$ can agree in at most $k - 1$ points — subtract one from the other and the result is a nonzero polynomial of degree below $k$, which has at most $k - 1$ roots. So out of $n$ evaluation points, at most $k - 1$ ever agree, meaning at least $n - k + 1$ always differ. Reed–Solomon codes hit this bound exactly, which is why they're called maximum distance separable.
+
+</MathBox>
+
+## Finding a corrupted number
+
+Erasures are the easy case, because the receiver knows where to look. A plain error is harder — one value is simply wrong, with no flag attached — but the same distance argument still finds it.
+
+<Figure caption="Fig. 5 — one wrong value still lets the true line win by a landslide, matching 4 of 5 received numbers against any rival's at most 2; but two errors can tie two different codewords, which is exactly the limit the distance allows.">
+  <CorruptedNumberFigure />
+</Figure>
+
+<MathBox label="Nearest-codeword decoding">
+
+<div slot="formula">
+
+$$\text{correct } t \text{ errors} \iff d \geq 2t + 1$$
+
+</div>
+
+Decoding means finding the codeword closest to what was received. Since any two codewords differ in at least $d$ places, a received word with fewer than $d/2$ errors is always closer to the true codeword than to any other — that's exactly the $d \geq 2t + 1$ rule from Fig. 1. Push past that limit, as with two errors here, and two codewords can tie, which is why that rule is a hard ceiling, not just a rule of thumb.
+
+</MathBox>
+
+## Where zero-knowledge uses these codes
+
+Two ideas from earlier lessons meet here: the NTT makes Reed–Solomon encoding fast, and the same distance bound becomes a soundness argument for proof systems and a resilience guarantee for distributed data.
+
+<Figure caption="Fig. 6 — padding a message with zeros and running it through the NTT from Topic 23 produces a Reed–Solomon codeword directly; the same codeword-distance idea lets proof systems catch cheating provers with a few spot checks and lets blockchains recover data from any k of n stored pieces.">
+  <ReedSolomonZKFigure />
+</Figure>
+
+Encoding a message is padding it to length $n$ and running the NTT — the same fast transform from Topic 23, repurposed as a Reed–Solomon encoder. In proof systems like STARKs, a cheating prover's list of values sits far from every valid codeword, so checking a handful of random positions catches it with overwhelming probability. In distributed storage and blockchain data availability, the same code is spread across many nodes, so any $k$ of the $n$ stored pieces reconstruct the original data even if the rest disappear.
+
+<KeyTakeaways>
+
+- Redundancy turns a corrupted message into something detectable: the Hamming distance between two words counts the positions where they differ, and a code's minimum distance $d$ decides how much damage it survives.
+- Reed–Solomon encodes a $k$-number message as a degree-$(k-1)$ polynomial and sends its value at $n$ agreed points; any $k$ of those points recover the message exactly.
+- The same root-counting fact behind Schwartz–Zippel forces any two different codewords to differ in at least $n - k + 1$ places — the best any code of that size can do.
+- A received word survives up to $n - k$ erasures (lost values at known positions) and up to $t$ plain errors whenever $d \geq 2t + 1$, by always decoding to the nearest codeword.
+- The NTT makes Reed–Solomon encoding fast, and the resulting distance bound underlies both the soundness of spot-checks in proof systems like STARKs and data-availability guarantees in blockchains.
+
+</KeyTakeaways>

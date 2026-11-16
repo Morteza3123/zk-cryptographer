@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "70", label: "Lessons" },
+    { num: "71", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -161,6 +161,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "Multivariate Polynomials",
       items: [
         { num: "24", title: "Multivariate & Multilinear Polynomials", duration: "13:00", slug: "multivariate-multilinear-polynomials" },
+      ],
+    },
+    {
+      module: "Coding Theory",
+      items: [
+        { num: "25", title: "Coding Theory & Reed–Solomon Codes", duration: "13:00", slug: "reed-solomon-coding-theory" },
       ],
     },
   ],

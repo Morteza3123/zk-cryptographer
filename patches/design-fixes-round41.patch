@@ -1,0 +1,489 @@
+diff --git a/src/components/figures/CodewordDistanceFigure.astro b/src/components/figures/CodewordDistanceFigure.astro
+new file mode 100644
+index 0000000..b9e94dc
+--- /dev/null
++++ b/src/components/figures/CodewordDistanceFigure.astro
+@@ -0,0 +1,38 @@
++---
++// Fig. for "Coding Theory": why two Reed–Solomon codewords are forced
++// apart — two degree-1 polynomials can agree in at most one point, so
++// their codewords differ in n − k + 1 of n places.
++---
++<svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">how far apart are two codewords?</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">How different are two Reed&#8211;Solomon codewords, really?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">TWO MESSAGES&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">f(x) = 3 + 5x and g(x) = 1 + 6x</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CODEWORDS&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">f &#8594; (3,8,0,5,10) and g &#8594; (1,7,0,6,12)</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">DIFFERENCE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">f &#8722; g = 2 &#8722; x, which has only one root, x = 2</tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">AGREE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">only at x = 2, where both give 0 &#8594; they differ in 4 of 5 places</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">RULE&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="12.5" font-weight="700">two different polynomials of degree below k agree in at most k &#8722; 1 points</tspan>
++  </text>
++
++  <rect x="140" y="270" width="480" height="36" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="293" text-anchor="middle" fill="#5ddc8a" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">d = n &#8722; k + 1 = 5 &#8722; 2 + 1 = 4 &#10003;</text>
++
++  <line x1="40" y1="322" x2="720" y2="322" stroke="#223049" stroke-width="1" />
++  <text x="380" y="346" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">EACH EXTRA EVALUATION ADDS ANOTHER PLACE CODEWORDS DIFFER</text>
++  <text x="380" y="368" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The same root-counting fact behind the Schwartz&#8211;Zippel lemma.</text>
++</svg>
+diff --git a/src/components/figures/CorruptedNumberFigure.astro b/src/components/figures/CorruptedNumberFigure.astro
+new file mode 100644
+index 0000000..6c2941f
+--- /dev/null
++++ b/src/components/figures/CorruptedNumberFigure.astro
+@@ -0,0 +1,38 @@
++---
++// Fig. for "Coding Theory": decoding past a single changed value by
++// finding the closest codeword, and why two errors can create a tie.
++---
++<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">finding a corrupted number</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">One number was changed and we don't know which. Can we still decode?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">RECEIVED&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">(3, 8, 0, 9, 10)</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TRY&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">the line 3 + 5x matches 4 of 5 numbers, all except x = 3</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="10.5" font-weight="700">ANY OTHER CODEWORD&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12" font-weight="700">differs from the sent word in &#8805; 4 places, so matches received in &#8804; 2</tspan>
++  </text>
++
++  <rect x="80" y="206" width="600" height="38" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="230" text-anchor="middle" fill="#5ddc8a" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">decode to 3 + 5x &#8212; the error is at x = 3: received 9, correct value 5 &#10003;</text>
++
++  <text x="380" y="270" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">TWO ERRORS&#160;&#160;&#160;</tspan><tspan fill="#ff5c7a" font-size="12.5" font-weight="700">(3,8,0,6,12) is distance 2 from both codewords</tspan>
++  </text>
++  <text x="380" y="296" text-anchor="middle" fill="#ff5c7a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">a tie &#8212; we know something's wrong but not which codeword was sent &#10007;</text>
++
++  <text x="380" y="328" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">RULE&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13" font-weight="700">correcting t errors needs d &#8805; 2t + 1; here d = 4, so t = 1</tspan>
++  </text>
++
++  <line x1="40" y1="358" x2="720" y2="358" stroke="#223049" stroke-width="1" />
++  <text x="380" y="382" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE CLOSEST CODEWORD WINS, UNDER HALF THE DISTANCE</text>
++  <text x="380" y="404" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Real decoders find the winner fast, without trying every line.</text>
++</svg>
+diff --git a/src/components/figures/ErasureRecoveryFigure.astro b/src/components/figures/ErasureRecoveryFigure.astro
+new file mode 100644
+index 0000000..81f6d57
+--- /dev/null
++++ b/src/components/figures/ErasureRecoveryFigure.astro
+@@ -0,0 +1,47 @@
++---
++// Fig. for "Coding Theory": recovering a message from two surviving
++// points after three of five sent numbers are erased — rebuilding the
++// line through (1, 8) and (3, 5) over F(13).
++---
++<svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">recovering lost numbers</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Three of the five numbers are lost. Can we still get the message back?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">SENT&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">(3, 8, 0, 5, 10)</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">RECEIVED&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">(?, 8, ?, 5, ?)</tspan><tspan fill="#8b96a8" font-size="11.5" font-weight="700">  &#8212; positions known</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">KNOWN POINTS&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13.5" font-weight="700">(1, 8) and (3, 5)</tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">SLOPE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">(5 &#8722; 8) &#247; (3 &#8722; 1) = &#8722;3 &#247; 2</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">INVERSE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">2<tspan dy="-5" font-size="65%">&#8722;1</tspan><tspan dy="5"> = 7 because 2&#215;7 = 14 = 1, so &#8722;3&#215;7 = &#8722;21 = 5</tspan></tspan>
++  </text>
++
++  <text x="380" y="282" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">INTERCEPT&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">8 = c + 5&#215;1, so c = 3</tspan>
++  </text>
++
++  <text x="380" y="314" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">RESULT&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="14" font-weight="700">f(x) = 3 + 5x &#8594; message (3, 5) &#10003;</tspan>
++  </text>
++
++  <text x="380" y="346" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">REBUILD&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13.5" font-weight="700">f(0)=3, f(2)=13=0, f(4)=23=10 &#10003;</tspan>
++  </text>
++
++  <line x1="40" y1="376" x2="720" y2="376" stroke="#223049" stroke-width="1" />
++  <text x="380" y="400" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">ANY 2 SURVIVING NUMBERS REBUILD EVERYTHING</text>
++  <text x="380" y="422" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">An erasure is a lost number at a known place; this code survives n &#8722; k = 3 of them.</text>
++</svg>
+diff --git a/src/components/figures/ErrorCorrectionBasicsFigure.astro b/src/components/figures/ErrorCorrectionBasicsFigure.astro
+new file mode 100644
+index 0000000..a02c325
+--- /dev/null
++++ b/src/components/figures/ErrorCorrectionBasicsFigure.astro
+@@ -0,0 +1,56 @@
++---
++// Fig. for "Coding Theory": why redundancy is needed, the Hamming
++// distance between two words, and the detect/correct rules that follow
++// from keeping codewords far apart (circles of radius t must not overlap).
++---
++<svg viewBox="0 0 760 610" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">why send extra numbers?</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">How can a message survive when some numbers get changed or lost?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">PROBLEM&#160;&#160;&#160;</tspan><tspan fill="#ff5c7a" font-size="13" font-weight="700">send (3, 5), one number changes to (3, 9) &#8594; the receiver can't tell</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">IDEA&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">add extra numbers computed from the message &#8212; this is redundancy</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">HAMMING DISTANCE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">the number of positions where two words differ</tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">EXAMPLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">(3,8,0,5,10) vs (1,7,0,6,12) differ in 4 places &#8594; distance 4</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CODE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">a chosen set of allowed codewords; the smallest distance between two is d</tspan>
++  </text>
++
++  <!-- two codewords, d apart, each with a radius-t circle that must not overlap -->
++  <circle cx="220" cy="358" r="46" fill="none" stroke="#8fdcff" stroke-width="1.5" stroke-dasharray="4 4" />
++  <circle cx="540" cy="358" r="46" fill="none" stroke="#8fdcff" stroke-width="1.5" stroke-dasharray="4 4" />
++  <line x1="220" y1="358" x2="540" y2="358" stroke="#8b96a8" stroke-width="1" stroke-dasharray="2 4" />
++  <circle cx="220" cy="358" r="6" fill="#8fdcff" />
++  <circle cx="540" cy="358" r="6" fill="#8fdcff" />
++  <line x1="220" y1="358" x2="220" y2="314" stroke="#8b96a8" stroke-width="1.2" />
++  <line x1="540" y1="358" x2="540" y2="314" stroke="#8b96a8" stroke-width="1.2" />
++  <text x="226" y="332" fill="#8b96a8" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">t</text>
++  <text x="546" y="332" fill="#8b96a8" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">t</text>
++  <text x="380" y="346" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">d</text>
++  <text x="380" y="430" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">circles of radius t around each codeword must not overlap</text>
++
++  <text x="380" y="464" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">DETECT&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13.5" font-weight="700">up to d &#8722; 1 errors</tspan>
++  </text>
++
++  <text x="380" y="496" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CORRECT&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13.5" font-weight="700">up to t errors when d &#8805; 2t + 1</tspan>
++  </text>
++
++  <line x1="40" y1="526" x2="720" y2="526" stroke="#223049" stroke-width="1" />
++  <text x="380" y="550" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">THE FARTHER APART THE CODEWORDS, THE MORE DAMAGE SURVIVES</text>
++  <text x="380" y="572" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Reed&#8211;Solomon codes make d as large as it can possibly be.</text>
++</svg>
+diff --git a/src/components/figures/ReedSolomonLineFigure.astro b/src/components/figures/ReedSolomonLineFigure.astro
+new file mode 100644
+index 0000000..f4ae6ed
+--- /dev/null
++++ b/src/components/figures/ReedSolomonLineFigure.astro
+@@ -0,0 +1,36 @@
++---
++// Fig. for "Coding Theory": turning a message into a low-degree
++// polynomial and sending its evaluations — the Reed–Solomon codeword for
++// (3, 5) over F(13) at x = 0..4.
++---
++<svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">Reed&#8211;Solomon: a message as a line</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">How do we create extra numbers that are all tied to the message?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">MESSAGE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">(3, 5) &#8594; the polynomial f(x) = 3 + 5x</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">EVALUATE&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13" font-weight="700">in F(13) at x = 0, 1, 2, 3, 4</tspan>
++  </text>
++  <text x="380" y="180" text-anchor="middle" fill="#e9eef5" font-size="12.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">f(0)=3, f(1)=8, f(2)=13=0, f(3)=18=5, f(4)=23=10</text>
++
++  <text x="380" y="214" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CODEWORD&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="14" font-weight="700">(3, 8, 0, 5, 10)</tspan>
++  </text>
++
++  <text x="380" y="246" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">SIZES&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">k = 2 message numbers, n = 5 sent numbers, rate k/n = 2/5</tspan>
++  </text>
++
++  <text x="380" y="278" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">WHY IT WORKS&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="12.5" font-weight="700">any 2 points determine a line, so any 2 of the 5 numbers recover the message</tspan>
++  </text>
++
++  <line x1="40" y1="308" x2="720" y2="308" stroke="#223049" stroke-width="1" />
++  <text x="380" y="332" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">POINTS OF ONE LOW-DEGREE POLYNOMIAL ARE ALL TIED TOGETHER</text>
++  <text x="380" y="354" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Reed&#8211;Solomon means: send many evaluations of the message polynomial.</text>
++</svg>
+diff --git a/src/components/figures/ReedSolomonZKFigure.astro b/src/components/figures/ReedSolomonZKFigure.astro
+new file mode 100644
+index 0000000..cada19b
+--- /dev/null
++++ b/src/components/figures/ReedSolomonZKFigure.astro
+@@ -0,0 +1,39 @@
++---
++// Fig. for "Coding Theory": fast Reed–Solomon encoding via the NTT, and
++// why proof systems and data-availability schemes both lean on
++// codewords being spread far apart.
++---
++<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">where zero knowledge uses these codes</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Why do proof systems and blockchains care about error-correcting codes?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">ENCODE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">message (3,5) = polynomial 3+5x, padded with zeros to (3,5,0,0)</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">NTT&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">evaluate at the roots of unity 1, 5, 12, 8 in F(13) &#8594; </tspan><tspan fill="#5ddc8a" font-size="13" font-weight="700">(8, 2, 11, 4)</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">SIZES&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">k = 2, n = 4, rate 1/2 &#8594; the message is blown up 2&#215;</tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">DISTANCE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">d = n &#8722; k + 1 = 3, so codewords differ in &#8805; 3 of 4 places</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">IN PROOFS&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="12.5" font-weight="700">a cheating prover's word is far from every codeword; a few checks catch it</tspan>
++  </text>
++
++  <text x="380" y="282" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">IN DATA&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="12.5" font-weight="700">extend data with Reed&#8211;Solomon; any k of the n pieces recover everything</tspan>
++  </text>
++
++  <line x1="40" y1="312" x2="720" y2="312" stroke="#223049" stroke-width="1" />
++  <text x="380" y="336" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">CHEATING MEANS BEING FAR FROM EVERY CODEWORD</text>
++  <text x="380" y="358" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">A low-degree polynomial is a codeword &#8212; encoded fast with the NTT from Topic 23.</text>
++</svg>
+diff --git a/src/content/lessons/multivariate-multilinear-polynomials.mdx b/src/content/lessons/multivariate-multilinear-polynomials.mdx
+index 3dbd5d5..9f6c46d 100644
+--- a/src/content/lessons/multivariate-multilinear-polynomials.mdx
++++ b/src/content/lessons/multivariate-multilinear-polynomials.mdx
+@@ -8,6 +8,8 @@ description: "How polynomials in several variables generalize everything built s
+ order: 24
+ prevTitle: "FFT and NTT"
+ prevHref: "/learn/math/fft-ntt"
++nextTitle: "Coding Theory & Reed–Solomon Codes"
++nextHref: "/learn/math/reed-solomon-coding-theory"
+ ---
+ 
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/lessons/reed-solomon-coding-theory.mdx b/src/content/lessons/reed-solomon-coding-theory.mdx
+new file mode 100644
+index 0000000..73f85d4
+--- /dev/null
++++ b/src/content/lessons/reed-solomon-coding-theory.mdx
+@@ -0,0 +1,143 @@
++---
++track: math
++module: "Coding Theory"
++lessonNumber: "25"
++title: "Coding Theory & Reed–Solomon Codes"
++duration: "13:00"
++description: "How the rigidity behind Lagrange interpolation and Schwartz–Zippel becomes a practical tool for surviving lost or corrupted data — the Hamming distance between two words, the Reed–Solomon code that sends many evaluations of one low-degree polynomial, and how that same code underlies soundness checks and data availability in modern proof systems."
++order: 25
++prevTitle: "Multivariate & Multilinear Polynomials"
++prevHref: "/learn/math/multivariate-multilinear-polynomials"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import ErrorCorrectionBasicsFigure from "../../components/figures/ErrorCorrectionBasicsFigure.astro";
++import ReedSolomonLineFigure from "../../components/figures/ReedSolomonLineFigure.astro";
++import ErasureRecoveryFigure from "../../components/figures/ErasureRecoveryFigure.astro";
++import CodewordDistanceFigure from "../../components/figures/CodewordDistanceFigure.astro";
++import CorruptedNumberFigure from "../../components/figures/CorruptedNumberFigure.astro";
++import ReedSolomonZKFigure from "../../components/figures/ReedSolomonZKFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
++
++The last few lessons showed how rigid polynomials really are: a low-degree one is pinned down by just a few points, and two different ones can only agree in a few places. **This lesson puts that rigidity to work on a very practical problem** — sending information when some of it gets lost or damaged along the way. This is coding theory, and its star is the Reed–Solomon code: it protects QR codes, CDs, and satellite links, and it sits underneath modern proof systems and blockchain data availability. One notation note carried over from the last lesson: there, $d$ meant a polynomial's degree; here, $d$ means a code's distance.
++
++## Why send extra numbers?
++
++Sending a message plainly leaves no way to tell that anything went wrong. Redundancy — extra numbers computed from the message — is what makes mistakes visible, and distance is what decides how many mistakes survive.
++
++<Figure caption="Fig. 1 — a message corrupted in transit looks just as valid as the real one; the fix is redundancy, measured by the Hamming distance between words, with circles of radius t around each codeword that must not overlap.">
++  <ErrorCorrectionBasicsFigure />
++</Figure>
++
++<MathBox label="Detecting and correcting errors">
++
++<div slot="formula">
++
++$$d \geq 2t + 1 \implies \text{correct up to } t \text{ errors}$$
++
++</div>
++
++The Hamming distance between two words is the number of positions where they differ. A code's distance $d$ is the smallest Hamming distance between any two of its codewords. With distance $d$, a receiver can always detect up to $d - 1$ errors, and correct up to $t$ errors whenever $d \geq 2t + 1$ — picture a circle of radius $t$ around each codeword; as long as those circles don't overlap, a corrupted word still lands closest to the codeword it came from.
++
++</MathBox>
++
++## Reed–Solomon: a message as a line
++
++Reed–Solomon's trick is to turn the message itself into a low-degree polynomial, then send its value at several agreed points instead of the raw numbers.
++
++<Figure caption="Fig. 2 — the message (3, 5) becomes f(x) = 3 + 5x, evaluated at x = 0 through 4 in F(13) to give the codeword (3, 8, 0, 5, 10); any 2 of those 5 numbers are enough to recover the line.">
++  <ReedSolomonLineFigure />
++</Figure>
++
++<MathBox label="Reed–Solomon encoding">
++
++<div slot="formula">
++
++$$\text{message} \to f(x), \qquad \text{codeword} = \big(f(x_1), f(x_2), \ldots, f(x_n)\big)$$
++
++</div>
++
++A message of $k$ numbers becomes a degree-$(k-1)$ polynomial, and the codeword is that polynomial's value at $n$ agreed points, with $n > k$. The rate $k/n$ tells you how much of what's sent actually carries the message — here, $2/5$. Because any $k$ points pin down a degree-$(k-1)$ polynomial exactly, any $k$ of the $n$ transmitted numbers are enough to reconstruct it.
++
++</MathBox>
++
++## Recovering lost numbers
++
++When some numbers go missing but the receiver knows exactly which positions were lost — an erasure — the surviving points are still enough to rebuild the line.
++
++<Figure caption="Fig. 3 — with three of five numbers erased, the two surviving points (1, 8) and (3, 5) are enough to solve for the slope and intercept, recovering f(x) = 3 + 5x and every missing value.">
++  <ErasureRecoveryFigure />
++</Figure>
++
++<MathBox label="Erasures">
++
++<div slot="formula">
++
++$$\text{survives up to } n - k \text{ erasures}$$
++
++</div>
++
++An erasure is a lost value at a known position — different from an error, where a value is wrong but its position looks fine. Because $k$ points determine the message, a Reed–Solomon code with $n$ total points tolerates losing up to $n - k$ of them and still recovers everything exactly, the same way two points determine a line here.
++
++</MathBox>
++
++## How far apart are two codewords?
++
++The error-correcting power of this code all traces back to one fact already familiar from Schwartz–Zippel: two different low-degree polynomials can only agree at a handful of points.
++
++<Figure caption="Fig. 4 — two different messages give polynomials that agree at only one of five evaluation points, so their codewords differ in n − k + 1 = 4 of 5 places — the maximum distance any code of this size could have.">
++  <CodewordDistanceFigure />
++</Figure>
++
++<MathBox label="Minimum distance">
++
++<div slot="formula">
++
++$$d = n - k + 1$$
++
++</div>
++
++Two different polynomials of degree below $k$ can agree in at most $k - 1$ points — subtract one from the other and the result is a nonzero polynomial of degree below $k$, which has at most $k - 1$ roots. So out of $n$ evaluation points, at most $k - 1$ ever agree, meaning at least $n - k + 1$ always differ. Reed–Solomon codes hit this bound exactly, which is why they're called maximum distance separable.
++
++</MathBox>
++
++## Finding a corrupted number
++
++Erasures are the easy case, because the receiver knows where to look. A plain error is harder — one value is simply wrong, with no flag attached — but the same distance argument still finds it.
++
++<Figure caption="Fig. 5 — one wrong value still lets the true line win by a landslide, matching 4 of 5 received numbers against any rival's at most 2; but two errors can tie two different codewords, which is exactly the limit the distance allows.">
++  <CorruptedNumberFigure />
++</Figure>
++
++<MathBox label="Nearest-codeword decoding">
++
++<div slot="formula">
++
++$$\text{correct } t \text{ errors} \iff d \geq 2t + 1$$
++
++</div>
++
++Decoding means finding the codeword closest to what was received. Since any two codewords differ in at least $d$ places, a received word with fewer than $d/2$ errors is always closer to the true codeword than to any other — that's exactly the $d \geq 2t + 1$ rule from Fig. 1. Push past that limit, as with two errors here, and two codewords can tie, which is why that rule is a hard ceiling, not just a rule of thumb.
++
++</MathBox>
++
++## Where zero-knowledge uses these codes
++
++Two ideas from earlier lessons meet here: the NTT makes Reed–Solomon encoding fast, and the same distance bound becomes a soundness argument for proof systems and a resilience guarantee for distributed data.
++
++<Figure caption="Fig. 6 — padding a message with zeros and running it through the NTT from Topic 23 produces a Reed–Solomon codeword directly; the same codeword-distance idea lets proof systems catch cheating provers with a few spot checks and lets blockchains recover data from any k of n stored pieces.">
++  <ReedSolomonZKFigure />
++</Figure>
++
++Encoding a message is padding it to length $n$ and running the NTT — the same fast transform from Topic 23, repurposed as a Reed–Solomon encoder. In proof systems like STARKs, a cheating prover's list of values sits far from every valid codeword, so checking a handful of random positions catches it with overwhelming probability. In distributed storage and blockchain data availability, the same code is spread across many nodes, so any $k$ of the $n$ stored pieces reconstruct the original data even if the rest disappear.
++
++<KeyTakeaways>
++
++- Redundancy turns a corrupted message into something detectable: the Hamming distance between two words counts the positions where they differ, and a code's minimum distance $d$ decides how much damage it survives.
++- Reed–Solomon encodes a $k$-number message as a degree-$(k-1)$ polynomial and sends its value at $n$ agreed points; any $k$ of those points recover the message exactly.
++- The same root-counting fact behind Schwartz–Zippel forces any two different codewords to differ in at least $n - k + 1$ places — the best any code of that size can do.
++- A received word survives up to $n - k$ erasures (lost values at known positions) and up to $t$ plain errors whenever $d \geq 2t + 1$, by always decoding to the nearest codeword.
++- The NTT makes Reed–Solomon encoding fast, and the resulting distance bound underlies both the soundness of spot-checks in proof systems like STARKs and data-availability guarantees in blockchains.
++
++</KeyTakeaways>
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 787933c..6757cdc 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -11,7 +11,7 @@ export const learnHero = {
+   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
+   stats: [
+     { num: "4", label: "Tracks" },
+-    { num: "70", label: "Lessons" },
++    { num: "71", label: "Lessons" },
+     { num: "0 → Prod", label: "Outcome" },
+   ],
+ };
+@@ -163,6 +163,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "24", title: "Multivariate & Multilinear Polynomials", duration: "13:00", slug: "multivariate-multilinear-polynomials" },
+       ],
+     },
++    {
++      module: "Coding Theory",
++      items: [
++        { num: "25", title: "Coding Theory & Reed–Solomon Codes", duration: "13:00", slug: "reed-solomon-coding-theory" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],
+diff --git a/src/content/tracks/math.json b/src/content/tracks/math.json
+index c06dea2..3b82eb5 100644
+--- a/src/content/tracks/math.json
++++ b/src/content/tracks/math.json
+@@ -4,5 +4,5 @@
+   "title": "Math",
+   "level": "BEGINNER – INTERMEDIATE",
+   "description": "Finite fields, elliptic curves, and the algebra that underlies every proof system.",
+-  "lessonCount": 24
++  "lessonCount": 26
+ }
