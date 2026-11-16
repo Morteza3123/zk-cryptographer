@@ -1,0 +1,40 @@
+---
+// Fig. for "Multivariate & Multilinear Polynomials": the Schwartz–Zippel
+// lemma — a nonzero polynomial of total degree d vanishes at a random
+// point in F(p) with chance at most d/p, checked on f(x,y) = xy and then
+// at real-proof-system scale.
+---
+<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">how often can a polynomial hit zero?</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">A polynomial isn't zero everywhere. How likely is a random point to be a root anyway?</text>
+
+  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ONE VARIABLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">degree d has at most d roots, so chance &#8804; d/p</tspan>
+  </text>
+
+  <text x="380" y="158" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">THE RULE&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13" font-weight="700">nonzero polynomial, total degree d, random point in F(p) &#8594; chance of zero &#8804; d/p</tspan>
+  </text>
+
+  <text x="380" y="194" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">EXAMPLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">f(x, y) = x &#215; y in F(13), total degree 2</tspan>
+  </text>
+
+  <text x="380" y="226" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ZEROS&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">x = 0 or y = 0 &#8594; 13 + 13 &#8722; 1 = 25 points out of 169</tspan>
+  </text>
+
+  <text x="380" y="258" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">COMPARE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">actual 25/169 &#8776; 14.8%, bound 2/13 = 26/169 &#8776; 15.4%  </tspan><tspan fill="#5ddc8a" font-size="12.5" font-weight="700">25 &#8804; 26 &#10003;</tspan>
+  </text>
+
+  <text x="380" y="290" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">REAL FIELD&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13" font-weight="700">p &#8776; 2<tspan dy="-6" font-size="65%">254</tspan><tspan dy="6"> and d = 2</tspan><tspan dy="-6" font-size="65%">20</tspan><tspan dy="6"> &#8594; chance &#8804; 2</tspan><tspan dy="-6" font-size="65%">&#8722;234</tspan><tspan dy="6"></tspan></tspan>
+  </text>
+
+  <line x1="40" y1="314" x2="720" y2="314" stroke="#223049" stroke-width="1" />
+  <text x="380" y="338" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">A NONZERO POLYNOMIAL ALMOST NEVER VANISHES AT RANDOM</text>
+  <text x="380" y="360" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This bound is the Schwartz&#8211;Zippel lemma.</text>
+</svg>

@@ -1,0 +1,143 @@
+---
+track: math
+module: "Multivariate Polynomials"
+lessonNumber: "24"
+title: "Multivariate & Multilinear Polynomials"
+duration: "13:00"
+description: "How polynomials in several variables generalize everything built so far, why restricting each variable to appear at most once — multilinear — gives a unique polynomial through any table of values, and how the Schwartz–Zippel lemma turns that into the soundness argument behind every random spot-check."
+order: 24
+prevTitle: "FFT and NTT"
+prevHref: "/learn/math/fft-ntt"
+---
+
+import MathBox from "../../components/MathBox.astro";
+import Figure from "../../components/Figure.astro";
+import OneVarToManyFigure from "../../components/figures/OneVarToManyFigure.astro";
+import MultilinearHypercubeFigure from "../../components/figures/MultilinearHypercubeFigure.astro";
+import TableToPolynomialFigure from "../../components/figures/TableToPolynomialFigure.astro";
+import SchwartzZippelFigure from "../../components/figures/SchwartzZippelFigure.astro";
+import RandomCheckFigure from "../../components/figures/RandomCheckFigure.astro";
+import SumcheckPreviewFigure from "../../components/figures/SumcheckPreviewFigure.astro";
+import KeyTakeaways from "../../components/KeyTakeaways.astro";
+
+Every polynomial up to now has taken one input: $f(x)$. **This lesson lets a polynomial take several**, which is what the rest of the series — and the sumcheck protocol in particular — actually runs on. One running example carries the lesson: a table of four values, the unique polynomial through them, and how confident a single random check can be that two polynomials agree everywhere.
+
+## From one variable to many
+
+The jump from one variable to several changes what "degree" means, but evaluation still works exactly the same way.
+
+<Figure caption="Fig. 1 — f(x) = 2 + 3x + x² has one input and degree 2; f(x, y) = 3x²y + 2xy + 5 takes a pair (x, y), where the term x²y has total degree 3 and degree 2 in x, degree 1 in y. Evaluating at (2, 3) in F(13) still gives one number.">
+  <OneVarToManyFigure />
+</Figure>
+
+<MathBox label="Total degree">
+
+<div slot="formula">
+
+$$\deg(x^2y) = 2 + 1 = 3, \qquad \deg(f) = \max_{\text{terms}} \deg(\text{term})$$
+
+</div>
+
+A monomial's degree is the sum of its exponents across every variable; a polynomial's total degree is the largest of those over all its terms. $f(x, y) = 3x^2y + 2xy + 5$ has total degree $3$, from the $x^2y$ term — even though the whole polynomial has only two variables. Plugging in a point is unchanged: substitute every value and reduce mod $p$, same as with one variable.
+
+</MathBox>
+
+## Multilinear: each variable at most once
+
+Restrict every variable to appear to the power $1$ at most, and the polynomial becomes exactly as expressive as a table of values on the Boolean hypercube — no more, no less.
+
+<Figure caption="Fig. 2 — 3 + 2x + 5y + 4xy is multilinear: x and y never appear squared. With n variables there are 2ⁿ monomials — one for every subset of variables that could be multiplied together — matching the 2ⁿ corners of the Boolean hypercube {0,1}ⁿ.">
+  <MultilinearHypercubeFigure />
+</Figure>
+
+<MathBox label="Multilinear polynomials">
+
+<div slot="formula">
+
+$$f(x_1, \ldots, x_n) = \sum_{S \subseteq \{1,\ldots,n\}} c_S \prod_{i \in S} x_i$$
+
+</div>
+
+A multilinear polynomial in $n$ variables is a sum over every subset $S$ of variables, each with its own coefficient $c_S$ multiplying the product of that subset — $2^n$ coefficients for $2^n$ subsets. That count isn't a coincidence: it matches the $2^n$ corners of $\{0,1\}^n$, the set of all $0/1$ assignments to the $n$ variables.
+
+</MathBox>
+
+## From a table to a polynomial
+
+Given values at the four corners of $\{0,1\}^2$, there's exactly one multilinear polynomial that hits all of them — and selector polynomials build it directly.
+
+<Figure caption="Fig. 3 — four corner values (0,0)→3, (1,0)→5, (0,1)→8, (1,1)→1 combine with four selector polynomials, each equal to 1 at its own corner and 0 at the other three, to build f(x, y) = 3 + 2x + 5y + 4xy — checked at (2, 3) two ways, both giving 7.">
+  <TableToPolynomialFigure />
+</Figure>
+
+<MathBox label="Selector polynomials">
+
+<div slot="formula">
+
+$$\chi_{(a,b)}(x,y) = x^{a}(1-x)^{1-a} \cdot y^{b}(1-y)^{1-b}$$
+
+</div>
+
+The selector for corner $(a, b)$ is $1$ exactly at that corner and $0$ at every other corner — built from $x$ or $(1-x)$ depending on whether $a$ is $1$ or $0$, same for $y$. Summing each corner's value times its selector gives a polynomial that matches the table everywhere on the hypercube; because a degree-$1$-per-variable polynomial is pinned down by that few points, it's the *only* one that does, and it's called the multilinear extension of the table.
+
+</MathBox>
+
+## How often can a polynomial hit zero?
+
+Lesson 10 introduced this bound for a single variable: a nonzero polynomial can still equal zero at plenty of points, but not too many. The same argument carries over unchanged to several variables, and that's the fact the next two sections build on.
+
+<Figure caption="Fig. 4 — f(x, y) = xy in F(13) has total degree 2 and vanishes at 25 of 169 points, right under the Schwartz–Zippel bound of 26 of 169; at the scale of a real proof system, the same bound makes a random point's chance of hitting zero astronomically small.">
+  <SchwartzZippelFigure />
+</Figure>
+
+<MathBox label="Schwartz–Zippel lemma">
+
+<div slot="formula">
+
+$$f \not\equiv 0, \ \deg(f) = d \implies \Pr_{r \leftarrow F^n}[f(r) = 0] \leq \frac{d}{|F|}$$
+
+</div>
+
+For any nonzero polynomial of total degree $d$ over a field $F$, a uniformly random point is a root with probability at most $d / |F|$. Over a small field like $F(13)$ that bound is a real constraint — degree $2$ vanishes up to about $15\%$ of the time. Over the $254$-bit fields real proof systems use, with $d$ in the thousands or millions, that probability is smaller than the chance of guessing a fair coin flip correctly forty times running.
+
+</MathBox>
+
+## One random check catches a cheater
+
+Flip the lemma around: if two polynomials disagree anywhere, a random point almost certainly reveals it — which is the entire soundness argument behind spot-checking a claim instead of verifying it in full.
+
+<Figure caption="Fig. 5 — testing whether A(x) × B(x) = C(x) everywhere by picking one random point; the difference polynomial g = AB − C has at most 2 roots out of 13, so one unlucky check can miss it, but a second catches it, and three checks together bring the miss chance under half a percent.">
+  <RandomCheckFigure />
+</Figure>
+
+<MathBox label="Soundness error">
+
+<div slot="formula">
+
+$$\varepsilon \leq \frac{d}{|F|}, \qquad \varepsilon_k \leq \left(\frac{d}{|F|}\right)^k \text{ after } k \text{ independent checks}$$
+
+</div>
+
+If a dishonest prover's claim is false, the gap $g = AB - C$ is a nonzero polynomial of degree $d$, so by Schwartz–Zippel a single random check misses it with probability at most $d/|F|$ — that's the protocol's soundness error. Repeating the check $k$ times with fresh randomness multiplies that error down to $(d/|F|)^k$; in a $254$-bit field, even one check already makes cheating practically impossible.
+
+</MathBox>
+
+## Preview: peeling off one variable
+
+One last idea closes the lesson: a claimed sum over every corner of the hypercube can be checked one variable at a time, each round shrinking the claim by one variable.
+
+<Figure caption="Fig. 6 — a claimed sum of 4 over f's hypercube is checked by sending the univariate slice g₁(x) = f(x,0) + f(x,1), confirming g₁(0) + g₁(1) matches the claim, then continuing with a fresh random x = 2, leaving only y to pin down.">
+  <SumcheckPreviewFigure />
+</Figure>
+
+Instead of summing $2^n$ values directly, the prover sends one variable's worth of the sum at a time, the verifier checks consistency with two evaluations, picks a random point to collapse that variable, and passes a smaller claim on to the next round. $n$ variables become $n$ rounds, each round a small, cheap check — and each one backed by exactly the Schwartz–Zippel argument from this lesson. That protocol, the sumcheck, is built in full next.
+
+<KeyTakeaways>
+
+- A polynomial in several variables has a total degree (the largest sum of exponents in any term) and a degree in each variable separately; evaluation still means "plug in every value and reduce."
+- A multilinear polynomial lets each variable appear to the power $1$ at most, giving exactly $2^n$ coefficients for $n$ variables — one per subset, matching the $2^n$ corners of the Boolean hypercube.
+- Selector polynomials, each $1$ at one corner and $0$ at the rest, build the unique multilinear polynomial through any table of hypercube values — its multilinear extension.
+- The Schwartz–Zippel lemma bounds how often a nonzero degree-$d$ polynomial can vanish at a random point: at most $d / |F|$ of the time, a vanishingly small chance in the large fields real proof systems use.
+- That same bound is the soundness argument behind a single random spot-check, and it's what makes the sumcheck protocol — checking a sum one variable at a time — provably hard to cheat.
+
+</KeyTakeaways>

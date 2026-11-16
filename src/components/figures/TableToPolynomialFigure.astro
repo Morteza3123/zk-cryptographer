@@ -1,0 +1,45 @@
+---
+// Fig. for "Multivariate & Multilinear Polynomials": building the unique
+// multilinear polynomial through four corner values with selector
+// polynomials, then checking the selector and expanded forms agree off
+// a corner, at (2, 3).
+---
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">from a table to a polynomial</text>
+
+  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
+  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Given four corner values, which multilinear polynomial passes through all of them?</text>
+
+  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TABLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">(0,0) &#8594; 3, (1,0) &#8594; 5, (0,1) &#8594; 8, (1,1) &#8594; 1</tspan>
+  </text>
+
+  <text x="380" y="154" text-anchor="middle" font-family="-apple-system,Arial,sans-serif">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">SELECTORS&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="12.5" font-weight="700">each corner gets a selector that is 1 at that corner and 0 at the other three:</tspan>
+  </text>
+  <text x="380" y="182" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(1 &#8722; x)(1 &#8722; y),  x(1 &#8722; y),  (1 &#8722; x)y,  xy</text>
+
+  <text x="380" y="214" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">BUILD&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">f(x,y) = 3&#215;(1&#8722;x)(1&#8722;y) + 5&#215;x(1&#8722;y) + 8&#215;(1&#8722;x)y + 1&#215;xy</tspan>
+  </text>
+
+  <text x="380" y="246" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">EXPAND&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">constant 3, x: &#8722;3+5=2, y: &#8722;3+8=5, xy: 3&#8722;5&#8722;8+1=&#8722;9=4</tspan>
+  </text>
+  <text x="380" y="274" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">so f(x, y) = 3 + 2x + 5y + 4xy</text>
+
+  <text x="380" y="306" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11" font-weight="700">TEST AT (2,3), SELECTOR FORM&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">3&#215;2+5&#215;(&#8722;4)+8&#215;(&#8722;3)+1&#215;6=6&#8722;20&#8722;24+6=&#8722;32=7</tspan>
+  </text>
+
+  <text x="380" y="338" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
+    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TEST AT (2,3), EXPANDED FORM&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">3+4+15+24=46=7</tspan>
+  </text>
+
+  <rect x="260" y="360" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
+  <text x="380" y="386" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">both forms give 7 &#10003;</text>
+
+  <line x1="40" y1="426" x2="720" y2="426" stroke="#223049" stroke-width="1" />
+  <text x="380" y="450" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">A TABLE HAS EXACTLY ONE MULTILINEAR POLYNOMIAL</text>
+  <text x="380" y="472" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">It's called the multilinear extension &#8212; and it works at points that aren't corners too.</text>
+</svg>

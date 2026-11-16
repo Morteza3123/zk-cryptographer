@@ -1,0 +1,485 @@
+diff --git a/src/components/figures/MultilinearHypercubeFigure.astro b/src/components/figures/MultilinearHypercubeFigure.astro
+new file mode 100644
+index 0000000..0fc0ad2
+--- /dev/null
++++ b/src/components/figures/MultilinearHypercubeFigure.astro
+@@ -0,0 +1,46 @@
++---
++// Fig. for "Multivariate & Multilinear Polynomials": a multilinear
++// polynomial has 2^n coefficients, exactly matching the 2^n corners of
++// the Boolean hypercube {0,1}^n — shown here for n = 2.
++---
++<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">multilinear: each variable at most once</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">What if every variable may only appear to the power 1?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ALLOWED&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13.5" font-weight="700">3 + 2x + 5y + 4xy &#10003;</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">NOT ALLOWED&#160;&#160;&#160;</tspan><tspan fill="#ff5c7a" font-size="13.5" font-weight="700">x<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> or x</tspan><tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">y &#10007;</tspan></tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">MONOMIALS&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">1, x, y, xy &#8594; 4 = 2<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6"> coefficients. With n variables there are 2</tspan><tspan dy="-6" font-size="65%">n</tspan><tspan dy="6">.</tspan></tspan>
++  </text>
++
++  <!-- the Boolean hypercube {0,1}^2 -->
++  <line x1="295" y1="230" x2="465" y2="230" stroke="#8fdcff" stroke-width="1.5" />
++  <line x1="295" y1="400" x2="465" y2="400" stroke="#8fdcff" stroke-width="1.5" />
++  <line x1="295" y1="230" x2="295" y2="400" stroke="#8fdcff" stroke-width="1.5" />
++  <line x1="465" y1="230" x2="465" y2="400" stroke="#8fdcff" stroke-width="1.5" />
++  <circle cx="295" cy="230" r="6" fill="#8fdcff" />
++  <circle cx="465" cy="230" r="6" fill="#8fdcff" />
++  <circle cx="295" cy="400" r="6" fill="#8fdcff" />
++  <circle cx="465" cy="400" r="6" fill="#8fdcff" />
++  <text x="280" y="234" text-anchor="end" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(0, 1) &#8594; 8</text>
++  <text x="480" y="234" text-anchor="start" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(1, 1) &#8594; 14 = 1</text>
++  <text x="280" y="404" text-anchor="end" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(0, 0) &#8594; 3</text>
++  <text x="480" y="404" text-anchor="start" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(1, 0) &#8594; 5</text>
++  <text x="380" y="430" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="SF Mono, Fira Code, Consolas, monospace">the Boolean hypercube {"{0, 1}"}<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">, all values in F(13)</tspan></text>
++
++  <text x="380" y="464" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CHECK&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13.5" font-weight="700">f(1, 1) = 3 + 2 + 5 + 4 = 14 = 1 &#10003;</tspan>
++  </text>
++
++  <line x1="40" y1="486" x2="720" y2="486" stroke="#223049" stroke-width="1" />
++  <text x="380" y="510" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">2&#8319; COEFFICIENTS MATCH 2&#8319; CORNERS</text>
++  <text x="380" y="532" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">The four corner values pin down the whole polynomial.</text>
++</svg>
+diff --git a/src/components/figures/OneVarToManyFigure.astro b/src/components/figures/OneVarToManyFigure.astro
+new file mode 100644
+index 0000000..bfedf27
+--- /dev/null
++++ b/src/components/figures/OneVarToManyFigure.astro
+@@ -0,0 +1,37 @@
++---
++// Fig. for "Multivariate & Multilinear Polynomials": moving from one
++// variable to several — total degree vs. degree in each variable,
++// evaluated at a point (2, 3) in F(13).
++---
++<svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">from one variable to many</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">What changes when a polynomial has more than one variable?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ONE VARIABLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">f(x) = 2 + 3x + x<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">  (one input, degree 2)</tspan></tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TWO VARIABLES&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">f(x, y) = 3x<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">y + 2xy + 5  (the input is a pair (x, y))</tspan></tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TOTAL DEGREE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">x<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">y has degree 2 + 1 = 3, so total degree = 3</tspan></tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">DEGREE IN EACH VARIABLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">x &#8594; 2, y &#8594; 1</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" fill="#8b96a8" font-size="11.5" font-weight="700" font-family="-apple-system,Arial,sans-serif">EVALUATE AT (2, 3) IN F(13)</text>
++  <text x="380" y="276" text-anchor="middle" fill="#e9eef5" font-size="13.5" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">3&#215;2<tspan dy="-6" font-size="65%">2</tspan><tspan dy="6">&#215;3 + 2&#215;2&#215;3 + 5 = 36 + 12 + 5 = 53 = 1</tspan></text>
++
++  <rect x="260" y="298" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="324" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">f(2, 3) = 1 &#10003;</text>
++
++  <line x1="40" y1="356" x2="720" y2="356" stroke="#223049" stroke-width="1" />
++  <text x="380" y="380" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">MANY VARIABLES: ONE POINT IN, ONE NUMBER OUT</text>
++  <text x="380" y="402" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">Total degree controls how often a random point hits zero.</text>
++</svg>
+diff --git a/src/components/figures/RandomCheckFigure.astro b/src/components/figures/RandomCheckFigure.astro
+new file mode 100644
+index 0000000..c8c2e5f
+--- /dev/null
++++ b/src/components/figures/RandomCheckFigure.astro
+@@ -0,0 +1,43 @@
++---
++// Fig. for "Multivariate & Multilinear Polynomials": why a single random
++// check catches a cheating prover — tying Schwartz–Zippel to a concrete
++// soundness argument, with a cheat that happens to survive one bad-luck
++// check before a second check catches it.
++---
++<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">one random check catches a cheater</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Why does checking at one random point actually catch a lie?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CLAIM&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">prover says A(x) &#215; B(x) = C(x) for every x in F(13)</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CHECK&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13" font-weight="700">verifier picks random r, tests A(r) &#215; B(r) =? C(r)</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">WHY IT WORKS&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">g(x) = A(x)B(x) &#8722; C(x) is nonzero, degree &#8804; 2 &#8594; at most 2 roots</tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">CHEAT EXAMPLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">this false claim's g(x) happens to vanish at x = 1 and x = 7</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TRY r = 1&#160;&#160;&#160;</tspan><tspan fill="#ff5c7a" font-size="13" font-weight="700">g(1) = 0 &#8594; check passes, cheater gets lucky &#10007;</tspan>
++  </text>
++
++  <text x="380" y="282" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TRY r = 2&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13" font-weight="700">g(2) = 5 &#8800; 0 &#8594; check fails, cheater is caught &#10003;</tspan>
++  </text>
++
++  <rect x="60" y="300" width="640" height="38" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="324" text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">repeat 3 times: chance every check gets lucky &#8804; (2/13)<tspan dy="-5" font-size="65%">3</tspan><tspan dy="5"> &#8776; 0.4%</tspan></text>
++
++  <line x1="40" y1="352" x2="720" y2="352" stroke="#223049" stroke-width="1" />
++  <text x="380" y="376" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">A FEW RANDOM CHECKS SHRINK THE CHEATING CHANCE FAST</text>
++  <text x="380" y="394" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">In a huge field, one check is already enough.</text>
++</svg>
+diff --git a/src/components/figures/SchwartzZippelFigure.astro b/src/components/figures/SchwartzZippelFigure.astro
+new file mode 100644
+index 0000000..24718ab
+--- /dev/null
++++ b/src/components/figures/SchwartzZippelFigure.astro
+@@ -0,0 +1,40 @@
++---
++// Fig. for "Multivariate & Multilinear Polynomials": the Schwartz–Zippel
++// lemma — a nonzero polynomial of total degree d vanishes at a random
++// point in F(p) with chance at most d/p, checked on f(x,y) = xy and then
++// at real-proof-system scale.
++---
++<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">how often can a polynomial hit zero?</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">A polynomial isn't zero everywhere. How likely is a random point to be a root anyway?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ONE VARIABLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">degree d has at most d roots, so chance &#8804; d/p</tspan>
++  </text>
++
++  <text x="380" y="158" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">THE RULE&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13" font-weight="700">nonzero polynomial, total degree d, random point in F(p) &#8594; chance of zero &#8804; d/p</tspan>
++  </text>
++
++  <text x="380" y="194" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">EXAMPLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">f(x, y) = x &#215; y in F(13), total degree 2</tspan>
++  </text>
++
++  <text x="380" y="226" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ZEROS&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">x = 0 or y = 0 &#8594; 13 + 13 &#8722; 1 = 25 points out of 169</tspan>
++  </text>
++
++  <text x="380" y="258" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">COMPARE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">actual 25/169 &#8776; 14.8%, bound 2/13 = 26/169 &#8776; 15.4%  </tspan><tspan fill="#5ddc8a" font-size="12.5" font-weight="700">25 &#8804; 26 &#10003;</tspan>
++  </text>
++
++  <text x="380" y="290" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">REAL FIELD&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13" font-weight="700">p &#8776; 2<tspan dy="-6" font-size="65%">254</tspan><tspan dy="6"> and d = 2</tspan><tspan dy="-6" font-size="65%">20</tspan><tspan dy="6"> &#8594; chance &#8804; 2</tspan><tspan dy="-6" font-size="65%">&#8722;234</tspan><tspan dy="6"></tspan></tspan>
++  </text>
++
++  <line x1="40" y1="314" x2="720" y2="314" stroke="#223049" stroke-width="1" />
++  <text x="380" y="338" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">A NONZERO POLYNOMIAL ALMOST NEVER VANISHES AT RANDOM</text>
++  <text x="380" y="360" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">This bound is the Schwartz&#8211;Zippel lemma.</text>
++</svg>
+diff --git a/src/components/figures/SumcheckPreviewFigure.astro b/src/components/figures/SumcheckPreviewFigure.astro
+new file mode 100644
+index 0000000..2c2262c
+--- /dev/null
++++ b/src/components/figures/SumcheckPreviewFigure.astro
+@@ -0,0 +1,39 @@
++---
++// Fig. for "Multivariate & Multilinear Polynomials": a teaser for the
++// sumcheck protocol — peeling one variable off a claimed sum at a time,
++// using the same f(x,y) = 3 + 2x + 5y + 4xy from the table-to-polynomial
++// figure, whose hypercube sum is 3 + 5 + 8 + 1 = 17 = 4 in F(13).
++---
++<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">preview: peeling off one variable</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Can a prover convince a verifier of a sum without the verifier adding it up?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CLAIM&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">sum over x, y in {"{0,1}"} of f(x, y) = 4</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ROUND 1&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="13" font-weight="700">prover sends g&#8321;(x) = f(x,0) + f(x,1) = 11 + 8x, keeping x free</tspan>
++  </text>
++
++  <text x="380" y="186" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">CHECK&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13" font-weight="700">g&#8321;(0) + g&#8321;(1) = 11 + 19 = 4, matches the claim &#10003;</tspan>
++  </text>
++
++  <text x="380" y="218" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">CHALLENGE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">verifier picks a random r = 2, prover continues at x = 2</tspan>
++  </text>
++
++  <text x="380" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">ROUND 2&#160;&#160;&#160;</tspan><tspan fill="#5ddc8a" font-size="13" font-weight="700">new claim is g&#8321;(2) = 1, and only y is left to pin down</tspan>
++  </text>
++
++  <rect x="60" y="272" width="640" height="38" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="296" text-anchor="middle" fill="#5ddc8a" font-size="13" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">two variables, two rounds, one small check each &#10003;</text>
++
++  <line x1="40" y1="326" x2="720" y2="326" stroke="#223049" stroke-width="1" />
++  <text x="380" y="350" text-anchor="middle" fill="#8fdcff" font-size="15" font-weight="800" font-family="-apple-system,Arial,sans-serif">N VARIABLES, N ROUNDS, ONE VARIABLE PEELED EACH TIME</text>
++  <text x="380" y="372" text-anchor="middle" fill="#8b96a8" font-size="12" font-family="-apple-system,Arial,sans-serif">This full protocol &#8212; the sumcheck &#8212; is coming up next in the series.</text>
++</svg>
+diff --git a/src/components/figures/TableToPolynomialFigure.astro b/src/components/figures/TableToPolynomialFigure.astro
+new file mode 100644
+index 0000000..2547404
+--- /dev/null
++++ b/src/components/figures/TableToPolynomialFigure.astro
+@@ -0,0 +1,45 @@
++---
++// Fig. for "Multivariate & Multilinear Polynomials": building the unique
++// multilinear polynomial through four corner values with selector
++// polynomials, then checking the selector and expanded forms agree off
++// a corner, at (2, 3).
++---
++<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
++  <text x="380" y="26" text-anchor="middle" fill="#e9eef5" font-size="16" font-weight="800" font-family="-apple-system,Arial,sans-serif">from a table to a polynomial</text>
++
++  <rect x="40" y="46" width="680" height="42" rx="10" fill="#111c2e" stroke="#3ab7ff" stroke-width="1.5" />
++  <text x="380" y="72" text-anchor="middle" fill="#8fdcff" font-size="13" font-weight="700" font-family="-apple-system,Arial,sans-serif">Given four corner values, which multilinear polynomial passes through all of them?</text>
++
++  <text x="380" y="122" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TABLE&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13.5" font-weight="700">(0,0) &#8594; 3, (1,0) &#8594; 5, (0,1) &#8594; 8, (1,1) &#8594; 1</tspan>
++  </text>
++
++  <text x="380" y="154" text-anchor="middle" font-family="-apple-system,Arial,sans-serif">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">SELECTORS&#160;&#160;&#160;</tspan><tspan fill="#8fdcff" font-size="12.5" font-weight="700">each corner gets a selector that is 1 at that corner and 0 at the other three:</tspan>
++  </text>
++  <text x="380" y="182" text-anchor="middle" fill="#8fdcff" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">(1 &#8722; x)(1 &#8722; y),  x(1 &#8722; y),  (1 &#8722; x)y,  xy</text>
++
++  <text x="380" y="214" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">BUILD&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">f(x,y) = 3&#215;(1&#8722;x)(1&#8722;y) + 5&#215;x(1&#8722;y) + 8&#215;(1&#8722;x)y + 1&#215;xy</tspan>
++  </text>
++
++  <text x="380" y="246" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">EXPAND&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">constant 3, x: &#8722;3+5=2, y: &#8722;3+8=5, xy: 3&#8722;5&#8722;8+1=&#8722;9=4</tspan>
++  </text>
++  <text x="380" y="274" text-anchor="middle" fill="#e9eef5" font-size="14" font-weight="700" font-family="SF Mono, Fira Code, Consolas, monospace">so f(x, y) = 3 + 2x + 5y + 4xy</text>
++
++  <text x="380" y="306" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11" font-weight="700">TEST AT (2,3), SELECTOR FORM&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="12.5" font-weight="700">3&#215;2+5&#215;(&#8722;4)+8&#215;(&#8722;3)+1&#215;6=6&#8722;20&#8722;24+6=&#8722;32=7</tspan>
++  </text>
++
++  <text x="380" y="338" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace">
++    <tspan fill="#8b96a8" font-size="11.5" font-weight="700">TEST AT (2,3), EXPANDED FORM&#160;&#160;&#160;</tspan><tspan fill="#e9eef5" font-size="13" font-weight="700">3+4+15+24=46=7</tspan>
++  </text>
++
++  <rect x="260" y="360" width="240" height="42" rx="10" fill="#0e1f16" stroke="#5ddc8a" stroke-width="1.8" />
++  <text x="380" y="386" text-anchor="middle" fill="#5ddc8a" font-size="14.5" font-weight="800" font-family="SF Mono, Fira Code, Consolas, monospace">both forms give 7 &#10003;</text>
++
++  <line x1="40" y1="426" x2="720" y2="426" stroke="#223049" stroke-width="1" />
++  <text x="380" y="450" text-anchor="middle" fill="#8fdcff" font-size="15.5" font-weight="800" font-family="-apple-system,Arial,sans-serif">A TABLE HAS EXACTLY ONE MULTILINEAR POLYNOMIAL</text>
++  <text x="380" y="472" text-anchor="middle" fill="#8b96a8" font-size="12.5" font-family="-apple-system,Arial,sans-serif">It's called the multilinear extension &#8212; and it works at points that aren't corners too.</text>
++</svg>
+diff --git a/src/content/lessons/fft-ntt.mdx b/src/content/lessons/fft-ntt.mdx
+index 6ed2e93..a94d228 100644
+--- a/src/content/lessons/fft-ntt.mdx
++++ b/src/content/lessons/fft-ntt.mdx
+@@ -8,6 +8,8 @@ description: "Why multiplying two polynomials the obvious way costs n × n multi
+ order: 23
+ prevTitle: "Linear Algebra over Finite Fields"
+ prevHref: "/learn/math/linear-algebra-finite-fields"
++nextTitle: "Multivariate & Multilinear Polynomials"
++nextHref: "/learn/math/multivariate-multilinear-polynomials"
+ ---
+ 
+ import MathBox from "../../components/MathBox.astro";
+diff --git a/src/content/lessons/multivariate-multilinear-polynomials.mdx b/src/content/lessons/multivariate-multilinear-polynomials.mdx
+new file mode 100644
+index 0000000..3dbd5d5
+--- /dev/null
++++ b/src/content/lessons/multivariate-multilinear-polynomials.mdx
+@@ -0,0 +1,143 @@
++---
++track: math
++module: "Multivariate Polynomials"
++lessonNumber: "24"
++title: "Multivariate & Multilinear Polynomials"
++duration: "13:00"
++description: "How polynomials in several variables generalize everything built so far, why restricting each variable to appear at most once — multilinear — gives a unique polynomial through any table of values, and how the Schwartz–Zippel lemma turns that into the soundness argument behind every random spot-check."
++order: 24
++prevTitle: "FFT and NTT"
++prevHref: "/learn/math/fft-ntt"
++---
++
++import MathBox from "../../components/MathBox.astro";
++import Figure from "../../components/Figure.astro";
++import OneVarToManyFigure from "../../components/figures/OneVarToManyFigure.astro";
++import MultilinearHypercubeFigure from "../../components/figures/MultilinearHypercubeFigure.astro";
++import TableToPolynomialFigure from "../../components/figures/TableToPolynomialFigure.astro";
++import SchwartzZippelFigure from "../../components/figures/SchwartzZippelFigure.astro";
++import RandomCheckFigure from "../../components/figures/RandomCheckFigure.astro";
++import SumcheckPreviewFigure from "../../components/figures/SumcheckPreviewFigure.astro";
++import KeyTakeaways from "../../components/KeyTakeaways.astro";
++
++Every polynomial up to now has taken one input: $f(x)$. **This lesson lets a polynomial take several**, which is what the rest of the series — and the sumcheck protocol in particular — actually runs on. One running example carries the lesson: a table of four values, the unique polynomial through them, and how confident a single random check can be that two polynomials agree everywhere.
++
++## From one variable to many
++
++The jump from one variable to several changes what "degree" means, but evaluation still works exactly the same way.
++
++<Figure caption="Fig. 1 — f(x) = 2 + 3x + x² has one input and degree 2; f(x, y) = 3x²y + 2xy + 5 takes a pair (x, y), where the term x²y has total degree 3 and degree 2 in x, degree 1 in y. Evaluating at (2, 3) in F(13) still gives one number.">
++  <OneVarToManyFigure />
++</Figure>
++
++<MathBox label="Total degree">
++
++<div slot="formula">
++
++$$\deg(x^2y) = 2 + 1 = 3, \qquad \deg(f) = \max_{\text{terms}} \deg(\text{term})$$
++
++</div>
++
++A monomial's degree is the sum of its exponents across every variable; a polynomial's total degree is the largest of those over all its terms. $f(x, y) = 3x^2y + 2xy + 5$ has total degree $3$, from the $x^2y$ term — even though the whole polynomial has only two variables. Plugging in a point is unchanged: substitute every value and reduce mod $p$, same as with one variable.
++
++</MathBox>
++
++## Multilinear: each variable at most once
++
++Restrict every variable to appear to the power $1$ at most, and the polynomial becomes exactly as expressive as a table of values on the Boolean hypercube — no more, no less.
++
++<Figure caption="Fig. 2 — 3 + 2x + 5y + 4xy is multilinear: x and y never appear squared. With n variables there are 2ⁿ monomials — one for every subset of variables that could be multiplied together — matching the 2ⁿ corners of the Boolean hypercube {0,1}ⁿ.">
++  <MultilinearHypercubeFigure />
++</Figure>
++
++<MathBox label="Multilinear polynomials">
++
++<div slot="formula">
++
++$$f(x_1, \ldots, x_n) = \sum_{S \subseteq \{1,\ldots,n\}} c_S \prod_{i \in S} x_i$$
++
++</div>
++
++A multilinear polynomial in $n$ variables is a sum over every subset $S$ of variables, each with its own coefficient $c_S$ multiplying the product of that subset — $2^n$ coefficients for $2^n$ subsets. That count isn't a coincidence: it matches the $2^n$ corners of $\{0,1\}^n$, the set of all $0/1$ assignments to the $n$ variables.
++
++</MathBox>
++
++## From a table to a polynomial
++
++Given values at the four corners of $\{0,1\}^2$, there's exactly one multilinear polynomial that hits all of them — and selector polynomials build it directly.
++
++<Figure caption="Fig. 3 — four corner values (0,0)→3, (1,0)→5, (0,1)→8, (1,1)→1 combine with four selector polynomials, each equal to 1 at its own corner and 0 at the other three, to build f(x, y) = 3 + 2x + 5y + 4xy — checked at (2, 3) two ways, both giving 7.">
++  <TableToPolynomialFigure />
++</Figure>
++
++<MathBox label="Selector polynomials">
++
++<div slot="formula">
++
++$$\chi_{(a,b)}(x,y) = x^{a}(1-x)^{1-a} \cdot y^{b}(1-y)^{1-b}$$
++
++</div>
++
++The selector for corner $(a, b)$ is $1$ exactly at that corner and $0$ at every other corner — built from $x$ or $(1-x)$ depending on whether $a$ is $1$ or $0$, same for $y$. Summing each corner's value times its selector gives a polynomial that matches the table everywhere on the hypercube; because a degree-$1$-per-variable polynomial is pinned down by that few points, it's the *only* one that does, and it's called the multilinear extension of the table.
++
++</MathBox>
++
++## How often can a polynomial hit zero?
++
++Lesson 10 introduced this bound for a single variable: a nonzero polynomial can still equal zero at plenty of points, but not too many. The same argument carries over unchanged to several variables, and that's the fact the next two sections build on.
++
++<Figure caption="Fig. 4 — f(x, y) = xy in F(13) has total degree 2 and vanishes at 25 of 169 points, right under the Schwartz–Zippel bound of 26 of 169; at the scale of a real proof system, the same bound makes a random point's chance of hitting zero astronomically small.">
++  <SchwartzZippelFigure />
++</Figure>
++
++<MathBox label="Schwartz–Zippel lemma">
++
++<div slot="formula">
++
++$$f \not\equiv 0, \ \deg(f) = d \implies \Pr_{r \leftarrow F^n}[f(r) = 0] \leq \frac{d}{|F|}$$
++
++</div>
++
++For any nonzero polynomial of total degree $d$ over a field $F$, a uniformly random point is a root with probability at most $d / |F|$. Over a small field like $F(13)$ that bound is a real constraint — degree $2$ vanishes up to about $15\%$ of the time. Over the $254$-bit fields real proof systems use, with $d$ in the thousands or millions, that probability is smaller than the chance of guessing a fair coin flip correctly forty times running.
++
++</MathBox>
++
++## One random check catches a cheater
++
++Flip the lemma around: if two polynomials disagree anywhere, a random point almost certainly reveals it — which is the entire soundness argument behind spot-checking a claim instead of verifying it in full.
++
++<Figure caption="Fig. 5 — testing whether A(x) × B(x) = C(x) everywhere by picking one random point; the difference polynomial g = AB − C has at most 2 roots out of 13, so one unlucky check can miss it, but a second catches it, and three checks together bring the miss chance under half a percent.">
++  <RandomCheckFigure />
++</Figure>
++
++<MathBox label="Soundness error">
++
++<div slot="formula">
++
++$$\varepsilon \leq \frac{d}{|F|}, \qquad \varepsilon_k \leq \left(\frac{d}{|F|}\right)^k \text{ after } k \text{ independent checks}$$
++
++</div>
++
++If a dishonest prover's claim is false, the gap $g = AB - C$ is a nonzero polynomial of degree $d$, so by Schwartz–Zippel a single random check misses it with probability at most $d/|F|$ — that's the protocol's soundness error. Repeating the check $k$ times with fresh randomness multiplies that error down to $(d/|F|)^k$; in a $254$-bit field, even one check already makes cheating practically impossible.
++
++</MathBox>
++
++## Preview: peeling off one variable
++
++One last idea closes the lesson: a claimed sum over every corner of the hypercube can be checked one variable at a time, each round shrinking the claim by one variable.
++
++<Figure caption="Fig. 6 — a claimed sum of 4 over f's hypercube is checked by sending the univariate slice g₁(x) = f(x,0) + f(x,1), confirming g₁(0) + g₁(1) matches the claim, then continuing with a fresh random x = 2, leaving only y to pin down.">
++  <SumcheckPreviewFigure />
++</Figure>
++
++Instead of summing $2^n$ values directly, the prover sends one variable's worth of the sum at a time, the verifier checks consistency with two evaluations, picks a random point to collapse that variable, and passes a smaller claim on to the next round. $n$ variables become $n$ rounds, each round a small, cheap check — and each one backed by exactly the Schwartz–Zippel argument from this lesson. That protocol, the sumcheck, is built in full next.
++
++<KeyTakeaways>
++
++- A polynomial in several variables has a total degree (the largest sum of exponents in any term) and a degree in each variable separately; evaluation still means "plug in every value and reduce."
++- A multilinear polynomial lets each variable appear to the power $1$ at most, giving exactly $2^n$ coefficients for $n$ variables — one per subset, matching the $2^n$ corners of the Boolean hypercube.
++- Selector polynomials, each $1$ at one corner and $0$ at the rest, build the unique multilinear polynomial through any table of hypercube values — its multilinear extension.
++- The Schwartz–Zippel lemma bounds how often a nonzero degree-$d$ polynomial can vanish at a random point: at most $d / |F|$ of the time, a vanishingly small chance in the large fields real proof systems use.
++- That same bound is the soundness argument behind a single random spot-check, and it's what makes the sumcheck protocol — checking a sum one variable at a time — provably hard to cheat.
++
++</KeyTakeaways>
+diff --git a/src/content/site-data/learn.ts b/src/content/site-data/learn.ts
+index 7b726dc..787933c 100644
+--- a/src/content/site-data/learn.ts
++++ b/src/content/site-data/learn.ts
+@@ -11,7 +11,7 @@ export const learnHero = {
+   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
+   stats: [
+     { num: "4", label: "Tracks" },
+-    { num: "69", label: "Lessons" },
++    { num: "70", label: "Lessons" },
+     { num: "0 → Prod", label: "Outcome" },
+   ],
+ };
+@@ -157,6 +157,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
+         { num: "23", title: "FFT and NTT", duration: "13:00", slug: "fft-ntt" },
+       ],
+     },
++    {
++      module: "Multivariate Polynomials",
++      items: [
++        { num: "24", title: "Multivariate & Multilinear Polynomials", duration: "13:00", slug: "multivariate-multilinear-polynomials" },
++      ],
++    },
+   ],
+   cryptography: [],
+   fundamentals: [],
+diff --git a/src/content/tracks/math.json b/src/content/tracks/math.json
+index dae7e46..c06dea2 100644
+--- a/src/content/tracks/math.json
++++ b/src/content/tracks/math.json
+@@ -4,5 +4,5 @@
+   "title": "Math",
+   "level": "BEGINNER – INTERMEDIATE",
+   "description": "Finite fields, elliptic curves, and the algebra that underlies every proof system.",
+-  "lessonCount": 23
++  "lessonCount": 24
+ }

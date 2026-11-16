@@ -11,7 +11,7 @@ export const learnHero = {
   sub: "Four tracks, in order, each building on the last — from the math underneath ZK to shipping proof systems in production.",
   stats: [
     { num: "4", label: "Tracks" },
-    { num: "69", label: "Lessons" },
+    { num: "70", label: "Lessons" },
     { num: "0 → Prod", label: "Outcome" },
   ],
 };
@@ -155,6 +155,12 @@ export const lessonManifest: Record<string, LessonModule[]> = {
       module: "FFT & NTT",
       items: [
         { num: "23", title: "FFT and NTT", duration: "13:00", slug: "fft-ntt" },
+      ],
+    },
+    {
+      module: "Multivariate Polynomials",
+      items: [
+        { num: "24", title: "Multivariate & Multilinear Polynomials", duration: "13:00", slug: "multivariate-multilinear-polynomials" },
       ],
     },
   ],
